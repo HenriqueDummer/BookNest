@@ -46,11 +46,7 @@ export const SignUp = async (req, res) => {
             generateTokenAndSaveCookie(newUser._id, res)
 
             await newUser.save()
-            return res.status(201).json({
-                username,
-                fullname,
-                email,
-            })
+            return res.status(201).json(`Signed up as ${newUser.fullname}`)
         } else {
             return res.status(400).json({ error: "Cold not create user" })
         }
@@ -77,6 +73,17 @@ export const LogIn = async (req, res) => {
         generateTokenAndSaveCookie(user._id, res)
         res.status(200).json(`Logged in as ${user.fullname}`)
 
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ error: "Internal server error" })
+    }
+
+}   
+
+export const GetMe = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id).select("-password")
+        return res.status(200).json(user)
     } catch (err) {
         console.log(err)
         return res.status(500).json({ error: "Internal server error" })
