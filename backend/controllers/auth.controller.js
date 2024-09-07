@@ -15,7 +15,7 @@ function generateTokenAndSaveCookie(userId, res) {
     });
 }
 
-export const SignUp = async (req, res) => {
+export const signUp = async (req, res) => {
     const { email, password, username, fullname } = req.body
 
     try {
@@ -57,7 +57,7 @@ export const SignUp = async (req, res) => {
 
 }
 
-export const LogIn = async (req, res) => {
+export const logIn = async (req, res) => {
     const { email, password } = req.body
 
     try {
@@ -80,7 +80,7 @@ export const LogIn = async (req, res) => {
 
 }   
 
-export const GetMe = async (req, res) => {
+export const getMe = async (req, res) => {
     try {
         const user = await User.findById(req.user._id).select("-password")
         return res.status(200).json(user)
