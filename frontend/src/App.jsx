@@ -1,11 +1,29 @@
 import { useState } from 'react'
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
+import {useQuery, QueryClientProvider} from "@tanstack/react-query"
+
+
+import SignUp from './pages/SignUp'
+import LogIn from './pages/LogIn'
+import Home from './pages/Home'
+
+import { getMe } from './util/http'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const navigate = useNavigate()
+  const {data: authUser, isLoading} = useQuery({
+    queryFn: getMe,
+    queryKey: ['authUser'],
+    retry: false
+  })
 
   return (
     <>
-     <h1>BookNest</h1>
+     <Routes>
+        <Route path='/' element={authUser ? <Home /> : <Navigate to="/login" />}  />
+        <Route path='/login' element={<LogIn />}/>
+        <Route path='/signup' element={<SignUp />}/>
+     </Routes>
     </>
   )
 }
