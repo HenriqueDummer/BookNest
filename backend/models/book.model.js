@@ -9,11 +9,11 @@ const bookSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    pages: {
+    totalPages: {
         type: Number,
         required: true
     },
-    description: {
+    summary: {
         type: String,
         required: true
     },
@@ -22,7 +22,7 @@ const bookSchema = mongoose.Schema({
             type: String,
         }
     ],
-    publicationYear: {
+    pubYear: {
         type: Number,
     },
     bookCover: {

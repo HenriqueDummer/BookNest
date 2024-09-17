@@ -7,27 +7,29 @@ const LogIn = () => {
     email: "",
     password: "",
   });
-  
 
   const { mutate, isLoading } = useMutation({
     mutationFn: submitLogIn,
     onSuccess: () => {
-        queryClient.invalidateQueries(["authUser"])
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
   });
 
   function handleSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
     mutate(formData);
   }
 
   function handleChange(e) {
-    setFormaData({...formData, [e.target.name]: e.target.value})
+    setFormaData({ ...formData, [e.target.name]: e.target.value });
   }
 
   return (
     <section className="w-full h-screen flex justify-center items-center bg-slate-900">
-      <form className="bg-slate-950 p-2 px-5 flex flex-col gap-4 text-zinc-300" onSubmit={handleSubmit}>
+      <form
+        className="bg-slate-950 p-2 px-5 flex flex-col gap-4 text-zinc-300"
+        onSubmit={handleSubmit}
+      >
         <h1 className="text-xl text-center">Sign in</h1>
         <p className="flex flex-col">
           <label htmlFor="email">Email</label>
@@ -51,11 +53,7 @@ const LogIn = () => {
             onChange={handleChange}
           />
         </p>
-        <button
-          className="bg-violet-700 py-1 rounded-md"
-        >
-          LogIn
-        </button>
+        <button className="bg-violet-700 py-1 rounded-md">LogIn</button>
       </form>
     </section>
   );

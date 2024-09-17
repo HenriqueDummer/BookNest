@@ -70,3 +70,65 @@ export const submitLogIn = async (formData) => {
         console.log(err)
     }
 }
+
+export const getAllBooks = async () => {
+    try{
+        const res = await fetch("http://localhost:8080/api/books/all", {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+
+        const data = await res.json() 
+
+        console.log(data)
+
+        return data
+    }catch(err){
+        console.log(err)
+    }
+}
+
+export const getBooksByStatus = async (status) => {
+    console.log("Called")
+    try{
+        const res = await fetch("http://localhost:8080/api/books/" + status, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+
+        const data = await res.json() 
+
+        console.log(data)
+
+        return data
+    }catch(err){
+        console.log(err)
+    }
+}
+
+export const addBook = async (formData) => {
+    try{
+        const res = await fetch("http://localhost:8080/api/books/create", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+               ...formData
+            })
+        })
+
+        const data = await res.json()
+        console.log(data)
+        return data
+    }catch(err){
+        console.log(err)
+    }
+}

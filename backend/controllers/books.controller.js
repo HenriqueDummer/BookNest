@@ -23,32 +23,35 @@ export const addBook = async (req, res) => {
       title,
       author,
       status,
-      pages,
-      description,
+      currentPage,
+      totalPages,
+      summary,
       genres,
-      publicationYear,
+      pubYear,
     } = req.body;
     let { bookCover } = req.body;
     const userId = req.user._id;
 
-    if (!title || !author || !pages || !description)
+    console.log(req.body)
+    if (!title || !author || !totalPages || !summary)
       return res
         .status(400)
-        .json({ error: "Must provide title, pages, description and author" });
+        .json({ title, author, totalPages, summary});
 
     if (bookCover) {
       const uploadedResponse = await cloudinary.uploader.upload(bookCover);
-      img = uploadedResponse.secure_url;
+      bookCover = uploadedResponse.secure_url;
     }
 
     const newBook = new Book({
       userId,
       title,
       author,
-      pages,
-      description,
+      totalPages,
+      currentPage,
+      summary,
       genres,
-      publicationYear,
+      pubYear,
       bookCover,
       status,
     });
@@ -71,10 +74,10 @@ export const updateBook = async (req, res) => {
       title,
       author,
       status,
-      pages,
-      description,
+      totalPages,
+      summary,
       genres,
-      publicationYear,
+      pubYear,
       currentPage,
     } = req.body;
     let { bookCover } = req.body;
@@ -95,10 +98,11 @@ export const updateBook = async (req, res) => {
 
     (book.title = title || book.title),
       (book.author = author || book.author),
-      (book.pages = pages || book.pages),
-      (book.description = description || book.description),
+      (book.totalPages = totalPages || book.totalPages),
+      (book.currentPage = currentPage || book.currentPage),
+      (book.summary = summary || book.summary),
       (book.genres = genres || book.genres),
-      (book.publicationYear = publicationYear || book.publicationYear),
+      (book.pubYear = pubYear || book.pubYear),
       (book.bookCover = bookCover || book.bookCover),
       (book.status = status || book.status);
     book.currentPage = currentPage || book.currentPage;
