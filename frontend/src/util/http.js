@@ -92,9 +92,29 @@ export const getAllBooks = async () => {
 }
 
 export const getBooksByStatus = async (status) => {
-    console.log("Called")
+
     try{
-        const res = await fetch("http://localhost:8080/api/books/" + status, {
+        const res = await fetch("http://localhost:8080/api/books/status/" + status, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+
+        const data = await res.json() 
+
+        console.log(data)
+
+        return data
+    }catch(err){
+        console.log(err)
+    }
+}
+
+export const getBookById = async (id) => {
+    try{
+        const res = await fetch("http://localhost:8080/api/books/" + id, {
             method: "GET",
             credentials: "include",
             headers: {
@@ -115,6 +135,31 @@ export const getBooksByStatus = async (status) => {
 export const addBook = async (formData) => {
     try{
         const res = await fetch("http://localhost:8080/api/books/create", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+               ...formData
+            })
+        })
+
+        const data = await res.json()
+        console.log(data)
+        return data
+    }catch(err){
+        console.log(err)
+    }
+}
+
+export const updateBook = async (formData) => {
+
+    const id = formData._id
+
+    
+    try{
+        const res = await fetch("http://localhost:8080/api/books/update/" + id, {
             method: "POST",
             credentials: "include",
             headers: {

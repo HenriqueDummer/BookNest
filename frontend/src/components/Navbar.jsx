@@ -6,22 +6,24 @@ import {
   CiLogout,
   CiHeart,
   CiBookmark,
-  CiCircleCheck,
-  CiBookmarkCheck,
-  CiHome 
+  CiHome,
+  CiCircleCheck
 } from "react-icons/ci";
-import { SiBookstack } from "react-icons/si";
 import { ImBooks } from "react-icons/im";
+import { queryClient } from "@/util/http";
 
-const liStyle = "bg-slate-400 text-slate-800 flex gap-5 text-3xl items-center py-1";
-const pStyle = "text-xl";
+const liStyle = "bg-purple text-white/80 flex gap-3 text-3xl items-center p-2 rounded-lg";
+const pStyle = "text-lg";
 
 const Navbar = () => {
   const { data: authUser, isLoading } = useQuery({ queryKey: ["authUser"] });
 
+  function handleLogout() {
+     queryClient.invalidateQueries({ queryKey: ["authUser"] });
+  }
   return (
-    <nav className="h-full w-[15rem] bg-slate-800 p-4 flex flex-col justify-between text-zinc-300">
-      <div className="flex flex-col items-center ">
+    <nav className="h-full w-[18rem] border-r border-x-stone-800 bg-dark_bg p-4 px-6 flex flex-col justify-between text-zinc-300"
+>      <div className="flex flex-col items-center ">
         <img
           className="w-[8rem] aspect-square rounded-full"
           src={authUser.profileImg}
@@ -31,10 +33,10 @@ const Navbar = () => {
       </div>
 
       <ul className="flex flex-col gap-10">
-        <Link className={ImBooks} to="/">
+        <Link to="/">
           <li className={liStyle}>
             <CiHome   />
-            <p className="text-xl">All</p>
+            <p className={pStyle}>All</p>
           </li>
         </Link>
         <Link to="/reading">
@@ -51,15 +53,15 @@ const Navbar = () => {
         </Link>
         <Link to="/read">
           <li className={liStyle}>
-            <CiBookmarkCheck />
+            <CiCircleCheck />
             <p className={pStyle}>Read</p>
           </li>
         </Link>
       </ul>
-      <div>
-        <CiLogout />
-        <p>Logout</p>
-      </div>
+      <button onClick={handleLogout} className="flex items-center justify-center gap-1 bg-zinc-900 py-2 w-full rounded-full">
+        <CiLogout className="text-lg" />
+        <p className="font-semibold">Logout</p>
+      </button>
     </nav>
   );
 };

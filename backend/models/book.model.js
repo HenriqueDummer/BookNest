@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const bookSchema = mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     author: {
         type: String,
@@ -27,7 +28,11 @@ const bookSchema = mongoose.Schema({
     },
     bookCover: {
         type: String,
-        default: "https://boxshot.com/3d-book-cover/how-to-make-a-3d-book-cover-in-photoshop/sample.jpg"
+        default: "https://i.pinimg.com/originals/80/ec/77/80ec77932091113c4970a88f69b9bb4f.gif"
+    },
+    bookBackground: {
+        type: String,
+        default: "https://i.pinimg.com/originals/80/ec/77/80ec77932091113c4970a88f69b9bb4f.gif"
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,

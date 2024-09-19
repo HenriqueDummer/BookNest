@@ -12,6 +12,7 @@ import { getMe } from "./util/http";
 import Reading from "./pages/Reading";
 import WantToRead from "./pages/WantToRead";
 import Read from "./pages/Read";
+import Book from "./pages/Book";
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -20,19 +21,34 @@ function App() {
     retry: false,
   });
 
-
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-dark_bg">
       {authUser && <Navbar />}
       <Routes>
-        <Route path="/" element={authUser ? <Home /> : <Navigate to="/login"/>} />
+        <Route
+          path="/"
+          element={authUser ? <Home /> : <Navigate to="/login" />}
+        />
         <Route
           path="/login"
           element={!authUser ? <LogIn /> : <Navigate to="/" />}
         />
-        <Route path="/reading" element={authUser ? <Reading /> :  <Navigate to="/login"/>} />
-        <Route path="/want_to_read" element={authUser ? <WantToRead /> :  <Navigate to="/login"/>} />
-        <Route path="/read" element={authUser ? <Read /> :  <Navigate to="/login"/>} />
+        <Route
+          path="/reading"
+          element={authUser ? <Reading /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/want_to_read"
+          element={authUser ? <WantToRead /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/read"
+          element={authUser ? <Read /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/book/:id"
+          element={authUser ? <Book /> : <Navigate to="/login" />}
+        />
       </Routes>
     </div>
   );
