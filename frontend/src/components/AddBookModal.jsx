@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 
 import ModalBookCover from "./ModalBookCover";
+import ModalBookBackground from "./ModalBookBackground";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -36,12 +37,19 @@ const AddBookModal = ({ existingFormData, children, className }) => {
           theme: "dark",
         });
       } else {
-        toast.success(existingFormData ? "Book updated successfully!" : "Book added successfully!", { theme: "dark" });
+        toast.success(
+          existingFormData
+            ? "Book updated successfully!"
+            : "Book added successfully!",
+          { theme: "dark" }
+        );
         setIsOpen(false);
-        queryClient.invalidateQueries({queryKey: ["book", res._id, "books"]})
+        queryClient.invalidateQueries({ queryKey: [res._id] });
       }
     },
   });
+
+  console.log(isLoading)
 
   const initialFormData = existingFormData ?? {
     status: "want_to_read",
@@ -50,11 +58,13 @@ const AddBookModal = ({ existingFormData, children, className }) => {
     totalPages: 0,
   };
 
-  const initialImg = existingFormData?.bookCover ?? "";
+  const initialCover = existingFormData?.bookCover ?? "";
+  const initialBackground = existingFormData?.bookBackground ?? "";
 
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
-  const [img, setImg] = useState(initialImg);
+  const [img, setImg] = useState(initialCover);
+  const [background, setBackground] = useState(initialBackground);
 
   function handleFormChange(e) {
     setFormData((prev) => {
@@ -64,8 +74,6 @@ const AddBookModal = ({ existingFormData, children, className }) => {
       };
     });
   }
-
- 
 
   return (
     <>
@@ -83,7 +91,13 @@ const AddBookModal = ({ existingFormData, children, className }) => {
           </DialogHeader>
           <form className="flex gap-5 p-6">
             <div className="w-[16rem]">
-              <p>
+              <ModalBookBackground background={background} setBackground={setBackground} />
+
+              <ModalBookCover img={img} setImg={setImg} />
+            </div>
+
+            <div className="w-[28rem]">
+              <p className="w-full">
                 <Label htmlFor="title">Title</Label>
                 <Input
                   id="title"
@@ -93,9 +107,6 @@ const AddBookModal = ({ existingFormData, children, className }) => {
                   value={formData.title}
                 />
               </p>
-              <ModalBookCover img={img} setImg={setImg} />
-            </div>
-            <div className="w-[28rem]">
               <div className="flex w-full gap-2">
                 <p className="w-full">
                   <Label htmlFor="author">Author</Label>
@@ -167,7 +178,7 @@ const AddBookModal = ({ existingFormData, children, className }) => {
               </DialogClose>
 
               <Button
-                onClick={() => mutate({ ...formData, bookCover: img })}
+                onClick={() => mutate({ ...formData, bookCover: img, bookBackground: background })}
                 type="button"
                 disabled={isLoading}
               >

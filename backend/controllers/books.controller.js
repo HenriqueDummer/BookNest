@@ -88,7 +88,7 @@ export const updateBook = async (req, res) => {
       pubYear,
       currentPage,
     } = req.body;
-    let { bookCover } = req.body;
+    let { bookCover, bookBackground } = req.body;
     const { id } = req.params;    
 
     let book = await Book.findById(id);
@@ -104,6 +104,17 @@ export const updateBook = async (req, res) => {
         }
     }
 
+    if(bookBackground){
+      if(book.bookBackground && book.bookBackground !== bookBackground){
+        await cloudinary.uploader.destroy(book.bookBackground.split("/").pop().split(".")[0]);
+      }
+      
+      if(book.bookBackground !== bookBackground){
+        const uploadedResponse = await cloudinary.uploader.upload(bookBackground)
+        bookBackground = uploadedResponse.secure_url
+      }
+  }
+
     (book.title = title || book.title),
       (book.author = author || book.author),
       (book.totalPages = totalPages || book.totalPages),
@@ -112,6 +123,7 @@ export const updateBook = async (req, res) => {
       (book.genres = genres || book.genres),
       (book.pubYear = pubYear || book.pubYear),
       (book.bookCover = bookCover || book.bookCover),
+      (book.bookBackground = bookBackground || book.bookBackground),
       (book.status = status || book.status);
     book.currentPage = currentPage || book.currentPage;
 
