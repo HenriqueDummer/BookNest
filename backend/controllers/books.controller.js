@@ -32,24 +32,25 @@ export const addBook = async (req, res) => {
     let { bookCover } = req.body;
     const userId = req.user._id;
 
-    console.log(req.body)
+    console.log(summary);
     if (!title || !bookCover || !author || !totalPages || !summary)
       return res
         .status(400)
-        .json({error: "Must provide title, author, cover, summary and total pages!"});
+        .json({
+          error: "Must provide title, author, cover, summary and total pages!",
+        });
 
-    const existingBook = await Book.find({title}) 
+    const existingBook = await Book.find({ title });
 
-    if(existingBook.length !== 0)
+    if (existingBook.length !== 0)
       return res
         .status(400)
-        .json({error: "A book with this title already exist!"});
+        .json({ error: "A book with this title already exist!" });
 
     if (bookCover) {
       const uploadedResponse = await cloudinary.uploader.upload(bookCover);
       bookCover = uploadedResponse.secure_url;
     }
-
 
     const newBook = new Book({
       userId,
@@ -76,6 +77,32 @@ export const addBook = async (req, res) => {
   }
 };
 
+export const deleteBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id)
+    const book = await Book.findById(id)
+    if(!book){
+      return res.status(400).json({error: "Book not found!"})
+    }
+
+    await cloudinary.uploader.destroy(
+      book.bookCover.split("/").pop().split(".")[0]
+    );
+
+    await cloudinary.uploader.destroy(
+      book.bookBackground.split("/").pop().split(".")[0]
+    );
+
+    await Book.findByIdAndDelete(id)
+
+    res.status(200).json(book)
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 export const updateBook = async (req, res) => {
   try {
     const {
@@ -89,31 +116,37 @@ export const updateBook = async (req, res) => {
       currentPage,
     } = req.body;
     let { bookCover, bookBackground } = req.body;
-    const { id } = req.params;    
+    const { id } = req.params;
 
     let book = await Book.findById(id);
 
-    if(bookCover){
-        if(book.bookCover && book.bookCover !== bookCover){
-          await cloudinary.uploader.destroy(book.bookCover.split("/").pop().split(".")[0]);
-        }
-        
-        if(book.bookCover !== bookCover){
-          const uploadedResponse = await cloudinary.uploader.upload(bookCover)
-          bookCover = uploadedResponse.secure_url
-        }
+    if (bookCover) {
+      if (book.bookCover && book.bookCover !== bookCover) {
+        await cloudinary.uploader.destroy(
+          book.bookCover.split("/").pop().split(".")[0]
+        );
+      }
+
+      if (book.bookCover !== bookCover) {
+        const uploadedResponse = await cloudinary.uploader.upload(bookCover);
+        bookCover = uploadedResponse.secure_url;
+      }
     }
 
-    if(bookBackground){
-      if(book.bookBackground && book.bookBackground !== bookBackground){
-        await cloudinary.uploader.destroy(book.bookBackground.split("/").pop().split(".")[0]);
+    if (bookBackground) {
+      if (book.bookBackground && book.bookBackground !== bookBackground) {
+        await cloudinary.uploader.destroy(
+          book.bookBackground.split("/").pop().split(".")[0]
+        );
       }
-      
-      if(book.bookBackground !== bookBackground){
-        const uploadedResponse = await cloudinary.uploader.upload(bookBackground)
-        bookBackground = uploadedResponse.secure_url
+
+      if (book.bookBackground !== bookBackground) {
+        const uploadedResponse = await cloudinary.uploader.upload(
+          bookBackground
+        );
+        bookBackground = uploadedResponse.secure_url;
       }
-  }
+    }
 
     (book.title = title || book.title),
       (book.author = author || book.author),
@@ -127,9 +160,9 @@ export const updateBook = async (req, res) => {
       (book.status = status || book.status);
     book.currentPage = currentPage || book.currentPage;
 
-    book = await book.save()
+    book = await book.save();
 
-    return res.status(200).json(book)
+    return res.status(200).json(book);
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });
@@ -154,7 +187,7 @@ export const getBooksByStatus = async (req, res) => {
 
 export const getBookById = async (req, res) => {
   const { id } = req.params;
-  console.log("status")
+  console.log("status");
 
   try {
     const book = await Book.findById(id); // Certifique-se de que está buscando corretamente no banco de dados
@@ -162,9 +195,9 @@ export const getBookById = async (req, res) => {
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }
-    
+
     return res.status(200).json(book); // Retorna o livro encontrado
   } catch (err) {
     return res.status(500).json({ error: "Internal server error" });
   }
-}
+};

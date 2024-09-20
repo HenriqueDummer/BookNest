@@ -1,21 +1,20 @@
 import { getBookById } from "@/util/http";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
 import { BiSolidEditAlt } from "react-icons/bi";
 import { IoIosArrowBack } from "react-icons/io";
+
+
 import AddBookModal from "@/components/AddBookModal";
+import DeleteBookModal from "@/components/DeleteBookModal";
+import { ToastContainer } from "react-toastify";
 
 const Book = () => {
   const { id } = useParams();
-  const {
-    data: bookData,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
+  const { data: bookData, isLoading } = useQuery({
     queryFn: () => getBookById(id),
     queryKey: ["book", id],
   });
@@ -26,12 +25,11 @@ const Book = () => {
     Math.round((bookData.currentPage / bookData.totalPages) * 1000) / 10;
 
   return (
-    <section className="flex-grow">
+    <section className="flex-grow overflow-auto">
       <div
         className="w-full h-[20rem] bg-slate-50 bg-cover bg-center relative"
         style={{
-          backgroundImage:
-            `url(${bookData.bookBackground})`,
+          backgroundImage: `url(${bookData.bookBackground})`,
         }}
       >
         <NavLink to={-1}>
@@ -40,10 +38,16 @@ const Book = () => {
             Back
           </button>
         </NavLink>
-        <AddBookModal existingFormData={bookData}  className="absolute right-6 top-5 gap-3 text-lg px-6 py-2 rounded-full">
-          <BiSolidEditAlt className="text-xl" />
-          Edit
-        </AddBookModal>
+        <div className="flex items-center gap-2 absolute right-6 top-5">
+          <DeleteBookModal />
+          <AddBookModal
+            existingFormData={bookData}
+            className="gap-3 text-lg px-4 h-10"
+          >
+            <BiSolidEditAlt className="text-xl" />
+            Edit
+          </AddBookModal>
+        </div>
       </div>
       <div className="max-w-[50rem] m-auto mt-[10rem] p-5 relative text-zinc-300 px-10">
         <div
@@ -70,7 +74,7 @@ const Book = () => {
         <div className="flex gap-3">
           {bookData.genres.map((genre) => {
             return (
-              <p className="bg-[#FF008A] px-4 py-2 rounded-full flex items-center gap-1 cursor-pointer">
+              <p className="bg-[#FF008A] px-4 py-2 rounded-full flex items-center gap-1">
                 {genre}
               </p>
             );

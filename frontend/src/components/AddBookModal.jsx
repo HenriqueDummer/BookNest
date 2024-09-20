@@ -29,7 +29,7 @@ import ModalSelect from "./ModalSelect";
 
 const AddBookModal = ({ existingFormData, children, className }) => {
   const mutation = existingFormData ? updateBook : addBook;
-  const { mutate, isLoading, isError, error } = useMutation({
+  const { mutate, isPending, isError, error } = useMutation({
     mutationFn: mutation,
     onSuccess: (res) => {
       if (res.error) {
@@ -44,12 +44,10 @@ const AddBookModal = ({ existingFormData, children, className }) => {
           { theme: "dark" }
         );
         setIsOpen(false);
-        queryClient.invalidateQueries({ queryKey: [res._id] });
+        queryClient.invalidateQueries({ queryKey: ["books"] });
       }
     },
   });
-
-  console.log(isLoading)
 
   const initialFormData = existingFormData ?? {
     status: "want_to_read",
@@ -58,12 +56,12 @@ const AddBookModal = ({ existingFormData, children, className }) => {
     totalPages: 0,
   };
 
-  const initialCover = existingFormData?.bookCover ?? "";
-  const initialBackground = existingFormData?.bookBackground ?? "";
+  const initialCover = existingFormData?.bookCover ?? null;
+  const initialBackground = existingFormData?.bookBackground ?? null;
 
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
-  const [img, setImg] = useState(initialCover);
+  const [cover, setCover] = useState(initialCover);
   const [background, setBackground] = useState(initialBackground);
 
   function handleFormChange(e) {
@@ -93,7 +91,7 @@ const AddBookModal = ({ existingFormData, children, className }) => {
             <div className="w-[16rem]">
               <ModalBookBackground background={background} setBackground={setBackground} />
 
-              <ModalBookCover img={img} setImg={setImg} />
+              <ModalBookCover cover={cover} setCover={setCover} />
             </div>
 
             <div className="w-[28rem]">
@@ -178,11 +176,11 @@ const AddBookModal = ({ existingFormData, children, className }) => {
               </DialogClose>
 
               <Button
-                onClick={() => mutate({ ...formData, bookCover: img, bookBackground: background })}
+                onClick={() => mutate({ ...formData, bookCover: cover, bookBackground: background })}
                 type="button"
-                disabled={isLoading}
+                disabled={isPending}
               >
-                {isLoading ? "Saving..." : "Save"}
+                {isPending ? "Saving..." : "Save"}
               </Button>
             </div>
           </DialogFooter>

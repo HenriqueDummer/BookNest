@@ -14,6 +14,8 @@ import WantToRead from "./pages/WantToRead";
 import Read from "./pages/Read";
 import Book from "./pages/Book";
 
+import { ToastContainer } from "react-toastify";
+
 function App() {
   const { data: authUser, isLoading } = useQuery({
     queryFn: getMe,
@@ -23,6 +25,7 @@ function App() {
 
   return (
     <div className="flex h-screen bg-dark_bg">
+      <ToastContainer />
       {authUser && <Navbar />}
       <Routes>
         <Route

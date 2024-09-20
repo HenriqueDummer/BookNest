@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { FaFileImage } from "react-icons/fa6";
 import { IoIosClose } from "react-icons/io";
 
-const BookCover = ({ img, setImg }) => {
+const BookCover = ({ cover, setCover }) => {
   const imageInputRef = useRef();
 
   const handleImgChange = (e) => {
@@ -10,7 +10,7 @@ const BookCover = ({ img, setImg }) => {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setImg(reader.result);
+        setCover(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -27,7 +27,7 @@ const BookCover = ({ img, setImg }) => {
         hidden
         name="cover"
       />
-      {!img ? (
+      {!cover ? (
         <div
           className="w-full cursor-pointer mt-3 flex justify-center items-center rounded-lg h-[22rem] border-dashed border-2 border-zinc-300 opacity-80"
           onClick={() => imageInputRef.current.click()}
@@ -36,9 +36,9 @@ const BookCover = ({ img, setImg }) => {
         </div>
       ) : (
         <div className="relative w-full">
-          <img className="w-full rounded-lg" src={img} alt="" />
+          <img className="w-full rounded-lg" src={cover} alt="" />
           <button
-            onClick={() => setImg(null)}
+            onClick={() => setCover(null)}
             className="absolute text-2xl top-2 right-2 bg-slate-950/80 rounded-full"
           >
             <IoIosClose />

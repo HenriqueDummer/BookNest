@@ -16,8 +16,6 @@ const BookCover = ({ background, setBackground }) => {
     }
   };
 
-  console.log(background    )
-
   return (
     <div className="mt-2">
       <label htmlFor="background">Book background</label>

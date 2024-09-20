@@ -153,6 +153,24 @@ export const addBook = async (formData) => {
     }
 }
 
+export const deleteBook = async (id) => {
+    try{
+        const res = await fetch("http://localhost:8080/api/books/delete/" + id, {
+            method: "DELETE",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        const data = await res.json()
+        console.log(data)
+        return data
+    }catch(err){
+        console.log(err)
+    }
+}
+
 export const updateBook = async (formData) => {
 
     const id = formData._id
@@ -160,7 +178,7 @@ export const updateBook = async (formData) => {
     
     try{
         const res = await fetch("http://localhost:8080/api/books/update/" + id, {
-            method: "POST",
+            method: "PATCH",
             credentials: "include",
             headers: {
                 "Content-Type": "application/json"

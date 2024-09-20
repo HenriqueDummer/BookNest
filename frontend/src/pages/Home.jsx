@@ -1,13 +1,14 @@
-import { useQuery } from '@tanstack/react-query'
-import React from 'react'
-import { getAllBooks } from '../util/http'
-import Book from '../components/BookComponent'
 import BookCollection from '@/components/BookCollection'
+
+import { ToastContainer } from 'react-toastify'
 
 const Home = () => {
 
   return (
-    <BookCollection status="all" title="All" />
+    <>
+      <ToastContainer />
+      <BookCollection status="all" title="All" />
+    </>
   )
 }
 

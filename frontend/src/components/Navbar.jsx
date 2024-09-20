@@ -21,6 +21,7 @@ const Navbar = () => {
   function handleLogout() {
      queryClient.invalidateQueries({ queryKey: ["authUser"] });
   }
+
   return (
     <nav className="h-full w-[18rem] border-r border-x-stone-800 bg-dark_bg p-4 px-6 flex flex-col justify-between text-zinc-300"
 >      <div className="flex flex-col items-center ">

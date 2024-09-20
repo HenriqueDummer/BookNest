@@ -8,14 +8,10 @@ import { IoAdd } from "react-icons/io5";
 import AddBookModal from "./AddBookModal";
 
 const BookCollection = ({ title, status }) => {
-  const { data, isLoading, isError, error, refetch } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryFn: () => status === 'all' ? getAllBooks() : getBooksByStatus(status),
     queryKey: ["books", status],
   });
-
-  function handleAddBook() {
-    console.log("Add");
-  }
 
   if (isLoading) return <h1>Loading...</h1>;
 
