@@ -2,15 +2,25 @@ import { useMutation } from "@tanstack/react-query";
 import { queryClient, submitLogIn } from "../util/http";
 import { useState } from "react";
 
+import Logo from "../assets/BookNestLogo.png";
+
+import { ToastContainer, toast } from "react-toastify";
+
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+
 const LogIn = () => {
   const [formData, setFormaData] = useState({
     email: "",
     password: "",
   });
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: submitLogIn,
-    onSuccess: () => {
+    onSuccess: (res) => {
+      if(res.error){
+        toast.warn(res.error, {theme: "dark", autoClose: 1000})
+      }
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
   });
@@ -25,36 +35,45 @@ const LogIn = () => {
   }
 
   return (
-    <section className="w-full h-screen flex justify-center items-center">
-      <form
-        className="bg-slate-950 p-2 px-5 flex flex-col gap-4 text-zinc-300"
-        onSubmit={handleSubmit}
-      >
-        <h1 className="text-xl text-center">Sign in</h1>
-        <p className="flex flex-col">
-          <label htmlFor="email">Email</label>
-          <input
-            className="bg-transparent border border-zinc-500 px-2 py-1 rounded-lg"
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </p>
-        <p className="flex flex-col">
-          <label htmlFor="password">Password</label>
-          <input
-            className="bg-transparent border border-zinc-500 px-2 py-1 rounded-lg"
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </p>
-        <button disabled={isLoading} className={`bg-purple py-1 rounded-md ${isLoading ? "bg-purple/60" : ""}`}>{isLoading ? "Loging in..." : "Log in"}</button>
-      </form>
+    <section
+      style={{
+        backgroundImage:
+          "url(https://hcommons.org/app/uploads/sites/1001669/2022/10/yin-adapted-2-scaled.jpg)",
+      }}
+      className="w-full h-screen bg-cover bg-center"
+    >
+      <ToastContainer />
+      <div className="w-2/4 flex flex-col justify-center h-screen bg-dark_bg py-10 px-8 text-zinc-300">
+        <div className="max-w-[70%]">
+          <img className="w-[8rem]" src={Logo} alt="" />
+          <h1 className="text-4xl mt-8 font-sans">Sign into your account</h1>
+          <p className="text-lg mt-2">Join the story again!</p>
+          <form className=" flex flex-col gap-4 my-10" onSubmit={handleSubmit}>
+            <p className="flex flex-col">
+              <Label className="text-lg">Email</Label>
+              <Input className="h-12 mt-2" type="email" id="email" name="email" value={formData.email} onChange={handleChange} />
+            </p>
+            <p className="flex flex-col">
+            <Label className="text-lg">Password</Label>
+            <Input className="h-12 mt-2" type="password" id="password" name="password" value={formData.password} onChange={handleChange} />
+            </p>
+            <button
+              disabled={isPending}
+              className={`bg-purple ease-in mt-4 py-2 rounded-lg w-full font-semibold ${
+                isPending ? "bg-purple/60 text-zinc-400" : ""
+              }`}
+            >
+              {isPending ? "Signing in..." : "Sing in"}
+            </button>
+          </form>
+          <div className="flex items-center justify-between">
+            <p>Don't have an account yet?</p>
+            <button className="px-4 py-2 border-2 border-purple rounded-full font-semibold transition-all duration-200 hover:bg-purple">
+              Create one
+            </button>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };

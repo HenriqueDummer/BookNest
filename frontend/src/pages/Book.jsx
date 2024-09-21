@@ -7,10 +7,8 @@ import { NavLink } from "react-router-dom";
 import { BiSolidEditAlt } from "react-icons/bi";
 import { IoIosArrowBack } from "react-icons/io";
 
-
 import AddBookModal from "@/components/AddBookModal";
 import DeleteBookModal from "@/components/DeleteBookModal";
-import { ToastContainer } from "react-toastify";
 
 const Book = () => {
   const { id } = useParams();

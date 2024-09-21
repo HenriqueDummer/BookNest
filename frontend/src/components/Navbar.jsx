@@ -20,6 +20,7 @@ const Navbar = () => {
 
   function handleLogout() {
      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+     queryClient.refetchQueries({ queryKey: ["authUser"] });
   }
 
   return (

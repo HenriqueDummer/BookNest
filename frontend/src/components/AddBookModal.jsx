@@ -41,10 +41,11 @@ const AddBookModal = ({ existingFormData, children, className }) => {
           existingFormData
             ? "Book updated successfully!"
             : "Book added successfully!",
-          { theme: "dark" }
+          { theme: "dark", autoClose: 2000 }
         );
         setIsOpen(false);
-        queryClient.invalidateQueries({ queryKey: ["books"] });
+        queryClient.invalidateQueries({ queryKey: ["book"]});
+        queryClient.invalidateQueries({ queryKey: ["books"]});
       }
     },
   });
