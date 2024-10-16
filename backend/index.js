@@ -29,6 +29,9 @@ app.use(express.json({limit: "20mb"}))
 
 app.use('/api/auth', authRoute)
 app.use('/api/books', booksRoute)
+app.get('/', (req, res) => {
+    res.send({message: "Working"})
+})
 
 app.listen(PORT, () => {
     console.log("Listening on port " + PORT)

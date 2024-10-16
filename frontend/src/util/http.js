@@ -49,9 +49,9 @@ export const submitSignUp = async (formData) => {
 
 export const submitLogIn = async (formData) => {
     const {email, password} = formData
-
+    console.log(JSON.stringify({email, password}))
     try{
-        const res = await fetch("http://localhost:8080/api/auth/login", {
+        const res = await fetch("https://book-nest-api-git-main-henriquedummers-projects.vercel.app/api/auth/login", {
             method: "POST",
             credentials: "include",
             headers: {
