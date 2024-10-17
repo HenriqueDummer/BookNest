@@ -51,7 +51,7 @@ export const submitLogIn = async (formData) => {
     const {email, password} = formData
     console.log(JSON.stringify({email, password}))
     try{
-        const res = await fetch("https://book-nest-api-git-main-henriquedummers-projects.vercel.app/api/auth/login", {
+        const res = await fetch("http://localhost:8080/api/auth/login", {
             method: "POST",
             credentials: "include",
             headers: {
@@ -62,9 +62,27 @@ export const submitLogIn = async (formData) => {
                 password,
             })
         })
-
+        console.log(res)
         const data = await res.json()
         console.log(data)
+        return data
+    }catch(err){
+        console.log(err)
+    }
+}
+
+export const logout = async() => {
+    try{
+        const res = await fetch("http://localhost:8080/api/auth/logout", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+
+        const data = await res.json()
+
         return data
     }catch(err){
         console.log(err)

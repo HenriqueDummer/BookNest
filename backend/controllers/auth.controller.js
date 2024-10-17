@@ -9,7 +9,7 @@ function generateTokenAndSaveCookie(userId, res) {
 
     res.cookie("token", token, {
         maxAge: 15 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
+        httpsOnly: true,
         secure: true,
         sameSite: "None"
     });
@@ -55,18 +55,20 @@ export const signUp = async (req, res) => {
 
 export const logIn = async (req, res) => {
     const { email, password } = req.body
-
+    console.log(email, password)
     try {
         if (!email || !password) {
             return res.status(400).json({ error: "All parameter are required" })
         }
 
         const user = await User.findOne({ email })
+        console.log("Found user " + user)
         const isPaswordCorrect = await bcrypt.compare(password, user?.password || "")
-       
+        console.log("bcrypt " + isPaswordCorrect)
         if (!user || !isPaswordCorrect) return res.status(400).json({ error: "Email or password incorrect" })
         
         generateTokenAndSaveCookie(user._id, res)
+        console.log("Generated cookie")
         res.status(200).json(`Logged in as ${user.username}`)
 
     } catch (err) {
@@ -75,6 +77,16 @@ export const logIn = async (req, res) => {
     }
 
 }   
+
+export const logout = async (req, res) => {
+    try {
+		res.cookie("token", "", { maxAge: 0 });
+		res.status(200).json({ message: "Logged out successfully" });
+	} catch (error) {
+		console.log("Error in logout controller", error.message);
+		res.status(500).json({ error: "Internal Server Error" });
+	}
+}
 
 export const getMe = async (req, res) => {
     try {

@@ -10,7 +10,8 @@ import {
   CiCircleCheck
 } from "react-icons/ci";
 import { ImBooks } from "react-icons/im";
-import { queryClient } from "@/util/http";
+import { logout, queryClient } from "@/util/http";
+
 
 const liStyle = "bg-purple text-white/80 flex gap-3 text-3xl items-center p-2 rounded-lg";
 const pStyle = "text-lg";
@@ -18,9 +19,9 @@ const pStyle = "text-lg";
 const Navbar = () => {
   const { data: authUser, isLoading } = useQuery({ queryKey: ["authUser"] });
 
-  function handleLogout() {
-     queryClient.invalidateQueries({ queryKey: ["authUser"] });
-     queryClient.refetchQueries({ queryKey: ["authUser"] });
+  async function handleLogout() {
+    await logout()
+    queryClient.invalidateQueries({queryKey: ["authUser"]})
   }
 
   return (
