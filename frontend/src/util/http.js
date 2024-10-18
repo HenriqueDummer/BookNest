@@ -83,7 +83,7 @@ export const logout = async () => {
     });
 
     const data = await res.json();
-
+    console.log(data)
     return data;
   } catch (err) {
     console.log(err);
@@ -92,7 +92,7 @@ export const logout = async () => {
 
 export const getAllBooks = async () => {
   try {
-    const res = await fetch(API_KEY + "/books/all", {
+    const res = await fetch(API_KEY + "/boks/all", {
       method: "GET",
       credentials: "include",
       headers: {
@@ -103,10 +103,10 @@ export const getAllBooks = async () => {
     const data = await res.json();
 
     console.log(data);
-
     return data;
   } catch (err) {
     console.log(err);
+    throw new Error("Failed to fetch all books!")
   }
 };
 
@@ -152,7 +152,7 @@ export const getBookById = async (id) => {
 
 export const addBook = async (formData) => {
   try {
-    const res = await fetch(API_KEY + "books/create", {
+    const res = await fetch(API_KEY + "/books/create", {
       method: "POST",
       credentials: "include",
       headers: {

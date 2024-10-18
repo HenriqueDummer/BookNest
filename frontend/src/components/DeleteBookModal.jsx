@@ -17,8 +17,8 @@ import { MdDeleteForever } from "react-icons/md";
 import { useMutation } from "@tanstack/react-query";
 import { deleteBook, queryClient } from "@/util/http";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
-import { ToastContainer, toast } from "react-toastify";
 
 const DeleteBookModal = () => {
   const navigate = useNavigate();
@@ -28,6 +28,7 @@ const DeleteBookModal = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: deleteBook,
     onSuccess: () => {
+      console.log("Success updating")
       toast.success("Book deleted successfully!", { theme: "dark", autoClose: 1000 });
       setTimeout(() => {
         queryClient.invalidateQueries({ queryKey: ["books"] });
@@ -42,7 +43,6 @@ const DeleteBookModal = () => {
 
   return (
     <>
-      <ToastContainer />
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant="destructive" className="gap-3 text-lg px-4 h-10">

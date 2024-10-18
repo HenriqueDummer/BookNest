@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
-import { useQuery, QueryClientProvider } from "@tanstack/react-query";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+
+import 'react-toastify/dist/ReactToastify.css';
 
 import SignUp from "./pages/SignUp";
 import LogIn from "./pages/LogIn";
@@ -14,6 +15,7 @@ import WantToRead from "./pages/WantToRead";
 import Read from "./pages/Read";
 import Book from "./pages/Book";
 import Loading from "./components/Loading";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -22,10 +24,11 @@ function App() {
     retry: false
   });
 
-  if(isLoading) return <Loading style="h-screen" />
+  if(isLoading) return <Loading style="h-screen w-full" />
 
   return (
     <div className="flex h-screen bg-dark_bg">
+      <ToastContainer />
       {authUser && <Navbar />}
       <Routes>
         <Route

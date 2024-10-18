@@ -5,8 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import ModalBookCover from "./ModalBookCover";
 import ModalBookBackground from "./ModalBookBackground";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -76,7 +75,6 @@ const AddBookModal = ({ existingFormData, children, className }) => {
 
   return (
     <>
-      <ToastContainer />
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger
           className={`flex items-center bg-purple text-zinc-300 font-semibold px-2 py-1 rounded-lg ${className}`}

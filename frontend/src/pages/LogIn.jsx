@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import Logo from "../assets/BookNestLogo.png";
 
-import { ToastContainer, toast } from "react-toastify";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -42,7 +41,6 @@ const LogIn = () => {
       }}
       className="w-full h-screen bg-cover bg-center"
     >
-      <ToastContainer />
       <div className="w-2/4 flex flex-col justify-center h-screen bg-dark_bg py-10 px-8 text-zinc-300">
         <div className="max-w-[70%]">
           <img className="w-[8rem]" src={Logo} alt="" />
