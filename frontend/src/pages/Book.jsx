@@ -9,6 +9,7 @@ import { IoIosArrowBack } from "react-icons/io";
 
 import AddBookModal from "@/components/AddBookModal";
 import DeleteBookModal from "@/components/DeleteBookModal";
+import Loading from "@/components/Loading";
 
 const Book = () => {
   const { id } = useParams();
@@ -17,7 +18,7 @@ const Book = () => {
     queryKey: ["book", id],
   });
 
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading) return <Loading />
 
   const progress =
     Math.round((bookData.currentPage / bookData.totalPages) * 1000) / 10;

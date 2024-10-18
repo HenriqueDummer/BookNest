@@ -13,6 +13,7 @@ import Reading from "./pages/Reading";
 import WantToRead from "./pages/WantToRead";
 import Read from "./pages/Read";
 import Book from "./pages/Book";
+import Loading from "./components/Loading";
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -21,7 +22,7 @@ function App() {
     retry: false
   });
 
-  if(isLoading) return <h1>Loading...</h1>
+  if(isLoading) return <Loading style="h-screen" />
 
   return (
     <div className="flex h-screen bg-dark_bg">

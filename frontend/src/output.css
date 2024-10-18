@@ -763,6 +763,10 @@ body {
   margin-top: 10rem;
 }
 
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
 .flex {
   display: flex;
 }
@@ -941,6 +945,10 @@ body {
 
 .max-w-lg {
   max-width: 32rem;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
 }
 
 .flex-grow {

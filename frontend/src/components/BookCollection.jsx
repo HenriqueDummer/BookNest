@@ -6,6 +6,7 @@ import { IoAdd } from "react-icons/io5";
 
 
 import AddBookModal from "./AddBookModal";
+import Loading from "./Loading";
 
 const BookCollection = ({ title, status }) => {
   const { data, isLoading, isError, error } = useQuery({
@@ -13,7 +14,7 @@ const BookCollection = ({ title, status }) => {
     queryKey: ["books", status],
   });
 
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading) return <Loading />
 
   return (
     <section className="flex-grow p-20   justify-center overflow-auto">
