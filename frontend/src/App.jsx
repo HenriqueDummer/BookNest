@@ -25,7 +25,7 @@ function App() {
   });
 
   if(isLoading) return <Loading style="h-screen w-full" />
-
+  
   return (
     <div className="flex h-screen bg-dark_bg">
       <ToastContainer />

@@ -83,7 +83,6 @@ export const logout = async () => {
     });
 
     const data = await res.json();
-    console.log(data)
     return data;
   } catch (err) {
     console.log(err);
@@ -92,7 +91,7 @@ export const logout = async () => {
 
 export const getAllBooks = async () => {
   try {
-    const res = await fetch(API_KEY + "/boks/all", {
+    const res = await fetch(API_KEY + "/books/all", {
       method: "GET",
       credentials: "include",
       headers: {

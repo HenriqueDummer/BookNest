@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
 import {
@@ -9,7 +9,6 @@ import {
   CiHome,
   CiCircleCheck
 } from "react-icons/ci";
-import { ImBooks } from "react-icons/im";
 import { logout, queryClient } from "@/util/http";
 
 
@@ -17,12 +16,14 @@ const liStyle = "bg-purple text-white/80 flex gap-3 text-3xl items-center p-2 ro
 const pStyle = "text-lg";
 
 const Navbar = () => {
-  const { data: authUser, isLoading } = useQuery({ queryKey: ["authUser"] });
+  const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
-  async function handleLogout() {
-    await logout()
-    queryClient.invalidateQueries({queryKey: ["authUser"]})
-  }
+  const {mutate, isLoading } = useMutation({
+    mutationFn: logout(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ["authUser"]})
+    }
+  })
 
   return (
     <nav className="h-full w-[18rem] border-r border-x-stone-800 bg-dark_bg p-4 px-6 flex flex-col justify-between text-zinc-300"
@@ -61,7 +62,7 @@ const Navbar = () => {
           </li>
         </Link>
       </ul>
-      <button onClick={handleLogout} className="flex items-center justify-center gap-1 bg-zinc-900 py-2 w-full rounded-full">
+      <button onClick={mutate} className="flex items-center justify-center gap-1 bg-zinc-900 py-2 w-full rounded-full">
         <CiLogout className="text-lg" />
         <p className="font-semibold">Logout</p>
       </button>
