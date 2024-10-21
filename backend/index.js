@@ -22,7 +22,7 @@ cloudinary.config({
 
 app.use(cookieParser())
 app.use(cors({
-    origin: "http://localhost:5173" || "https://book-nest-ktm4kxpw8-henriquedummers-projects.vercel.app",
+    origin:[ "http://localhost:5173", "https://book-nest-ktm4kxpw8-henriquedummers-projects.vercel.app"],
     credentials: true
 }))
 app.use(express.json({limit: "20mb"}))
