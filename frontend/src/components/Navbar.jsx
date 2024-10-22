@@ -19,7 +19,7 @@ const Navbar = () => {
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
   const {mutate, isLoading } = useMutation({
-    mutationFn: logout(),
+    mutationFn: logout,
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ["authUser"]})
     }
