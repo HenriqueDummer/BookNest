@@ -24,7 +24,7 @@ export const getMe = async () => {
 
 export const submitLogIn = async (formData) => {
   const { email, password } = formData;
-  console.log(JSON.stringify({ email, password }));
+
   try {
     const res = await fetch(API_KEY + "/auth/login", {
       method: "POST",
@@ -39,7 +39,6 @@ export const submitLogIn = async (formData) => {
     });
 
     const data = await res.json();
-    console.log(data);
     return data;
   } catch (err) {
     console.log(err);
