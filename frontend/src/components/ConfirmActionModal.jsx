@@ -13,27 +13,27 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
-import { MdDeleteForever } from "react-icons/md";
 import { useMutation } from "@tanstack/react-query";
 import { deleteBook, queryClient } from "@/util/http";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 
-const DeleteBookModal = () => {
+const ConfirmActionModal = ({onConfirmFn, children, dialog, onSuccessMessage, queryToInvalidate, pendingText }) => {
   const navigate = useNavigate();
 
   const { id } = useParams();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: deleteBook,
+    mutationFn: onConfirmFn,
     onSuccess: () => {
-      console.log("Success updating")
-      toast.success("Book deleted successfully!", { theme: "dark", autoClose: 1000 });
-      setTimeout(() => {
-        queryClient.invalidateQueries({ queryKey: ["books"] });
-        navigate("/");
-      }, 1500); // 1.5 second delay to give time for toast to show
+      toast.success(onSuccessMessage, { theme: "dark", autoClose: 1500 });
+      if(queryToInvalidate){
+        setTimeout(() => {
+          queryClient.invalidateQueries({ queryKey: [queryToInvalidate] });
+          navigate("/");
+        }, 1500); // 1.5 second delay to give time for toast to show
+      }
     },
   });
 
@@ -45,10 +45,7 @@ const DeleteBookModal = () => {
     <>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="destructive" className="gap-3 text-lg px-4 h-10">
-            <MdDeleteForever className="text-xl" />
-            Delete
-          </Button>
+          {children}
         </AlertDialogTrigger>
         <AlertDialogContent className="bg-dark_bg">
           <AlertDialogHeader>
@@ -56,8 +53,7 @@ const DeleteBookModal = () => {
               Are you absolutely sure?
             </AlertDialogTitle>
             <AlertDialogDescription className="text-zinc-400">
-              This action cannot be undone. This will permanently delete the
-              book from our database!
+              {dialog}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -67,7 +63,7 @@ const DeleteBookModal = () => {
               onClick={handleDeleteBook}
               className="bg-purple"
             >
-              {isPending ? "Deleting" : "Continue"}
+              {isPending ? pendingText : "Continue"}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -76,4 +72,4 @@ const DeleteBookModal = () => {
   );
 };
 
-export default DeleteBookModal;
+export default ConfirmActionModal;

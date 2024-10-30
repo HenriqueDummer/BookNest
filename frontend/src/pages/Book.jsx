@@ -1,14 +1,17 @@
-import { getBookById } from "@/util/http";
+import { deleteBook, getBookById } from "@/util/http";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 import { BiSolidEditAlt } from "react-icons/bi";
 import { IoIosArrowBack } from "react-icons/io";
+import { MdDeleteForever } from "react-icons/md";
+
 
 import AddBookModal from "@/components/AddBookModal";
-import DeleteBookModal from "@/components/DeleteBookModal";
+import ConfirmActionModal from "@/components/ConfirmActionModal";
 import Loading from "@/components/Loading";
 
 const Book = () => {
@@ -38,7 +41,19 @@ const Book = () => {
           </button>
         </NavLink>
         <div className="flex items-center gap-2 absolute right-6 top-5">
-          <DeleteBookModal />
+          <ConfirmActionModal 
+            onConfirmFn={deleteBook}
+            onSuccessMessage={"Book deleted successfully!"}
+            dialog={"This action cannot be undone. This will permanently delete the book from our database!"}
+            queryToInvalidate={"books"}
+            pendingText={"Deleting..."}
+            
+            >
+            <Button variant="destructive" className="gap-3 text-lg px-4 h-10">
+              <MdDeleteForever className="text-xl" />
+              Delete
+            </Button>
+          </ConfirmActionModal>
           <AddBookModal
             existingFormData={bookData}
             className="gap-3 text-lg px-4 h-10"
