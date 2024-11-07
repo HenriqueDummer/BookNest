@@ -27,7 +27,7 @@ const Navbar = () => {
           src={authUser.profileImg}
           alt=""
         />
-        <p className="text-2xl mt-2">Henrique Dummer</p>
+        <p className="text-2xl mt-2">{authUser.username}</p>
       </div>
       <ul className="flex flex-col gap-10">
         <Link to="/">
