@@ -24,7 +24,7 @@ function App() {
     retry: false
   });
 
-  if(isLoading) return <Loading style="h-screen w-full" />
+  if(isLoading) return <Loading style="h-screen w-full" message={"Loading... (This can take a while at first)"} />
   
   return (
     <div className="flex h-screen bg-dark_bg">
