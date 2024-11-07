@@ -40,6 +40,10 @@ function App() {
           element={!authUser ? <LogIn /> : <Navigate to="/" />}
         />
         <Route
+          path="/signup"
+          element={!authUser ? <SignUp /> : <Navigate to="/" />}
+        />
+        <Route
           path="/reading"
           element={authUser ? <Reading /> : <Navigate to="/login" />}
         />

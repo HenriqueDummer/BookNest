@@ -8,6 +8,7 @@ import Logo from "../assets/BookNestLogo.png";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
 
 const LogIn = () => {
   const [formData, setFormaData] = useState({
@@ -19,7 +20,7 @@ const LogIn = () => {
     mutationFn: submitLogIn,
     onSuccess: (res) => {
       if(res.error){
-        toast.warn(res.error, {theme: "dark", autoClose: 1000})
+        toast.warn(res.error, {theme: "dark", autoClose: 2000})
       }
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
@@ -67,9 +68,9 @@ const LogIn = () => {
           </form>
           <div className="flex items-center justify-between">
             <p>Don't have an account yet?</p>
-            <button className="px-4 py-2 border-2 border-purple rounded-full font-semibold transition-all duration-200 hover:bg-purple">
+            <Link to={"/signup"} className="px-4 py-2 border-2 border-purple rounded-full font-semibold transition-all duration-200 hover:bg-purple">
               Create one
-            </button>
+            </Link>
           </div>
         </div>
       </div>
