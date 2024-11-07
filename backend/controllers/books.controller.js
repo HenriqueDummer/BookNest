@@ -29,7 +29,7 @@ export const addBook = async (req, res) => {
       genres,
       pubYear,
     } = req.body;
-    let { bookCover } = req.body;
+    let { bookCover, bookBackground } = req.body;
     const userId = req.user._id;
 
     console.log(summary);
@@ -52,6 +52,11 @@ export const addBook = async (req, res) => {
       bookCover = uploadedResponse.secure_url;
     }
 
+    if (bookBackground) {
+      const uploadedResponse = await cloudinary.uploader.upload(bookBackground);
+      bookBackground = uploadedResponse.secure_url;
+    }
+
     const newBook = new Book({
       userId,
       title,
@@ -62,6 +67,7 @@ export const addBook = async (req, res) => {
       genres,
       pubYear,
       bookCover,
+      bookBackground,
       status,
     });
 
