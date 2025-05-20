@@ -13,15 +13,15 @@ import { logout, queryClient } from "@/util/http";
 import ConfirmActionModal from "./ConfirmActionModal";
 
 const liStyle =
-  "bg-purple text-white/80 flex gap-3 text-3xl items-center p-2 rounded-lg";
-const pStyle = "text-lg";
+  " bg-purple text-white/80 flex gap-3 text-3xl items-center p-2 rounded-lg";
+const pStyle = "text-sm hidden md:inline lg:text-lg";
 
 const Navbar = () => {
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
   return (
-    <nav className="h-full w-[18rem] border-r border-x-stone-800 bg-dark_bg p-4 px-6 flex flex-col justify-between text-zinc-300">
-      <div className="flex flex-col items-center ">
+    <nav className="flex lg:flex-col lg:items-start w-full items-center justify-center lg:justify-between lg:h-full lg:w-[18rem] border-t lg:border-t-0 lg:border-r border-stone-800 bg-dark_bg p-2 lg:p-4 px-6 text-zinc-300">
+      <div className="hidden lg:inline flex flex-col items-center ">
         <img
           className="w-[8rem] aspect-square rounded-full"
           src={authUser.profileImg}
@@ -29,7 +29,7 @@ const Navbar = () => {
         />
         <p className="text-2xl mt-2">{authUser.username}</p>
       </div>
-      <ul className="flex flex-col gap-10">
+      <ul className="flex items-center justify-center lg:items-stretch lg:flex-col gap-5 sm:gap-10">
         <Link to="/">
           <li className={liStyle}>
             <CiHome />
@@ -63,10 +63,10 @@ const Navbar = () => {
         queryToInvalidate={"authUser"}
       >
         <button
-          className="flex items-center justify-center gap-1 bg-zinc-900 py-2 w-full rounded-full"
+          className="flex ml-5 sm:ml-10 p-2 lg:ml-0 items-center justify-center gap-1 bg-zinc-900  lg:py-2 lg:w-full rounded-lg lg:rounded-full"
         >
-          <CiLogout className="text-lg" />
-          <p className="font-semibold">Logout</p>
+          <CiLogout className="text-3xl" />
+          <p className="hidden lg:inline font-semibold">Logout</p>
         </button>
       </ConfirmActionModal>
     </nav>

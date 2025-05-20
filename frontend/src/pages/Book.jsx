@@ -27,7 +27,7 @@ const Book = () => {
     Math.round((bookData.currentPage / bookData.totalPages) * 1000) / 10;
 
   return (
-    <section className="flex-grow overflow-auto">
+    <section className="w-full overflow-auto">
       <div
         className="w-full h-[20rem] bg-slate-50 bg-cover bg-center relative"
         style={{
@@ -35,12 +35,12 @@ const Book = () => {
         }}
       >
         <NavLink to={-1}>
-          <button className="absolute top-5 left-5 bg-black/60 text-zinc-300 font-semibold rounded-full py-2 px-4 flex gap-1 items-center">
+          <button className="absolute top-5 left-1 sm:left-5 bg-black/60 text-zinc-300 font-semibold rounded-full py-2 px-4 flex gap-1 items-center">
             <IoIosArrowBack className="text-lg" />
             Back
           </button>
         </NavLink>
-        <div className="flex items-center gap-2 absolute right-6 top-5">
+        <div className="flex items-center gap-2 absolute right-1 sm:right-6 top-5">
           <ConfirmActionModal 
             onConfirmFn={deleteBook}
             onSuccessMessage={"Book deleted successfully!"}
@@ -62,14 +62,15 @@ const Book = () => {
             Edit
           </AddBookModal>
         </div>
-      </div>
-      <div className="max-w-[50rem] m-auto mt-[10rem] p-5 relative text-zinc-300 px-10">
         <div
-          className="absolute top-0 left-0 -translate-y-full w-[14rem] h-[22rem] bg-cover bg-center rounded-xl overflow-hidden"
+          className="absolute bottom-0 left-[30rem] translate-y-[50%] w-[14rem] h-[22rem] bg-cover bg-center rounded-xl overflow-hidden"
           style={{
             backgroundImage: `url(${bookData.bookCover})`,
           }}
         ></div>
+      </div>
+      <div className="max-w-[50rem] m-auto mt-[10rem] p-5 text-zinc-300 px-10">
+        
         <h1 className="text-4xl font-semibold">{bookData.title}</h1>
         <p className="mt-2 opacity-60 text-lg">
           {bookData.author} | {bookData.pubYear}
