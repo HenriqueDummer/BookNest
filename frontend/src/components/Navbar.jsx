@@ -13,7 +13,7 @@ import { logout, queryClient } from "@/util/http";
 import ConfirmActionModal from "./ConfirmActionModal";
 
 const liStyle =
-  " bg-purple text-white/80 flex gap-3 text-3xl items-center p-2 rounded-lg";
+  " bg-purple text-white/80 flex gap-1 lg:gap-3 text-3xl items-center justify-center lg:justify-start p-2 rounded-lg";
 const pStyle = "text-sm hidden md:inline lg:text-lg";
 
 const Navbar = () => {
@@ -21,7 +21,7 @@ const Navbar = () => {
 
   return (
     <nav className="flex lg:flex-col lg:items-start w-full items-center justify-center lg:justify-between lg:h-full lg:w-[18rem] border-t lg:border-t-0 lg:border-r border-stone-800 bg-dark_bg p-2 lg:p-4 px-6 text-zinc-300">
-      <div className="hidden lg:inline flex flex-col items-center ">
+      <div className="hidden lg:flex w-full flex-col items-center ">
         <img
           className="w-[8rem] aspect-square rounded-full"
           src={authUser.profileImg}

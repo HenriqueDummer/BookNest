@@ -63,14 +63,14 @@ const Book = () => {
           </AddBookModal>
         </div>
         <div
-          className="absolute bottom-0 left-[30rem] translate-y-[50%] w-[14rem] h-[22rem] bg-cover bg-center rounded-xl overflow-hidden"
+          className="absolute bottom-0 left-[50%] -translate-x-[50%] lg:left-[30%] translate-y-[50%] w-[14rem] h-[22rem] bg-cover bg-center rounded-xl overflow-hidden"
           style={{
             backgroundImage: `url(${bookData.bookCover})`,
           }}
         ></div>
       </div>
-      <div className="max-w-[50rem] m-auto mt-[10rem] p-5 text-zinc-300 px-10">
-        
+
+      <div className="max-w-[50rem] m-auto mt-[12rem] p-5 text-zinc-300 px-5 lg:px-10">
         <h1 className="text-4xl font-semibold">{bookData.title}</h1>
         <p className="mt-2 opacity-60 text-lg">
           {bookData.author} | {bookData.pubYear}
@@ -86,7 +86,7 @@ const Book = () => {
             </p>
           </div>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3 px-5 lg:px-0">
           {bookData.genres.map((genre) => {
             return (
               <p className="bg-[#FF008A] px-4 py-2 rounded-full flex items-center gap-1">
@@ -95,7 +95,7 @@ const Book = () => {
             );
           })}
         </div>
-        <p className="mt-4 text-justify max-w-full">{bookData.summary}</p>
+        <p className="mt-4 text-justify max-w-full px-5 lg:px-0">{bookData.summary}</p>
       </div>
     </section>
   );
