@@ -30,20 +30,15 @@ const BookCollection = ({ title, status }) => {
           Add book
         </AddBookModal>
       </div>
-      <div className="mt-10 flex justify-center lg:justify-start flex-wrap gap-5 lg:p-5">
-        {data.length === 0 && 
+      <div className="mt-10 w-full flex justify-center lg:justify-start flex-wrap gap-5 lg:p-5">
+        {data.length === 0 && (
           <div className="w-full mt-40 flex justify-center text-zinc-400">
             <IoTelescopeOutline className="text-6xl" />
             <h2 className="text-xl mt-4">No books here yet</h2>
-          </div>}
+          </div>
+        )}
         {data &&
-          data.map((book) => <>
-          <BookComponent key={book._id} bookData={book} />
-          <BookComponent key={book._id} bookData={book} />
-          <BookComponent key={book._id} bookData={book} />
-          <BookComponent key={book._id} bookData={book} />
-          <BookComponent key={book._id} bookData={book} />
-          </>)}
+          data.map((book) => <BookComponent key={book._id} bookData={book} />)}
       </div>
     </section>
   );

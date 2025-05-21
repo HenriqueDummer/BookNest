@@ -50,13 +50,16 @@ const ModalGenres = ({setFormData, formData}) => {
         {formData?.genres?.length > 0 ? (
           formData.genres.map((genre) => (
             <p
-              id={genre}
-              onClick={handleDeleteGenre}
-              className="bg-[#FF008A] px-2 py-1 rounded-full flex items-center gap-1 cursor-pointer"
-            >
-              {genre}
+            key={genre}
+            id={genre}
+            onClick={handleDeleteGenre}
+            className="group bg-[#FF008A] px-2 py-1 rounded-full flex items-center gap-1 cursor-pointer"
+          >
+            {genre}
+            <span className="hidden group-hover:inline">
               <IoCloseCircleOutline />
-            </p>
+            </span>
+          </p>
           ))
         ) : (
           <p className="font-light text-sm opacity-50">No genres added yet</p>
