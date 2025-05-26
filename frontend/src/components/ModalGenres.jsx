@@ -34,9 +34,9 @@ const ModalGenres = ({setFormData, formData}) => {
     });
   }
   return (
-    <div className="mt-2">
+    <div className="mt-2 w-full">
       <Label htmlFor="genre">Genres</Label>
-      <div className="flex gap-2 w-[60%]">
+      <div className="flex gap-2 lg:w-[60%]">
         <Input ref={genreRef} id="genre" type="text" name="genre" />
         <Button type="button" onClick={handleAddGenre}>
           Add

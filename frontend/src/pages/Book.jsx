@@ -10,7 +10,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { MdDeleteForever } from "react-icons/md";
 
 
-import AddBookModal from "@/components/AddBookModal";
+import AddBookModal from "@/components/BookModal";
 import ConfirmActionModal from "@/components/ConfirmActionModal";
 import Loading from "@/components/Loading";
 

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 
-import { Textarea } from "@/components/ui/textarea";
+import TextareaAutosize from "react-textarea-autosize";
 
 import ModalBookCover from "./ModalBookCover";
 import ModalBookBackground from "./ModalBookBackground";
@@ -28,7 +28,7 @@ import ModalSelect from "./ModalSelect";
 
 const AddBookModal = ({ existingFormData, children, className }) => {
   const mutation = existingFormData ? updateBook : addBook;
-  const { mutate, isPending, isError, error } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: mutation,
     onSuccess: (res) => {
       if (res.error) {
@@ -43,8 +43,10 @@ const AddBookModal = ({ existingFormData, children, className }) => {
           { theme: "dark", autoClose: 2000 }
         );
         setIsOpen(false);
-        queryClient.invalidateQueries({ queryKey: ["book"]});
-        queryClient.invalidateQueries({ queryKey: ["books"]});
+        queryClient.invalidateQueries({
+          queryKey: ["book", existingFormData?._id],
+        });
+        queryClient.invalidateQueries({ queryKey: ["books"] });
       }
     },
   });
@@ -81,19 +83,28 @@ const AddBookModal = ({ existingFormData, children, className }) => {
         >
           {children}
         </DialogTrigger>
-        <DialogContent className="bg-dark_bg border-none text-zinc-200 w-auto">
+        <DialogContent className="bg-dark_bg border-none lg:min-w-[44rem] text-zinc-200 w-auto">
           <DialogClose onClick={() => setIsOpen(false)}></DialogClose>
           <DialogHeader>
             <DialogTitle className="text-sm">Let's add a new book</DialogTitle>
           </DialogHeader>
-          <form className="flex gap-5 p-6">
-            <div className="w-[16rem]">
-              <ModalBookBackground background={background} setBackground={setBackground} />
+          <form
+            className="flex min-w-[20rem] max-h-[36rem] lg:min-w-0 lg:min-h-0 overflow-y-auto overflow-x-hidden lg:overflow-visible flex-col items-center lg:flex-row gap-5 p-3 lg:p-6 [&::-webkit-scrollbar]:w-2
+  [&::-webkit-scrollbar-track]:rounded-full
+  [&::-webkit-scrollbar-thumb]:rounded-full
+  [&::-webkit-scrollbar-track]:bg-neutral-700
+  [&::-webkit-scrollbar-thumb]:bg-neutral-500"
+          >
+            <div className="w-full lg:w-[24rem] lg:px-0 flex flex-col justify-between">
+              <ModalBookBackground
+                background={background}
+                setBackground={setBackground}
+              />
 
               <ModalBookCover cover={cover} setCover={setCover} />
             </div>
 
-            <div className="w-[28rem]">
+            <div className="lg:w-full">
               <p className="w-full">
                 <Label htmlFor="title">Title</Label>
                 <Input
@@ -104,7 +115,7 @@ const AddBookModal = ({ existingFormData, children, className }) => {
                   value={formData.title}
                 />
               </p>
-              <div className="flex w-full gap-2">
+              <div className="mt-2 flex w-full gap-2">
                 <p className="w-full">
                   <Label htmlFor="author">Author</Label>
                   <Input
@@ -126,9 +137,9 @@ const AddBookModal = ({ existingFormData, children, className }) => {
                   />
                 </p>
               </div>
-              <div className="mt-8 flex justify-between items-center gap-3">
+              <div className="mt-8 flex flex-col lg:flex-row justify-between lg:items-center gap-3">
                 <ModalSelect formData={formData} setFormData={setFormData} />
-                <p className="flex items-center gap-2">
+                <p className="flex items-center justify-center gap-2">
                   Currently on
                   <Input
                     className={`w-14 p-1`}
@@ -151,8 +162,8 @@ const AddBookModal = ({ existingFormData, children, className }) => {
               </div>
               <p className="mt-2">
                 <Label htmlFor="summary">Summary</Label>
-                <Textarea
-                  className="text-black min-h-[8rem]"
+                <TextareaAutosize
+                  className="text-black w-full max-h-[10rem] rounded-lg p-2"
                   name="summary"
                   id="summary"
                   onChange={handleFormChange}
@@ -175,7 +186,13 @@ const AddBookModal = ({ existingFormData, children, className }) => {
               </DialogClose>
 
               <Button
-                onClick={() => mutate({ ...formData, bookCover: cover, bookBackground: background })}
+                onClick={() =>
+                  mutate({
+                    ...formData,
+                    bookCover: cover,
+                    bookBackground: background,
+                  })
+                }
                 type="button"
                 disabled={isPending}
               >
