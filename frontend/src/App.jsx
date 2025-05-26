@@ -16,6 +16,8 @@ import Read from "./pages/Read";
 import Book from "./pages/Book";
 import Loading from "./components/Loading";
 import { ToastContainer } from "react-toastify";
+import AuthLayout from "./pages/AuthLayout";
+import RootLayout from "./pages/RootLayout";
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -38,34 +40,21 @@ function App() {
       {authUser && <Navbar />}
       <div className="flex flex-1 overflow-auto">
         <Routes>
-          <Route
-            path="/"
-            element={authUser ? <Home /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/login"
-            element={!authUser ? <LogIn /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/signup"
-            element={!authUser ? <SignUp /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/reading"
-            element={authUser ? <Reading /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/want_to_read"
-            element={authUser ? <WantToRead /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/read"
-            element={authUser ? <Read /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/book/:id"
-            element={authUser ? <Book /> : <Navigate to="/login" />}
-          />
+          {authUser ? (
+            <Route element={<RootLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/reading" element={<Reading />} />
+              <Route path="/want_to_read" element={<WantToRead />} />
+              <Route path="/read" element={<Read />} />
+              <Route path="/book/:id" element={<Book />} />
+            </Route>
+          ) : (
+            <Route element={<AuthLayout />}>
+              <Route path="/login" element={<LogIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            </Route>
+          )}
         </Routes>
       </div>
     </div>

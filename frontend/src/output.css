@@ -711,6 +711,18 @@ body {
   margin: auto;
 }
 
+.m-4 {
+  margin: 1rem;
+}
+
+.m-6 {
+  margin: 1.5rem;
+}
+
+.m-2 {
+  margin: 0.5rem;
+}
+
 .-mx-1 {
   margin-left: -0.25rem;
   margin-right: -0.25rem;
@@ -769,6 +781,10 @@ body {
 
 .mt-\[12rem\] {
   margin-top: 12rem;
+}
+
+.ml-0 {
+  margin-left: 0px;
 }
 
 .flex {
@@ -955,6 +971,18 @@ body {
   max-width: 32rem;
 }
 
+.max-w-\[20rem\] {
+  max-width: 20rem;
+}
+
+.max-w-\[30rem\] {
+  max-width: 30rem;
+}
+
+.max-w-\[34rem\] {
+  max-width: 34rem;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -1093,6 +1121,10 @@ body {
 
 .rounded-xl {
   border-radius: 0.75rem;
+}
+
+.rounded-2xl {
+  border-radius: 1rem;
 }
 
 .border {
@@ -1287,6 +1319,10 @@ body {
 
 .p-6 {
   padding: 1.5rem;
+}
+
+.\!p-4 {
+  padding: 1rem !important;
 }
 
 .px-2 {
@@ -2054,6 +2090,10 @@ body {
 
   .lg\:w-full {
     width: 100%;
+  }
+
+  .lg\:w-2\/4 {
+    width: 50%;
   }
 
   .lg\:min-w-0 {
