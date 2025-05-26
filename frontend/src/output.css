@@ -675,10 +675,6 @@ body {
   left: 50%;
 }
 
-.right-1 {
-  right: 0.25rem;
-}
-
 .right-2 {
   right: 0.5rem;
 }
@@ -823,6 +819,10 @@ body {
   height: 1.25rem;
 }
 
+.h-8 {
+  height: 2rem;
+}
+
 .h-9 {
   height: 2.25rem;
 }
@@ -861,14 +861,6 @@ body {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-6 {
-  height: 1.5rem;
-}
-
-.h-8 {
-  height: 2rem;
 }
 
 .max-h-96 {
@@ -915,10 +907,6 @@ body {
   width: 1.25rem;
 }
 
-.w-\[10rem\] {
-  width: 10rem;
-}
-
 .w-\[14rem\] {
   width: 14rem;
 }
@@ -927,16 +915,16 @@ body {
   width: 8rem;
 }
 
+.w-\[9rem\] {
+  width: 9rem;
+}
+
 .w-auto {
   width: auto;
 }
 
 .w-full {
   width: 100%;
-}
-
-.w-\[9rem\] {
-  width: 9rem;
 }
 
 .min-w-\[20rem\] {
@@ -1423,11 +1411,6 @@ body {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-base {
-  font-size: 1rem;
-  line-height: 1.5rem;
 }
 
 .font-light {
@@ -1970,10 +1953,6 @@ body {
     right: 1.5rem;
   }
 
-  .sm\:right-7 {
-    right: 1.75rem;
-  }
-
   .sm\:ml-10 {
     margin-left: 2.5rem;
   }
@@ -2045,12 +2024,12 @@ body {
     display: flex;
   }
 
-  .lg\:h-full {
-    height: 100%;
-  }
-
   .lg\:h-10 {
     height: 2.5rem;
+  }
+
+  .lg\:h-full {
+    height: 100%;
   }
 
   .lg\:min-h-0 {
@@ -2159,11 +2138,6 @@ body {
     padding-right: 2.5rem;
   }
 
-  .lg\:py-2 {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
-
   .lg\:px-3 {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
@@ -2174,14 +2148,14 @@ body {
     padding-right: 1rem;
   }
 
+  .lg\:py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
   .lg\:text-lg {
     font-size: 1.125rem;
     line-height: 1.75rem;
-  }
-
-  .lg\:text-4xl {
-    font-size: 2.25rem;
-    line-height: 2.5rem;
   }
 
   .lg\:text-xl {

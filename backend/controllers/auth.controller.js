@@ -10,8 +10,8 @@ function generateTokenAndSaveCookie(userId, res) {
   res.cookie("token", token, {
     maxAge: 15 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    secure: process.env.PRODUCTION === true ? true : false,
-    sameSite: process.env.PRODUCTION === true ? 'None' : 'Lax'
+    secure: true,
+    sameSite: "None"
   });
 }
 
@@ -56,24 +56,24 @@ export const signUp = async (req, res) => {
 
 export const logIn = async (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password);
+
   try {
     if (!email || !password) {
       return res.status(400).json({ error: "All parameter are required" });
     }
 
     const user = await User.findOne({ email });
-    console.log("Found user " + user);
+
     const isPaswordCorrect = await bcrypt.compare(
       password,
       user?.password || ""
     );
-    console.log("bcrypt " + isPaswordCorrect);
+
     if (!user || !isPaswordCorrect)
       return res.status(400).json({ error: "Email or password incorrect" });
 
     generateTokenAndSaveCookie(user._id, res);
-    console.log("Generated cookie");
+
     res.status(200).json(`Logged in as ${user.username}`);
   } catch (err) {
     console.log(err);
