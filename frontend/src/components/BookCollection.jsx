@@ -6,7 +6,7 @@ import { getAllBooks, getBooksByStatus } from "@/util/http";
 import { IoAdd } from "react-icons/io5";
 import { IoTelescopeOutline } from "react-icons/io5";
 
-import AddBookModal from "./BookModal";
+import BookModal from "./BookModal";
 import Loading from "./Loading";
 import Error from "@/pages/Error";
 
@@ -23,12 +23,12 @@ const BookCollection = ({ title, status }) => {
 
   return (
     <section className="flex-grow p-4 sm:p-10 lg:p-20 justify-center overflow-auto">
-      <div className="flex justify-between">
-        <h1 className="text-4xl text-zinc-300 font-semibold">{title}</h1>
-        <AddBookModal>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl sm:text-4xl text-zinc-300 font-semibold">{title}</h1>
+        <BookModal>
           <IoAdd className="text-xl" />
           Add book
-        </AddBookModal>
+        </BookModal>
       </div>
       <div className="mt-10 w-full flex justify-center lg:justify-start flex-wrap gap-5 lg:p-5">
         {data.length === 0 && (

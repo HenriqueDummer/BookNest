@@ -26,7 +26,7 @@ import { addBook, queryClient, updateBook } from "@/util/http";
 import ModalGenres from "./ModalGenres";
 import ModalSelect from "./ModalSelect";
 
-const AddBookModal = ({ existingFormData, children, className }) => {
+const BookModal = ({ existingFormData, children, className }) => {
   const mutation = existingFormData ? updateBook : addBook;
   const { mutate, isPending } = useMutation({
     mutationFn: mutation,
@@ -75,18 +75,25 @@ const AddBookModal = ({ existingFormData, children, className }) => {
     });
   }
 
+  const closeModal = () => {
+    setIsOpen(false);
+    setFormData(initialFormData);
+    setCover(initialCover);
+    setBackground(initialBackground);
+  }
+
   return (
     <>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger
-          className={`flex items-center bg-purple text-zinc-300 font-semibold px-2 py-1 rounded-lg ${className}`}
+          className={`flex items-center bg-purple text-zinc-300 font-semibold px-2 py-1 lg:px-3 lg:py-2 rounded-lg ${className}`}
         >
           {children}
         </DialogTrigger>
         <DialogContent className="bg-dark_bg border-none lg:min-w-[44rem] text-zinc-200 w-auto">
           <DialogClose onClick={() => setIsOpen(false)}></DialogClose>
           <DialogHeader>
-            <DialogTitle className="text-sm">Let's add a new book</DialogTitle>
+            <DialogTitle className="text-sm">{existingFormData ? "Let's update this book" : "Let's add a new book"}</DialogTitle>
           </DialogHeader>
           <form
             className="flex min-w-[20rem] max-h-[36rem] lg:min-w-0 lg:min-h-0 overflow-y-auto overflow-x-hidden lg:overflow-visible flex-col items-center lg:flex-row gap-5 p-3 lg:p-6 [&::-webkit-scrollbar]:w-2
@@ -179,7 +186,7 @@ const AddBookModal = ({ existingFormData, children, className }) => {
                 <Button
                   type="button"
                   variant="secondary"
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => closeModal()}
                 >
                   Cancel
                 </Button>
@@ -206,4 +213,4 @@ const AddBookModal = ({ existingFormData, children, className }) => {
   );
 };
 
-export default AddBookModal;
+export default BookModal;

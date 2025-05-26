@@ -9,7 +9,7 @@ const BookComponent = ({ bookData }) => {
     <Link to={`/book/${bookData._id}`}>
       {/* <h2 className="text-lg text-center text-zinc-300 mb-2 font-semibold max-w-full">{bookData.title}</h2> */}
       <div
-        className="w-[10rem] sm:w-[12rem] lg:w-[14rem] aspect-[3/5] bg-cover bg-center relative rounded-xl overflow-hidden"
+        className="w-[9rem] sm:w-[12rem] lg:w-[14rem] aspect-[3/5] bg-cover bg-center relative rounded-xl overflow-hidden"
         style={{ backgroundImage: `url(${bookData.bookCover})` }}
       >
         <div className="flex">

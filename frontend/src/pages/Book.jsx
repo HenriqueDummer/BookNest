@@ -35,12 +35,12 @@ const Book = () => {
         }}
       >
         <NavLink to={-1}>
-          <button className="absolute top-5 left-1 sm:left-5 bg-black/60 text-zinc-300 font-semibold rounded-full py-2 px-4 flex gap-1 items-center">
+          <button className="absolute top-5 left-1 sm:left-5 bg-black/60 text-zinc-300 font-semibold rounded-full py-1 px-2 lg:py-2 lg:px-4 flex gap-1 items-center">
             <IoIosArrowBack className="text-lg" />
             Back
           </button>
         </NavLink>
-        <div className="flex items-center gap-2 absolute right-1 sm:right-6 top-5">
+        <div className="flex items-center gap-2 absolute right-2 sm:right-6 top-5">
           <ConfirmActionModal 
             onConfirmFn={deleteBook}
             onSuccessMessage={"Book deleted successfully!"}
@@ -49,14 +49,14 @@ const Book = () => {
             pendingText={"Deleting..."}
             
             >
-            <Button variant="destructive" className="gap-3 text-lg px-4 h-10">
-              <MdDeleteForever className="text-xl" />
+            <Button variant="destructive" className="gap-3 px-2 h-8 lg:text-lg lg:px-4 lg:h-10">
+              <MdDeleteForever className="text-lg lg:text-xl" />
               Delete
             </Button>
           </ConfirmActionModal>
           <AddBookModal
             existingFormData={bookData}
-            className="gap-3 text-lg px-4 h-10"
+            className="gap-3 px-2 h-8 lg:text-lg lg:px-4 lg:h-10"
           >
             <BiSolidEditAlt className="text-xl" />
             Edit
