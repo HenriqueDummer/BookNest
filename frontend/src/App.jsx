@@ -24,6 +24,8 @@ function App() {
     queryFn: getMe,
     queryKey: ["authUser"],
     retry: false,
+    refetchOnWindowFocus: false,
+
   });
 
   if (isLoading)
@@ -35,7 +37,7 @@ function App() {
     );
 
   return (
-    <div className="flex flex-col-reverse lg:flex-row h-screen bg-dark_bg">
+    <div className="flex flex-col-reverse lg:flex-row h-dvh">
       <ToastContainer />
       {authUser && <Navbar />}
       <div className="flex flex-1 overflow-auto">

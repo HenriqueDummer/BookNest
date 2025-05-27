@@ -707,20 +707,12 @@ body {
   z-index: 50;
 }
 
-.m-auto {
-  margin: auto;
-}
-
-.m-4 {
-  margin: 1rem;
-}
-
-.m-6 {
-  margin: 1.5rem;
-}
-
 .m-2 {
   margin: 0.5rem;
+}
+
+.m-auto {
+  margin: auto;
 }
 
 .-mx-1 {
@@ -749,6 +741,10 @@ body {
 
 .mb-4 {
   margin-bottom: 1rem;
+}
+
+.ml-0 {
+  margin-left: 0px;
 }
 
 .ml-5 {
@@ -781,10 +777,6 @@ body {
 
 .mt-\[12rem\] {
   margin-top: 12rem;
-}
-
-.ml-0 {
-  margin-left: 0px;
 }
 
 .flex {
@@ -879,6 +871,10 @@ body {
   height: 100vh;
 }
 
+.h-dvh {
+  height: 100dvh;
+}
+
 .max-h-96 {
   max-height: 24rem;
 }
@@ -955,12 +951,12 @@ body {
   min-width: var(--radix-select-trigger-width);
 }
 
-.max-w-\[50rem\] {
-  max-width: 50rem;
+.max-w-\[34rem\] {
+  max-width: 34rem;
 }
 
-.max-w-\[70\%\] {
-  max-width: 70%;
+.max-w-\[50rem\] {
+  max-width: 50rem;
 }
 
 .max-w-full {
@@ -969,18 +965,6 @@ body {
 
 .max-w-lg {
   max-width: 32rem;
-}
-
-.max-w-\[20rem\] {
-  max-width: 20rem;
-}
-
-.max-w-\[30rem\] {
-  max-width: 30rem;
-}
-
-.max-w-\[34rem\] {
-  max-width: 34rem;
 }
 
 .flex-1 {
@@ -1121,10 +1105,6 @@ body {
 
 .rounded-xl {
   border-radius: 0.75rem;
-}
-
-.rounded-2xl {
-  border-radius: 1rem;
 }
 
 .border {
@@ -1275,6 +1255,10 @@ body {
   background-color: rgb(24 24 27 / var(--tw-bg-opacity));
 }
 
+.bg-\[radial-gradient\(ellipse_at_bottom\2c _var\(--tw-gradient-stops\)\)\] {
+  background-image: radial-gradient(ellipse at bottom, var(--tw-gradient-stops));
+}
+
 .bg-gradient-to-r {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
 }
@@ -1285,8 +1269,24 @@ body {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.from-zinc-800 {
+  --tw-gradient-from: #27272a var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(39 39 42 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-zinc-900 {
+  --tw-gradient-from: #18181b var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(24 24 27 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .to-\[\#FF008A\] {
   --tw-gradient-to: #FF008A var(--tw-gradient-to-position);
+}
+
+.to-zinc-900 {
+  --tw-gradient-to: #18181b var(--tw-gradient-to-position);
 }
 
 .bg-cover {
@@ -1319,10 +1319,6 @@ body {
 
 .p-6 {
   padding: 1.5rem;
-}
-
-.\!p-4 {
-  padding: 1rem !important;
 }
 
 .px-2 {
@@ -2072,6 +2068,10 @@ body {
     min-height: 0px;
   }
 
+  .lg\:w-2\/4 {
+    width: 50%;
+  }
+
   .lg\:w-\[14rem\] {
     width: 14rem;
   }
@@ -2090,10 +2090,6 @@ body {
 
   .lg\:w-full {
     width: 100%;
-  }
-
-  .lg\:w-2\/4 {
-    width: 50%;
   }
 
   .lg\:min-w-0 {

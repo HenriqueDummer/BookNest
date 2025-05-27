@@ -22,7 +22,8 @@ const BookCollection = ({ title, status }) => {
   if (isError) return <Error error={error} />;
 
   return (
-    <section className="flex-grow p-4 sm:p-10 lg:p-20 justify-center overflow-auto">
+    <section className="flex-grow p-4 sm:p-10 lg:p-20 justify-center overflow-auto bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))]
+ from-zinc-900 bg-dark_bg">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl sm:text-4xl text-zinc-300 font-semibold">{title}</h1>
         <BookModal>

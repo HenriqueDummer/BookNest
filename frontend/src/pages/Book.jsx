@@ -27,7 +27,8 @@ const Book = () => {
     Math.round((bookData.currentPage / bookData.totalPages) * 1000) / 10;
 
   return (
-    <section className="w-full overflow-auto">
+    <section className="w-full overflow-auto bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))]
+ from-zinc-900 bg-dark_bg">
       <div
         className="w-full h-[20rem] bg-slate-50 bg-cover bg-center relative"
         style={{

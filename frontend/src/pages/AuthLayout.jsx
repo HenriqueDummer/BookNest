@@ -5,8 +5,11 @@ import BookBg from "../assets/book_bg.jpg";
 
 const AuthLayout = () => {
   return (
-    <section className="flex w-full">
-      <div className="w-full lg:w-2/4 flex flex-col justify-center items-center h-screen bg-dark_bg py-10 px-8 text-zinc-300">
+    <section
+      className="flex w-full bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))]
+ from-zinc-800 to-zinc-900"
+    >
+      <div className="w-full lg:w-2/4 flex flex-col justify-center items-center h-screen py-10 px-8 text-zinc-300">
         <div className="w-full max-w-[34rem]">
           <img className="w-[8rem]" src={Logo} alt="" />
           <Outlet />

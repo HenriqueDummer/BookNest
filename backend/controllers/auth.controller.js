@@ -9,7 +9,10 @@ function generateTokenAndSaveCookie(userId, res) {
 
   res.cookie("token", token, {
     maxAge: 15 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
+    // httpOnly: process.env.PRODUCTION == "true" ? true : false,
+    // secure: process.env.PRODUCTION == "true" ? true : false,
+    // sameSite: process.env.PRODUCTION == "true" ? "None" : "Lax"
+    httpOnly: true ,
     secure: true,
     sameSite: "None"
   });
