@@ -1,6 +1,6 @@
 import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import {
   CiLogout,
@@ -13,7 +13,7 @@ import { logout, queryClient } from "@/util/http";
 import ConfirmActionModal from "./ConfirmActionModal";
 
 const liStyle =
-  " bg-purple text-white/80 flex gap-1 lg:gap-3 text-3xl items-center justify-center lg:justify-start p-2 rounded-lg";
+  "bg-purple text-white/80 flex flex-1 gap-1 lg:gap-3 text-3xl items-center justify-center lg:justify-start p-2 rounded-lg";
 const pStyle = "text-sm hidden md:inline lg:text-lg";
 
 const Navbar = () => {
@@ -25,31 +25,31 @@ const Navbar = () => {
         <p className="text-xl">Hello there</p>
         <p className="text-2xl font-semibold text-purple">{authUser.username}</p>
       </div>
-      <ul className="flex items-center justify-center lg:items-stretch lg:flex-col gap-5 sm:gap-10">
-        <Link to="/">
+      <ul className="flex w-full items-center justify-center lg:items-stretch lg:flex-col gap-5 sm:gap-10">
+        <NavLink className={({isActive}) => (isActive ? "font-bold" : "")} to="/">
           <li className={liStyle}>
             <CiHome />
             <p className={pStyle}>All</p>
           </li>
-        </Link>
-        <Link to="/reading">
+        </NavLink>
+        <NavLink className={({isActive}) => (isActive ? "font-bold" : "")} to="/reading">
           <li className={liStyle}>
             <CiBookmark />
             <p className={pStyle}>Currently Reading</p>
           </li>
-        </Link>
-        <Link to="/want_to_read">
+        </NavLink>
+        <NavLink className={({isActive}) => (isActive ? "font-bold" : "")} to="/want_to_read">
           <li className={liStyle}>
             <CiHeart />
             <p className={pStyle}>Want to read</p>
           </li>
-        </Link>
-        <Link to="/read">
+        </NavLink>
+        <NavLink className={({isActive}) => (isActive ? "font-bold" : "")} to="/read">
           <li className={liStyle}>
             <CiCircleCheck />
             <p className={pStyle}>Read</p>
           </li>
-        </Link>
+        </NavLink>
       </ul>
       <ConfirmActionModal
         onConfirmFn={logout}
