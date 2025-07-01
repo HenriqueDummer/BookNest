@@ -799,10 +799,6 @@ body {
   aspect-ratio: 3/5;
 }
 
-.aspect-square {
-  aspect-ratio: 1 / 1;
-}
-
 .h-10 {
   height: 2.5rem;
 }
@@ -859,6 +855,10 @@ body {
   height: var(--radix-select-trigger-height);
 }
 
+.h-dvh {
+  height: 100dvh;
+}
+
 .h-full {
   height: 100%;
 }
@@ -869,10 +869,6 @@ body {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-dvh {
-  height: 100dvh;
 }
 
 .max-h-96 {
@@ -1445,6 +1441,10 @@ body {
   line-height: 1rem;
 }
 
+.font-bold {
+  font-weight: 700;
+}
+
 .font-light {
   font-weight: 300;
 }
@@ -1459,10 +1459,6 @@ body {
 
 .font-semibold {
   font-weight: 600;
-}
-
-.font-bold {
-  font-weight: 700;
 }
 
 .leading-3 {
@@ -1603,20 +1599,8 @@ body {
   transition-duration: 150ms;
 }
 
-.transition {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
 .duration-200 {
   transition-duration: 200ms;
-}
-
-.duration-300 {
-  transition-duration: 300ms;
 }
 
 .ease-in {
@@ -1639,10 +1623,6 @@ body {
 
 .duration-200 {
   animation-duration: 200ms;
-}
-
-.duration-300 {
-  animation-duration: 300ms;
 }
 
 .ease-in {
