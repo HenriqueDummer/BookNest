@@ -9,12 +9,12 @@ function generateTokenAndSaveCookie(userId, res) {
 
   res.cookie("token", token, {
     maxAge: 15 * 24 * 60 * 60 * 1000,
-    // httpOnly: process.env.PRODUCTION == "true" ? true : false,
-    // secure: process.env.PRODUCTION == "true" ? true : false,
-    // sameSite: process.env.PRODUCTION == "true" ? "None" : "Lax"
-    httpOnly: true ,
-    secure: true,
-    sameSite: "None"
+    httpOnly: process.env.PRODUCTION == "true" ? false : true,
+    secure: process.env.PRODUCTION == "true" ? true : false,
+    sameSite: process.env.PRODUCTION == "true" ? "None" : "Lax",
+    // httpOnly: true ,
+    // secure: true,
+    // sameSite: "None"
   });
 }
 
@@ -47,7 +47,7 @@ export const signUp = async (req, res) => {
       generateTokenAndSaveCookie(newUser._id, res);
 
       await newUser.save();
-      return res.status(201).json(`Signed up as ${newUser.username}`);
+      return res.status(201).json({ user: newUser });
     } else {
       return res.status(400).json({ error: "Cold not create user" });
     }
@@ -59,7 +59,7 @@ export const signUp = async (req, res) => {
 
 export const logIn = async (req, res) => {
   const { email, password } = req.body;
-
+  console.log("logging ing");
   try {
     if (!email || !password) {
       return res.status(400).json({ error: "All parameter are required" });
@@ -77,7 +77,7 @@ export const logIn = async (req, res) => {
 
     generateTokenAndSaveCookie(user._id, res);
 
-    res.status(200).json(`Logged in as ${user.username}`);
+    res.status(200).json({ user });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });

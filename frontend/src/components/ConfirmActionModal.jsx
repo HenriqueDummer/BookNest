@@ -18,8 +18,14 @@ import { deleteBook, queryClient } from "@/util/http";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-
-const ConfirmActionModal = ({onConfirmFn, children, dialog, onSuccessMessage, queryToInvalidate, pendingText }) => {
+const ConfirmActionModal = ({
+  onConfirmFn,
+  children,
+  dialog,
+  onSuccessMessage,
+  queryToInvalidate,
+  pendingText,
+}) => {
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -28,7 +34,7 @@ const ConfirmActionModal = ({onConfirmFn, children, dialog, onSuccessMessage, qu
     mutationFn: onConfirmFn,
     onSuccess: () => {
       toast.success(onSuccessMessage, { theme: "dark", autoClose: 1500 });
-      if(queryToInvalidate){
+      if (queryToInvalidate) {
         setTimeout(() => {
           queryClient.invalidateQueries({ queryKey: [queryToInvalidate] });
           navigate("/");
@@ -44,9 +50,7 @@ const ConfirmActionModal = ({onConfirmFn, children, dialog, onSuccessMessage, qu
   return (
     <>
       <AlertDialog>
-        <AlertDialogTrigger asChild>
-          {children}
-        </AlertDialogTrigger>
+        <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
         <AlertDialogContent className="bg-dark_bg">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-zinc-300">

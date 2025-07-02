@@ -24,9 +24,11 @@ const BookCover = ({ cover, setCover }) => {
         onChange={handleImgChange}
         id="cover"
         type="file"
+        accept="image/*"
         hidden
         name="cover"
       />
+
       {!cover ? (
         <div
           className="w-full cursor-pointer mt-3 flex justify-center items-center rounded-lg h-[22rem] border-dashed border-2 border-zinc-300 opacity-80"

@@ -8,6 +8,7 @@ import Logo from "../assets/BookNestLogo.png";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
+import useAuth from "@/hooks/useAuth";
 
 const SignUp = () => {
   const [formData, setFormaData] = useState({
@@ -16,19 +17,11 @@ const SignUp = () => {
     username: "",
   });
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: submitSignUp,
-    onSuccess: (res) => {
-      if (res.error) {
-        toast.warn(res.error, { theme: "dark", autoClose: 2000 });
-      }
-      queryClient.invalidateQueries({ queryKey: ["authUser"] });
-    },
-  });
+  const { signUp, signingUp } = useAuth();
 
   function handleSubmit(e) {
     e.preventDefault();
-    mutate(formData);
+    signUp(formData);
   }
 
   function handleChange(e) {
@@ -74,12 +67,12 @@ const SignUp = () => {
           />
         </p>
         <button
-          disabled={isPending}
+          disabled={signingUp}
           className={`bg-purple ease-in mt-4 py-2 rounded-lg w-full font-semibold ${
-            isPending ? "bg-purple/60 text-zinc-400" : ""
+            signingUp ? "bg-purple/60 text-zinc-400" : ""
           }`}
         >
-          {isPending ? "Signing in..." : "Sing in"}
+          {signingUp ? "Signing up..." : "Sing up"}
         </button>
       </form>
       <div className="flex items-center justify-between">

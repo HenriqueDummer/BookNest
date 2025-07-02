@@ -90,7 +90,7 @@ const Book = () => {
         <div className="flex flex-wrap gap-3 px-5 lg:px-0">
           {bookData.genres.map((genre) => {
             return (
-              <p className="bg-[#FF008A] px-4 py-2 rounded-full flex items-center gap-1">
+              <p key={genre} className="bg-[#FF008A] px-4 py-2 rounded-full flex items-center gap-1">
                 {genre}
               </p>
             );

@@ -80,7 +80,7 @@ const BookModal = ({ existingFormData, children, className }) => {
     setFormData(initialFormData);
     setCover(initialCover);
     setBackground(initialBackground);
-  }
+  };
 
   return (
     <>
@@ -93,7 +93,11 @@ const BookModal = ({ existingFormData, children, className }) => {
         <DialogContent className="bg-dark_bg border-none lg:min-w-[44rem] text-zinc-200 w-auto">
           <DialogClose onClick={() => setIsOpen(false)}></DialogClose>
           <DialogHeader>
-            <DialogTitle className="text-sm">{existingFormData ? "Let's update this book" : "Let's add a new book"}</DialogTitle>
+            <DialogTitle className="text-sm">
+              {existingFormData
+                ? "Let's update this book"
+                : "Let's add a new book"}
+            </DialogTitle>
           </DialogHeader>
           <form
             className="flex min-w-[20rem] max-h-[36rem] lg:min-w-0 lg:min-h-0 overflow-y-auto overflow-x-hidden lg:overflow-visible flex-col items-center lg:flex-row gap-5 p-3 lg:p-6 [&::-webkit-scrollbar]:w-2

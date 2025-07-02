@@ -14,7 +14,7 @@ export const getMe = async () => {
     });
 
     const data = await res.json();
-    console.log(data);
+
     if (data.error) return false;
     return data;
   } catch (err) {
@@ -39,9 +39,14 @@ export const submitLogIn = async (formData) => {
     });
 
     const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to log in!");
+    }
+
     return data;
   } catch (err) {
     console.log(err);
+    throw new Error(err.message);
   }
 };
 
@@ -63,11 +68,15 @@ export const submitSignUp = async (formData) => {
     });
 
     const data = await res.json();
+    if(!res.ok){
+      throw new Error(data.error || "Failed to sign up!")
+    }
     console.log(data);
 
     return data;
   } catch (err) {
     console.log(err);
+    throw new Error(err.message)
   }
 };
 
@@ -82,7 +91,7 @@ export const logout = async () => {
     });
 
     const data = await res.json();
-    console.log(data)
+    console.log(data);
     return data;
   } catch (err) {
     console.log(err);
@@ -105,7 +114,7 @@ export const getAllBooks = async () => {
     return data;
   } catch (err) {
     console.log(err);
-    throw new Error("Failed to fetch all books!")
+    throw new Error("Failed to fetch all books!");
   }
 };
 
@@ -140,8 +149,6 @@ export const getBookById = async (id) => {
     });
 
     const data = await res.json();
-
-    console.log(data);
 
     return data;
   } catch (err) {

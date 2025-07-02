@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
@@ -6,21 +6,34 @@ import { Button } from "./ui/button";
 
 import { IoCloseCircleOutline } from "react-icons/io5";
 
-const ModalGenres = ({setFormData, formData}) => {
-  const genreRef = useRef();
+const ModalGenres = ({ setFormData, formData }) => {
+  const [genre, setGenre] = useState("");
+  const [error, setError] = useState("");
+
+  function handleChange(e) {
+    setError("");
+    setGenre(e.target.value);
+  }
 
   function handleAddGenre() {
-    if (genreRef.current.value.trim() === "") {
+    if (genre.trim() === "") {
       return;
     }
+
+    if (formData.genres.includes(genre.trim())) {
+      setError("Genre already added");
+      setGenre("");
+      return;
+    }
+
     setFormData((prev) => {
       return {
         ...prev,
-        genres: [...prev.genres, genreRef.current.value],
+        genres: [...prev.genres, genre],
       };
     });
 
-    genreRef.current.value = "";
+    setGenre("");
   }
 
   function handleDeleteGenre(e) {
@@ -33,15 +46,28 @@ const ModalGenres = ({setFormData, formData}) => {
       };
     });
   }
+
   return (
     <div className="mt-2 w-full">
       <Label htmlFor="genre">Genres</Label>
       <div className="flex gap-2 lg:w-[60%]">
-        <Input ref={genreRef} id="genre" type="text" name="genre" />
-        <Button type="button" onClick={handleAddGenre}>
+        <Input
+          onChange={(e) => handleChange(e)}
+          value={genre}
+          id="genre"
+          type="text"
+          name="genre"
+        />
+
+        <Button
+          type="button"
+          onClick={handleAddGenre}
+          disabled={genre.trim() === ""}
+        >
           Add
         </Button>
       </div>
+      {error && <p className="text-xs text-red-500">{error}</p>}
       <div
         className={`w-full flex items-center gap-2 ${
           formData?.genres ? "" : "justify-center"
@@ -50,16 +76,16 @@ const ModalGenres = ({setFormData, formData}) => {
         {formData?.genres?.length > 0 ? (
           formData.genres.map((genre) => (
             <p
-            key={genre}
-            id={genre}
-            onClick={handleDeleteGenre}
-            className="group bg-[#FF008A] px-2 py-1 rounded-full flex items-center gap-1 cursor-pointer"
-          >
-            {genre}
-            <span className="hidden group-hover:inline">
-              <IoCloseCircleOutline />
-            </span>
-          </p>
+              key={genre}
+              id={genre}
+              onClick={handleDeleteGenre}
+              className="group bg-[#FF008A] px-2 py-1 rounded-full flex items-center gap-1 cursor-pointer"
+            >
+              {genre}
+              <span className="hidden group-hover:inline">
+                <IoCloseCircleOutline />
+              </span>
+            </p>
           ))
         ) : (
           <p className="font-light text-sm opacity-50">No genres added yet</p>

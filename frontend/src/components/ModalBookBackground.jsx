@@ -24,6 +24,7 @@ const BookCover = ({ background, setBackground }) => {
         onChange={handleImgChange}
         id="background"
         type="file"
+        accept="image/*"
         hidden
         name="background"
       />
@@ -35,7 +36,10 @@ const BookCover = ({ background, setBackground }) => {
           <FaFileImage className="text-3xl opacity-70" />
         </div>
       ) : (
-        <div style={{backgroundImage: `url(${background})`}} className="relative w-full h-[6rem] bg-cover bg-center rounded-lg">
+        <div
+          style={{ backgroundImage: `url(${background})` }}
+          className="relative w-full h-[6rem] bg-cover bg-center rounded-lg"
+        >
           <button
             onClick={() => setBackground(null)}
             className="absolute text-2xl top-2 right-2 bg-slate-950/80 rounded-full"

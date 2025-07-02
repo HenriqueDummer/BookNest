@@ -18,17 +18,14 @@ import Loading from "./components/Loading";
 import { ToastContainer } from "react-toastify";
 import AuthLayout from "./pages/AuthLayout";
 import RootLayout from "./pages/RootLayout";
+import useAuth from "./hooks/useAuth";
+import PublicRoute from "./components/PublicRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const { data: authUser, isLoading } = useQuery({
-    queryFn: getMe,
-    queryKey: ["authUser"],
-    retry: false,
-    refetchOnWindowFocus: false,
+  const { authUser, isLoadingUser } = useAuth();
 
-  });
-
-  if (isLoading)
+  if (isLoadingUser)
     return (
       <Loading
         style="h-screen w-full"
@@ -42,21 +39,34 @@ function App() {
       {authUser && <Navbar />}
       <div className="flex flex-1 overflow-auto">
         <Routes>
-          {authUser ? (
-            <Route element={<RootLayout />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/reading" element={<Reading />} />
-              <Route path="/want_to_read" element={<WantToRead />} />
-              <Route path="/read" element={<Read />} />
-              <Route path="/book/:id" element={<Book />} />
-            </Route>
-          ) : (
-            <Route element={<AuthLayout />}>
-              <Route path="/login" element={<LogIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="*" element={<Navigate to="/login" replace />} />
-            </Route>
-          )}
+          // Public routes
+          <Route
+            element={
+              <PublicRoute>
+                <AuthLayout />
+              </PublicRoute>
+            }
+          >
+            <Route path="/login" element={<LogIn />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Route>
+          // Private routes
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute>
+                <Routes>
+                  <Route element={<RootLayout />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/reading" element={<Reading />} />
+                    <Route path="/want_to_read" element={<WantToRead />} />
+                    <Route path="/read" element={<Read />} />
+                    <Route path="/book/:id" element={<Book />} />
+                  </Route>
+                </Routes>
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
     </div>
