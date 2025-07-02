@@ -87,4 +87,4 @@ DATABASE_URL=...
 
 - 📧 E-mail: [henriquedummer01@gmail.com](mailto:henriquedummer01@gmail.com)
 - 💼 LinkedIn: [linkedin.com/in/henrique-dummer-725a1a239](https://www.linkedin.com/in/henrique-dummer-725a1a239/)
-- 💻 GitHub: [github.com/seu-usuario](https://github.com/seu-usuario)
+- 💻 GitHub: [github.com/HenriqueDummer](https://github.com/HenriqueDummer)
