@@ -71,11 +71,11 @@ DATABASE_URL=...
 
 ## ✅ Funcionalidades
 
--🔐 Login com autenticação JWT
--📚 Cadastro de livros com capa personalizada
--🎯 Filtros por status de leitura (Lendo, Lido, Quero ler)
--☁️ Upload de imagens com Cloudinary
--🔄 Integração com MongoDB para persistência dos dados
+- 🔐 Login com autenticação JWT
+- 📚 Cadastro de livros com capa personalizada
+- 🎯 Filtros por status de leitura (Lendo, Lido, Quero ler)
+- ☁️ Upload de imagens com Cloudinary
+- 🔄 Integração com MongoDB para persistência dos dados
 
 ## 🛠️ Status do projeto
 
