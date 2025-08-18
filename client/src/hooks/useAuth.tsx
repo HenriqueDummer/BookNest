@@ -1,10 +1,8 @@
 import { getMe, queryClient, submitLogIn, submitSignUp } from "@/util/http";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const useAuth = () => {
-
   const {
     data: authUser,
     isLoading: isLoadingUser,

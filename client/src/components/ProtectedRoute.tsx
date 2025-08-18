@@ -1,5 +1,6 @@
 import useAuth from "../hooks/useAuth";
 import { Navigate } from "react-router-dom";
+import Loading from "./Loading";
 
 const ProtectedRoute = ({ children }) => {
   const { authUser, isLoadingUser, userError } = useAuth();
@@ -11,8 +12,6 @@ const ProtectedRoute = ({ children }) => {
         message={"Loading... (This can take a while at first)"}
       />
     );
-
-  console.log(authUser)
 
   if (!authUser || userError) return <Navigate to={"/login"} replace />;
 

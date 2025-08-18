@@ -11,7 +11,6 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "@/hooks/useAuth";
 
 const LogIn = () => {
-  const navigate = useNavigate();
   const [formData, setFormaData] = useState({
     email: "",
     password: "",

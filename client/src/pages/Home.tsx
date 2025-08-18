@@ -1,4 +1,5 @@
 import BookCollection from '@/components/BookCollection'
+import { useEffect } from 'react'
 
 const Home = () => {
 

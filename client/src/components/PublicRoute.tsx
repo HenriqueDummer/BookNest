@@ -11,7 +11,7 @@ const PublicRoute = ({ children }) => {
       <Loading style="h-screen w-full" message={"Checking authentication..."} />
     );
 
-  if (authUser) return <Navigate to={"/"} replace />;
+  if (authUser) return <Navigate to="/" replace />;
 
   return children;
 };

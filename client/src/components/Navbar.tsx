@@ -21,13 +21,13 @@ const Navbar = () => {
   const { authUser } = useAuth();
 
   return (
-    <nav className="flex lg:flex-col lg:items-start w-full items-center justify-center lg:justify-between lg:h-full lg:w-[18rem] border-t lg:border-t-0 lg:border-r border-stone-800 bg-dark_bg p-2 lg:p-4 px-6 text-zinc-300">
-      <div className="hidden lg:flex w-full flex-col mt-2">
+    <nav className="flex lg:flex-col lg:items-start w-full items-center justify-center lg:justify-between lg:h-full lg:w-[18rem] border-t lg:border-t-0 lg:border-r border-stone-800 bg-neutral-950 p-2 lg:p-4 px-6 text-zinc-300">
+      <NavLink to={"/user/"} className="hidden lg:flex w-full flex-col mt-2">
         <p className="text-xl">Hello there</p>
         <p className="text-2xl font-semibold text-purple">
           {authUser.username}
         </p>
-      </div>
+      </NavLink>
       <ul className="flex w-full items-center justify-center lg:items-stretch lg:flex-col gap-5 sm:gap-10">
         <NavLink
           className={({ isActive }) => (isActive ? "font-bold" : "")}

@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-import Logo from "../assets/BookNestLogo.png";
+import Logo from "@/assets/BookNestLogo.png";
 import BookBg from "../assets/book_bg.jpg";
 
 const AuthLayout = () => {

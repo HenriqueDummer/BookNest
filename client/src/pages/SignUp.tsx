@@ -1,14 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
-import { queryClient, submitSignUp } from "../util/http";
 import { useState } from "react";
-import { toast } from "react-toastify";
 
-import Logo from "../assets/BookNestLogo.png";
-
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 import { Link } from "react-router-dom";
-import useAuth from "@/hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 
 const SignUp = () => {
   const [formData, setFormaData] = useState({
@@ -68,9 +63,8 @@ const SignUp = () => {
         </p>
         <button
           disabled={signingUp}
-          className={`bg-purple ease-in mt-4 py-2 rounded-lg w-full font-semibold ${
-            signingUp ? "bg-purple/60 text-zinc-400" : ""
-          }`}
+          className={`bg-purple ease-in mt-4 py-2 rounded-lg w-full font-semibold ${signingUp ? "bg-purple/60 text-zinc-400" : ""
+            }`}
         >
           {signingUp ? "Signing up..." : "Sing up"}
         </button>
