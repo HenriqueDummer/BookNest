@@ -1,6 +1,6 @@
 import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 
 import {
   CiLogout,
@@ -9,7 +9,7 @@ import {
   CiHome,
   CiCircleCheck,
 } from "react-icons/ci";
-import { logout, queryClient } from "@/util/http";
+import { logout } from "@/util/http";
 import ConfirmActionModal from "./ConfirmActionModal";
 import useAuth from "@/hooks/useAuth";
 
@@ -22,10 +22,10 @@ const Navbar = () => {
 
   return (
     <nav className="flex lg:flex-col lg:items-start w-full items-center justify-center lg:justify-between lg:h-full lg:w-[18rem] border-t lg:border-t-0 lg:border-r border-stone-800 bg-neutral-950 p-2 lg:p-4 px-6 text-zinc-300">
-      <NavLink to={"/user/"} className="hidden lg:flex w-full flex-col mt-2">
+      <NavLink to={`/user/${authUser?._id}`} className="hidden lg:flex w-full flex-col mt-2">
         <p className="text-xl">Hello there</p>
         <p className="text-2xl font-semibold text-purple">
-          {authUser.username}
+          {authUser?.username}
         </p>
       </NavLink>
       <ul className="flex w-full items-center justify-center lg:items-stretch lg:flex-col gap-5 sm:gap-10">
@@ -36,6 +36,15 @@ const Navbar = () => {
           <li className={liStyle}>
             <CiHome />
             <p className={pStyle}>All</p>
+          </li>
+        </NavLink>
+        <NavLink
+          className={({ isActive }) => (isActive ? "font-bold" : "")}
+          to="/my_books"
+        >
+          <li className={liStyle}>
+            <CiHome />
+            <p className={pStyle}>My books</p>
           </li>
         </NavLink>
         <NavLink

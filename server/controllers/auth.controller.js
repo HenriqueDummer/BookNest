@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import PublicBook from "../models/public_book.model.js";
 
 function generateTokenAndSaveCookie(userId, res) {
   const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
@@ -99,6 +100,23 @@ export const logout = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id).select("-password");
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+    }
+
+    const sharedBooks = await PublicBook.find({ userId: user._id });
+
+    return res.status(200).json({ user, sharedBooks });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
 
 export const getMe = async (req, res) => {
   try {

@@ -4,7 +4,6 @@ const bookSchema = mongoose.Schema({
     title: {
         type: String,
         required: true,
-        unique: true
     },
     author: {
         type: String,
@@ -39,17 +38,8 @@ const bookSchema = mongoose.Schema({
         ref: "user",
         required: true
     },
-    currentPage: {
-        type: Number,
-        default: 0
-    },
-    status: {
-        type: String,
-        enum: ["reading", "read", "want_to_read"],
-        default: "want_to_read"
-    }
 })
 
-const Book = mongoose.model("Book", bookSchema)
+const PublicBook = mongoose.model("Public Book", bookSchema)
 
-export default Book
+export default PublicBook

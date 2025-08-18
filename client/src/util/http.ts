@@ -1,9 +1,12 @@
+import type { PrivateBook } from "@/Types/PrivateBook";
+import type { PublicBook } from "@/Types/PublicBook";
+import type { User } from "@/Types/User";
 import { QueryClient } from "@tanstack/react-query";
 
 export const queryClient = new QueryClient();
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-export const getMe = async () => {
+export const getMe = async (): Promise<User | undefined> => {
   try {
     const res = await fetch(API_KEY + "/auth/getme", {
       method: "GET",
@@ -15,12 +18,14 @@ export const getMe = async () => {
 
     const data = await res.json();
 
-    if (data.error) return false;
+    if (data.error) return undefined;
+
     return data;
   } catch (err) {
     console.log(err);
   }
 };
+
 
 export const submitLogIn = async (formData) => {
   const { email, password } = formData;
@@ -68,7 +73,7 @@ export const submitSignUp = async (formData) => {
     });
 
     const data = await res.json();
-    if(!res.ok){
+    if (!res.ok) {
       throw new Error(data.error || "Failed to sign up!")
     }
     console.log(data);
@@ -98,6 +103,26 @@ export const logout = async () => {
   }
 };
 
+export const getUserById = async (id: string): Promise<{user: User, sharedBooks: PublicBook[]} | undefined> => {
+  try {
+    const res = await fetch(API_KEY + "/auth/user/" + id, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+    console.log(data)
+    return data;
+
+  } catch (err) {
+    console.log(err);
+    return undefined;
+  }
+}
+
 export const getAllBooks = async () => {
   try {
     const res = await fetch(API_KEY + "/books/all", {
@@ -118,9 +143,50 @@ export const getAllBooks = async () => {
   }
 };
 
+export const getPublicBooks = async () => {
+  try {
+    const res = await fetch(API_KEY + "/books/public", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to fetch all books!");
+  }
+}
+
+export const shareBook = async (bookId: string) => {
+  try {
+    const res = await fetch(API_KEY + "/books/share/" + bookId, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+    console.log(data)
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to share book!");
+  }
+}
+
+
 export const getBooksByStatus = async (status) => {
   try {
-    const res = await fetch(API_KEY + "/books/status/" + status, {
+    const url = status === "all" ? "/books/all" : "/books/status/" + status;
+    const res = await fetch(API_KEY + url, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -138,7 +204,7 @@ export const getBooksByStatus = async (status) => {
   }
 };
 
-export const getBookById = async (id) => {
+export const getBookById = async (id: string): Promise<PrivateBook | undefined> => {
   try {
     const res = await fetch(API_KEY + "/books/" + id, {
       method: "GET",

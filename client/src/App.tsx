@@ -16,6 +16,8 @@ import AuthLayout from "./pages/AuthLayout";
 import RootLayout from "./pages/RootLayout";
 import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
+import UserProfile from "./pages/UserProfile";
+import MyBooks from "./pages/MyBooks";
 
 function App() {
   return (
@@ -44,10 +46,12 @@ function App() {
             }
           >
             <Route path="/" element={<Home />} />
+            <Route path="/my_books" element={<MyBooks />} />
             <Route path="/reading" element={<Reading />} />
             <Route path="/want_to_read" element={<WantToRead />} />
             <Route path="/read" element={<Read />} />
             <Route path="/book/:id" element={<Book />} />
+            <Route path="/user/:id" element={<UserProfile />} />
           </Route>
         </Routes>
       </div>

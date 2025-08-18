@@ -1,6 +1,5 @@
-import { deleteBook, getBookById } from "@/util/http";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import { deleteBook, getBookById, shareBook } from "@/util/http";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -13,18 +12,31 @@ import { MdDeleteForever } from "react-icons/md";
 import AddBookModal from "@/components/BookModal";
 import ConfirmActionModal from "@/components/ConfirmActionModal";
 import Loading from "@/components/Loading";
+import { toast } from "react-toastify";
 
 const Book = () => {
   const { id } = useParams();
+
+  if(!id) return <p>Not found!</p>
+
   const { data: bookData, isLoading } = useQuery({
     queryFn: () => getBookById(id),
     queryKey: ["book", id],
   });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: shareBook,
+    onSuccess: (data) => {
+      toast.success(data.message || "Book shared successfully!");
+    }
+  })
+
   if (isLoading) return <Loading />
 
+  if(!bookData) return <p className="text-zinc-400">No book found with this ID.</p>
+
   const progress =
-    Math.round((bookData.currentPage / bookData.totalPages) * 1000) / 10;
+    Math.round((bookData?.currentPage / bookData?.totalPages) * 1000) / 10;
 
   return (
     <section className="w-full overflow-auto bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))]
@@ -32,7 +44,7 @@ const Book = () => {
       <div
         className="w-full h-[20rem] bg-slate-50 bg-cover bg-center relative"
         style={{
-          backgroundImage: `url(${bookData.bookBackground})`,
+          backgroundImage: `url(${bookData?.bookBackground})`,
         }}
       >
         <NavLink to={-1}>
@@ -42,14 +54,14 @@ const Book = () => {
           </button>
         </NavLink>
         <div className="flex items-center gap-2 absolute right-2 sm:right-6 top-5">
-          <ConfirmActionModal 
+          <ConfirmActionModal
             onConfirmFn={deleteBook}
             onSuccessMessage={"Book deleted successfully!"}
             dialog={"This action cannot be undone. This will permanently delete the book from our database!"}
             queryToInvalidate={"books"}
             pendingText={"Deleting..."}
-            
-            >
+
+          >
             <Button variant="destructive" className="gap-3 px-2 h-8 lg:text-lg lg:px-4 lg:h-10">
               <MdDeleteForever className="text-lg lg:text-xl" />
               Delete
@@ -62,6 +74,9 @@ const Book = () => {
             <BiSolidEditAlt className="text-xl" />
             Edit
           </AddBookModal>
+          <Button onClick={() => mutate(bookData._id )} className="gap-3 px-2 h-8 lg:text-lg lg:px-4 lg:h-10">
+            {bookData.shared ? "Privatize" : "Share"}
+          </Button>
         </div>
         <div
           className="absolute bottom-0 left-[50%] -translate-x-[50%] lg:left-[30%] translate-y-[50%] w-[14rem] h-[22rem] bg-cover bg-center rounded-xl overflow-hidden"

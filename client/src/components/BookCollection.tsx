@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
 import BookComponent from "./BookComponent";
 import { useQuery } from "@tanstack/react-query";
-import { getAllBooks, getBooksByStatus } from "@/util/http";
+import { getAllBooks, getBooksByStatus, getPublicBooks } from "@/util/http";
 
 import { IoAdd } from "react-icons/io5";
 import { IoTelescopeOutline } from "react-icons/io5";
@@ -10,10 +9,10 @@ import BookModal from "./BookModal";
 import Loading from "./Loading";
 import Error from "@/pages/Error";
 
-const BookCollection = ({ title, status }) => {
+const BookCollection = ({ title, status }: {title: string, status?: string}) => {
   const { data, isLoading, isError, error } = useQuery({
     queryFn: () =>
-      status === "all" ? getAllBooks() : getBooksByStatus(status),
+      !status ? getPublicBooks() : getBooksByStatus(status),
     queryKey: ["books", status],
   });
 
@@ -22,8 +21,8 @@ const BookCollection = ({ title, status }) => {
   if (isError) return <Error error={error} />;
 
   return (
-    <section className="flex-grow p-4 sm:p-10 lg:p-20 justify-center overflow-auto bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))]
- from-zinc-900 bg-dark_bg">
+    <section className="flex-grow p-4 sm:p-10 lg:p-20 justify-center overflow-auto
+ bg-dark_bg">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl sm:text-4xl text-zinc-300 font-semibold">{title}</h1>
         <BookModal>

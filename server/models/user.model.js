@@ -20,7 +20,19 @@ const userSchema = mongoose.Schema({
     },
     bio: {
         type: String,
-    }
+    },
+    books: [{
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Book"
+        },
+        status: {
+            type: String,
+            enum: ["reading", "read", "want_to_read"],
+            default: "want_to_read"
+        },
+        
+    }]
 })
 
 const User = mongoose.model("User", userSchema)
