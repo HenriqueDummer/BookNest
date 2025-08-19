@@ -1,4 +1,4 @@
-import { deleteBook, getBookById, shareBook } from "@/util/http";
+import { deleteBook, getBookById, queryClient, shareBook } from "@/util/http";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
@@ -9,7 +9,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { MdDeleteForever } from "react-icons/md";
 
 
-import AddBookModal from "@/components/BookModal";
+import BookModal from "@/components/Modal/Modal";
 import ConfirmActionModal from "@/components/ConfirmActionModal";
 import Loading from "@/components/Loading";
 import { toast } from "react-toastify";
@@ -24,10 +24,13 @@ const Book = () => {
     queryKey: ["book", id],
   });
 
-  const { mutate, isPending } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: shareBook,
     onSuccess: (data) => {
       toast.success(data.message || "Book shared successfully!");
+      queryClient.setQueryData(["book", id], () => {
+        return data.book
+      });
     }
   })
 
@@ -47,7 +50,7 @@ const Book = () => {
           backgroundImage: `url(${bookData?.bookBackground})`,
         }}
       >
-        <NavLink to={-1}>
+        <NavLink to="..">
           <button className="absolute top-5 left-1 sm:left-5 bg-black/60 text-zinc-300 font-semibold rounded-full py-1 px-2 lg:py-2 lg:px-4 flex gap-1 items-center">
             <IoIosArrowBack className="text-lg" />
             Back
@@ -67,13 +70,13 @@ const Book = () => {
               Delete
             </Button>
           </ConfirmActionModal>
-          <AddBookModal
+          <BookModal
             existingFormData={bookData}
             className="gap-3 px-2 h-8 lg:text-lg lg:px-4 lg:h-10"
           >
             <BiSolidEditAlt className="text-xl" />
             Edit
-          </AddBookModal>
+          </BookModal>
           <Button onClick={() => mutate(bookData._id )} className="gap-3 px-2 h-8 lg:text-lg lg:px-4 lg:h-10">
             {bookData.shared ? "Privatize" : "Share"}
           </Button>

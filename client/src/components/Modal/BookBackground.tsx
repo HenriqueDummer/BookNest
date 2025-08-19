@@ -1,27 +1,23 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { FaFileImage } from "react-icons/fa6";
 import { IoIosClose } from "react-icons/io";
+import handleImgChange from "@/util/readImageAsUrl";
 
-const BookCover = ({ background, setBackground }) => {
-  const imageInputRef = useRef();
+type BookBackgroundProps = {
+  background: string | null;
+  setBackground: (background: string | null) => void;
+}
 
-  const handleImgChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setBackground(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+const BookBackground = ({ background, setBackground }: BookBackgroundProps) => {
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
+
 
   return (
     <div className="mt-2">
       <label htmlFor="background">Book background</label>
       <input
         ref={imageInputRef}
-        onChange={handleImgChange}
+        onChange={(e) => setBackground(handleImgChange(e))}
         id="background"
         type="file"
         accept="image/*"
@@ -31,7 +27,7 @@ const BookCover = ({ background, setBackground }) => {
       {!background ? (
         <div
           className="w-full cursor-pointer mt-3 flex h-[6rem] justify-center items-center rounded-lg border-dashed border-2 border-zinc-300 opacity-80"
-          onClick={() => imageInputRef.current.click()}
+          onClick={() => imageInputRef.current && imageInputRef.current.click()}
         >
           <FaFileImage className="text-3xl opacity-70" />
         </div>
@@ -52,4 +48,4 @@ const BookCover = ({ background, setBackground }) => {
   );
 };
 
-export default BookCover;
+export default BookBackground;

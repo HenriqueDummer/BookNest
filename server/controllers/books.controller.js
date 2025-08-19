@@ -131,18 +131,17 @@ export const updateBook = async (req, res) => {
     const {
       title,
       author,
-      status,
       totalPages,
       summary,
       genres,
       pubYear,
-      currentPage,
     } = req.body;
     let { bookCover, bookBackground } = req.body;
     const { id } = req.params;
 
     let book = await PrivateBook.findById(id);
 
+    // Delete old book cover images from cloudinary if they are being updated
     if (bookCover) {
       if (book.bookCover && book.bookCover !== bookCover) {
         await cloudinary.uploader.destroy(
@@ -156,6 +155,7 @@ export const updateBook = async (req, res) => {
       }
     }
 
+    // Delete old background images from cloudinary if they are being updated
     if (bookBackground) {
       if (book.bookBackground && book.bookBackground !== bookBackground) {
         await cloudinary.uploader.destroy(
@@ -179,13 +179,11 @@ export const updateBook = async (req, res) => {
       (book.genres = genres || book.genres),
       (book.pubYear = pubYear || book.pubYear),
       (book.bookCover = bookCover || book.bookCover),
-      (book.bookBackground = bookBackground || book.bookBackground),
-      (book.status = status || book.status);
-    book.currentPage = currentPage || book.currentPage;
+      (book.bookBackground = bookBackground || book.bookBackground)
 
     book = await book.save();
-
     return res.status(200).json(book);
+    
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });
@@ -241,11 +239,11 @@ export const shareBook = async (req, res) => {
       return res.status(404).json({ error: "Private book not found" });
     }
 
-    // If it's already shared, unshare it
     if (book.shared) {
       if (book.publicBookId) {
         await PublicBook.findByIdAndDelete(book.publicBookId);
       }
+
       const updatedPrivateBook = await PrivateBook.findByIdAndUpdate(
         id,
         { shared: false, publicBookId: null },
@@ -253,7 +251,7 @@ export const shareBook = async (req, res) => {
       );
       return res.status(200).json({
         message: "Book privatized successfully",
-        data: updatedPrivateBook,
+        book: updatedPrivateBook,
       });
     }
 
@@ -282,7 +280,7 @@ export const shareBook = async (req, res) => {
 
     return res.status(201).json({
       message: "Book shared successfully",
-      data: updatedPrivateBook,
+      book: updatedPrivateBook,
     });
 
   } catch (err) {

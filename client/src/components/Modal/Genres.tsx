@@ -1,16 +1,22 @@
 import { useRef, useState } from "react";
 
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 import { IoCloseCircleOutline } from "react-icons/io5";
+import type { PrivateBook } from "@/Types/PrivateBook";
 
-const ModalGenres = ({ setFormData, formData }) => {
+type ModalGenresProps = {
+  setFormData: (formData: any) => void;
+  genres: string[];
+}
+
+const ModalGenres = ({ setFormData, genres }: ModalGenresProps) => {
   const [genre, setGenre] = useState("");
   const [error, setError] = useState("");
 
-  function handleChange(e) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement> ){
     setError("");
     setGenre(e.target.value);
   }
@@ -20,13 +26,13 @@ const ModalGenres = ({ setFormData, formData }) => {
       return;
     }
 
-    if (formData.genres.includes(genre.trim())) {
+    if (genres.includes(genre.trim())) {
       setError("Genre already added");
       setGenre("");
       return;
     }
 
-    setFormData((prev) => {
+    setFormData((prev: PrivateBook) => {
       return {
         ...prev,
         genres: [...prev.genres, genre],
@@ -36,10 +42,10 @@ const ModalGenres = ({ setFormData, formData }) => {
     setGenre("");
   }
 
-  function handleDeleteGenre(e) {
-    const genre = e.target.id;
+  function handleDeleteGenre(e: React.MouseEvent<HTMLParagraphElement>) {
+    const genre = e.currentTarget.id;
 
-    setFormData((prev) => {
+    setFormData((prev: PrivateBook) => {
       return {
         ...prev,
         genres: prev.genres.filter((existingGenre) => existingGenre !== genre),
@@ -70,15 +76,15 @@ const ModalGenres = ({ setFormData, formData }) => {
       {error && <p className="text-xs text-red-500">{error}</p>}
       <div
         className={`w-full flex items-center gap-2 ${
-          formData?.genres ? "" : "justify-center"
+          genres ? "" : "justify-center"
         } mt-2 border flex-wrap border-slate-400 min-h-12 rounded-3xl p-2`}
       >
-        {formData?.genres?.length > 0 ? (
-          formData.genres.map((genre) => (
+        {genres?.length > 0 ? (
+          genres.map((genre) => (
             <p
               key={genre}
               id={genre}
-              onClick={handleDeleteGenre}
+              onClick={(e) => handleDeleteGenre(e)}
               className="group bg-[#FF008A] px-2 py-1 rounded-full flex items-center gap-1 cursor-pointer"
             >
               {genre}

@@ -9,4 +9,5 @@ export type PublicBook = {
   summary: string;
   bookBackground: string;
   userId: string;
+  shared: boolean;
 }

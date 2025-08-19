@@ -1,19 +1,18 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 import TextareaAutosize from "react-textarea-autosize";
 
-import ModalBookCover from "./ModalBookCover";
-import ModalBookBackground from "./ModalBookBackground";
+import BookCover from "./BookCover";
+import BookBackground from "./BookBackground";
 
 import { toast } from "react-toastify";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -23,10 +22,16 @@ import {
 
 import { useMutation } from "@tanstack/react-query";
 import { addBook, queryClient, updateBook } from "@/util/http";
-import ModalGenres from "./ModalGenres";
-import ModalSelect from "./ModalSelect";
+import ModalGenres from "./Genres";
+import type { PrivateBook } from "@/Types/PrivateBook";
 
-const BookModal = ({ existingFormData, children, className }) => {
+type BookModalProps = {
+  existingFormData?: PrivateBook;
+  children: React.ReactNode;
+  className?: string;
+}
+
+const BookModal = ({ existingFormData, children, className }: BookModalProps) => {
   const mutation = existingFormData ? updateBook : addBook;
   const { mutate, isPending } = useMutation({
     mutationFn: mutation,
@@ -56,6 +61,12 @@ const BookModal = ({ existingFormData, children, className }) => {
     genres: [],
     currentPage: 0,
     totalPages: 0,
+    title: "",
+    bookBackground: "",
+    bookCover: "",
+    summary: "",
+    author: "",
+    pubYear: 0
   };
 
   const initialCover = existingFormData?.bookCover ?? null;
@@ -66,7 +77,7 @@ const BookModal = ({ existingFormData, children, className }) => {
   const [cover, setCover] = useState(initialCover);
   const [background, setBackground] = useState(initialBackground);
 
-  function handleFormChange(e) {
+  function handleFormChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setFormData((prev) => {
       return {
         ...prev,
@@ -107,12 +118,12 @@ const BookModal = ({ existingFormData, children, className }) => {
   [&::-webkit-scrollbar-thumb]:bg-neutral-500"
           >
             <div className="w-full lg:w-[24rem] lg:px-0 flex flex-col justify-between">
-              <ModalBookBackground
+              <BookBackground
                 background={background}
                 setBackground={setBackground}
               />
 
-              <ModalBookCover cover={cover} setCover={setCover} />
+              <BookCover cover={cover} setCover={setCover} />
             </div>
 
             <div className="lg:w-full">
@@ -149,18 +160,18 @@ const BookModal = ({ existingFormData, children, className }) => {
                 </p>
               </div>
               <div className="mt-8 flex flex-col lg:flex-row justify-between lg:items-center gap-3">
-                <ModalSelect formData={formData} setFormData={setFormData} />
+                {/* <ModalSelect formData={formData} setFormData={setFormData} /> */}
                 <p className="flex items-center justify-center gap-2">
-                  Currently on
-                  <Input
+                  {/* Currently on */}
+                  {/* <Input
                     className={`w-14 p-1`}
                     id="currentPage"
                     type="number"
                     name="currentPage"
                     onChange={handleFormChange}
                     value={formData.currentPage}
-                  />
-                  of
+                  /> */}
+                  Total pages
                   <Input
                     className={`w-14 p-1`}
                     id="totalPages"
@@ -181,7 +192,7 @@ const BookModal = ({ existingFormData, children, className }) => {
                   value={formData.summary}
                 />
               </p>
-              <ModalGenres formData={formData} setFormData={setFormData} />
+              <ModalGenres genres={formData.genres} setFormData={setFormData} />
             </div>
           </form>
           <DialogFooter>

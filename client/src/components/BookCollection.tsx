@@ -5,7 +5,7 @@ import { getAllBooks, getBooksByStatus, getPublicBooks } from "@/util/http";
 import { IoAdd } from "react-icons/io5";
 import { IoTelescopeOutline } from "react-icons/io5";
 
-import BookModal from "./BookModal";
+import BookModal from "./Modal/Modal";
 import Loading from "./Loading";
 import Error from "@/pages/Error";
 

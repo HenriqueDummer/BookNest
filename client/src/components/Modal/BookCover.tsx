@@ -1,27 +1,22 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { FaFileImage } from "react-icons/fa6";
 import { IoIosClose } from "react-icons/io";
+import handleImgChange from "@/util/readImageAsUrl";
 
-const BookCover = ({ cover, setCover }) => {
-  const imageInputRef = useRef();
+type BookCoverProps = {
+  cover: string | null;
+  setCover: (cover: string | null) => void;
+}
 
-  const handleImgChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setCover(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+const BookCover = ({ cover, setCover }: BookCoverProps) => {
+  const imageInputRef = useRef<HTMLInputElement | null>(null);
 
   return (
     <div className="mt-2">
       <label htmlFor="cover">Book cover</label>
       <input
         ref={imageInputRef}
-        onChange={handleImgChange}
+        onChange={(e) => setCover(handleImgChange(e))}
         id="cover"
         type="file"
         accept="image/*"
@@ -32,7 +27,7 @@ const BookCover = ({ cover, setCover }) => {
       {!cover ? (
         <div
           className="w-full cursor-pointer mt-3 flex justify-center items-center rounded-lg h-[22rem] border-dashed border-2 border-zinc-300 opacity-80"
-          onClick={() => imageInputRef.current.click()}
+          onClick={() => imageInputRef.current && imageInputRef.current.click()}
         >
           <FaFileImage className="text-8xl opacity-70" />
         </div>

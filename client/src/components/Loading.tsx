@@ -1,6 +1,6 @@
 import { TailSpin } from "react-loader-spinner";
 
-const Loading = ({ style, message }: {style?: string, message: string}) => {
+const Loading = ({ style, message }: {style?: string, message?: string}) => {
   return (
     <div
       className={`flex-1 h-full flex flex-col justify-center items-center text-center bg-dark_bg ${style}`}
