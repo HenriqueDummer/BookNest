@@ -1,17 +1,26 @@
-const handleImgChange = (e: React.ChangeEvent<HTMLInputElement | null>): string => {
-  const file = e.target.files && e.target.files[0];
-  if (file) {
+const handleImgChange = (e: React.ChangeEvent<HTMLInputElement | null>): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const file = e?.target?.files?.[0];
+    if (!file) {
+      return reject("No file selected");
+    }
+
     const reader = new FileReader();
-    let result = "";
+
     reader.onload = () => {
       if (typeof reader.result === "string") {
-        result = reader.result;
+        resolve(reader.result);
+      } else {
+        reject("Invalid file result");
       }
     };
+
+    reader.onerror = () => {
+      reject("Error reading file");
+    };
+
     reader.readAsDataURL(file);
-    return result;
-  }
-  return "";
+  });
 };
 
 export default handleImgChange;

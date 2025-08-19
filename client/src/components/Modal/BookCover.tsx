@@ -11,12 +11,17 @@ type BookCoverProps = {
 const BookCover = ({ cover, setCover }: BookCoverProps) => {
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
+  const handleCoverChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileUrl = await handleImgChange(e);
+    setCover(fileUrl);
+  }
+
   return (
     <div className="mt-2">
       <label htmlFor="cover">Book cover</label>
       <input
         ref={imageInputRef}
-        onChange={(e) => setCover(handleImgChange(e))}
+        onChange={(e) => handleCoverChange(e)}
         id="cover"
         type="file"
         accept="image/*"

@@ -1,6 +1,6 @@
 import BookComponent from "./BookComponent";
 import { useQuery } from "@tanstack/react-query";
-import { getAllBooks, getBooksByStatus, getPublicBooks } from "@/util/http";
+import { getBooksByStatus, getPublicBooks } from "@/util/http";
 
 import { IoAdd } from "react-icons/io5";
 import { IoTelescopeOutline } from "react-icons/io5";
@@ -9,11 +9,18 @@ import BookModal from "./Modal/Modal";
 import Loading from "./Loading";
 import Error from "@/pages/Error";
 
-const BookCollection = ({ title, status }: {title: string, status?: string}) => {
+type BookCollectionProps = {
+  title: string;
+  status?: string;
+}
+
+const BookCollection = ({ title, status }: BookCollectionProps) => {
   const { data, isLoading, isError, error } = useQuery({
     queryFn: () =>
       !status ? getPublicBooks() : getBooksByStatus(status),
     queryKey: ["books", status],
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   if (isLoading) return <Loading message="Fetching books..." />;
@@ -31,7 +38,7 @@ const BookCollection = ({ title, status }: {title: string, status?: string}) => 
         </BookModal>
       </div>
       <div className="mt-10 w-full flex justify-center lg:justify-start flex-wrap gap-5 lg:p-5">
-        {data.length === 0 && (
+        {!data || data.length === 0 && (
           <div className="w-full mt-40 flex justify-center text-zinc-400">
             <IoTelescopeOutline className="text-6xl" />
             <h2 className="text-xl mt-4">No books here yet</h2>

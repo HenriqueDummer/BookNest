@@ -143,7 +143,7 @@ export const getAllBooks = async () => {
   }
 };
 
-export const getPublicBooks = async () => {
+export const getPublicBooks = async (): Promise<PublicBook[]> => {
   try {
     const res = await fetch(API_KEY + "/books/public", {
       method: "GET",
@@ -154,8 +154,6 @@ export const getPublicBooks = async () => {
     });
 
     const data = await res.json();
-
-    console.log(data);
     return data;
   } catch (err) {
     console.log(err);
@@ -183,7 +181,7 @@ export const shareBook = async (bookId: string) => {
 }
 
 
-export const getBooksByStatus = async (status) => {
+export const getBooksByStatus = async (status: string): Promise<PrivateBook[] | undefined> => {
   try {
     const url = status === "all" ? "/books/all" : "/books/status/" + status;
     const res = await fetch(API_KEY + url, {
@@ -195,12 +193,10 @@ export const getBooksByStatus = async (status) => {
     });
 
     const data = await res.json();
-
-    console.log(data);
-
     return data;
   } catch (err) {
     console.log(err);
+    return undefined;
   }
 };
 

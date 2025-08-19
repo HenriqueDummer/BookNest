@@ -54,6 +54,10 @@ const bookSchema = mongoose.Schema({
     publicBookId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Public Book"
+    },
+    isPublic: {
+        type: Boolean,
+        default: false
     }
     
 })

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const bookSchema = mongoose.Schema({
+
     title: {
         type: String,
         required: true,
@@ -35,8 +36,12 @@ const bookSchema = mongoose.Schema({
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "user",
+        ref: "User",
         required: true
+    },
+    isPublic: {
+        type: Boolean,
+        default: true
     },
 })
 

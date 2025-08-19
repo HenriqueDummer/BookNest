@@ -6,7 +6,8 @@ export const getAllBooks = async (req, res) => {
   try {
     const user = req.user;
 
-    const books = await PrivateBook.find({ userId: user._id });
+    const books = await PrivateBook.find({ userId: user._id }).select("author title bookCover totalPages currentPage genres pubYear status isPublic");
+
     if (books) {
       return res.status(200).json(books);
     } else {
@@ -20,7 +21,9 @@ export const getAllBooks = async (req, res) => {
 
 export const getPublicBooks = async (req, res) => {
   try {
-    const books = await PublicBook.find();
+    const books = await PublicBook.find()
+      .select("author title bookCover totalPages currentPage genres pubYear status userId isPublic")
+      .populate("userId", "username");
 
     if (books) {
       return res.status(200).json(books);
@@ -103,23 +106,34 @@ export const addBook = async (req, res) => {
 export const deleteBook = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id)
-    const book = await PrivateBook.findById(id)
-    if (!book) {
+
+    const privateBook = await PrivateBook.findById(id)
+    if (!privateBook) {
       return res.status(400).json({ error: "Book not found!" })
     }
 
+    // If the book is shared, delete the public book as well
+    let publicBook;
+    if (privateBook.shared && privateBook.publicBookId) {
+      publicBook = await PublicBook.findById(privateBook.publicBookId);
+    }
+
+    console.log(publicBook)
+
     await cloudinary.uploader.destroy(
-      book.bookCover.split("/").pop().split(".")[0]
+      privateBook.bookCover.split("/").pop().split(".")[0],
+      publicBook !== undefined ?? publicBook.bookCover.split("/").pop().split(".")[0]
     );
 
     await cloudinary.uploader.destroy(
-      book.bookBackground.split("/").pop().split(".")[0]
+      privateBook.bookBackground.split("/").pop().split(".")[0],
+      publicBook !== undefined ?? publicBook.bookBackground.split("/").pop().split(".")[0]
     );
 
     await PrivateBook.findByIdAndDelete(id)
+    await PublicBook.findByIdAndDelete(privateBook.publicBookId);
 
-    res.status(200).json(book)
+    res.status(200).json(privateBook)
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });
@@ -183,7 +197,7 @@ export const updateBook = async (req, res) => {
 
     book = await book.save();
     return res.status(200).json(book);
-    
+
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });
@@ -206,7 +220,7 @@ export const getBooksByStatus = async (req, res) => {
     }
 
 
-    return res.status(200).json(booksByStatus);
+    return res.status(200).json(books);
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });
@@ -218,7 +232,10 @@ export const getBookById = async (req, res) => {
   console.log("status");
 
   try {
-    const book = await PrivateBook.findById(id);
+    let book = await PrivateBook.findById(id);
+    if(!book) {
+      book = await PublicBook.findById(id).populate("userId", "username profileImg");
+    }
 
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
@@ -226,6 +243,7 @@ export const getBookById = async (req, res) => {
 
     return res.status(200).json(book);
   } catch (err) {
+    console.log(err)
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -239,6 +257,7 @@ export const shareBook = async (req, res) => {
       return res.status(404).json({ error: "Private book not found" });
     }
 
+    // If the book is already shared, privatize it
     if (book.shared) {
       if (book.publicBookId) {
         await PublicBook.findByIdAndDelete(book.publicBookId);

@@ -1,3 +1,5 @@
+import type { User } from "./User";
+
 export type PublicBook = {
   _id: string;
   title: string;
@@ -8,6 +10,7 @@ export type PublicBook = {
   genres: string[];
   summary: string;
   bookBackground: string;
-  userId: string;
+  userId: User;
   shared: boolean;
+  isPublic: boolean;
 }

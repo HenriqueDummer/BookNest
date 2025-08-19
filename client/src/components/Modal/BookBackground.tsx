@@ -5,19 +5,23 @@ import handleImgChange from "@/util/readImageAsUrl";
 
 type BookBackgroundProps = {
   background: string | null;
-  setBackground: (background: string | null) => void;
+  setBackground: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const BookBackground = ({ background, setBackground }: BookBackgroundProps) => {
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
+  const handleBackgroundChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileUrl =  await handleImgChange(e);
+    setBackground(fileUrl);
+  }
 
   return (
     <div className="mt-2">
       <label htmlFor="background">Book background</label>
       <input
         ref={imageInputRef}
-        onChange={(e) => setBackground(handleImgChange(e))}
+        onChange={(e) => handleBackgroundChange(e)}
         id="background"
         type="file"
         accept="image/*"
