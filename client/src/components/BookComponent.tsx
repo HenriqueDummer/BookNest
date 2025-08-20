@@ -15,7 +15,7 @@ type BookComponentProps = {
     currentPage?: number;
     status?: string;
     totalPages?: number;
-    userId: {
+    sharedBy: {
       _id: string;
       username: string;
     }
@@ -25,7 +25,7 @@ type BookComponentProps = {
 const BookComponent = ({ bookData }: BookComponentProps) => {
 
   console.log(bookData)
-  const { currentPage, genres, author, totalPages, bookCover, userId, isPublic } = bookData
+  const { currentPage, genres, author, totalPages, bookCover, sharedBy, isPublic } = bookData
 
   let progress = null;
   if (currentPage !== undefined && totalPages) {
@@ -73,9 +73,9 @@ const BookComponent = ({ bookData }: BookComponentProps) => {
 
       </Link>
       {
-        userId &&
-        <NavLink to={`/user/${userId._id}`} className="text-xs text-zinc-400 mt-1 inline-flex gap-2 items-center border border-white/10 hover:bg-white/10 px-2 py-1 rounded-full">
-          <IoIosShareAlt /> <span>{userId.username}</span>
+        sharedBy &&
+        <NavLink to={`/user/${sharedBy._id}`} className="text-xs text-zinc-400 mt-1 inline-flex gap-2 items-center border border-white/10 hover:bg-white/10 px-2 py-1 rounded-full">
+          <IoIosShareAlt /> <span>{sharedBy.username}</span>
         </NavLink>
       }
     </div>

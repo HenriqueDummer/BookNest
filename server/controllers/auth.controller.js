@@ -109,7 +109,8 @@ export const getUserById = async (req, res) => {
       res.status(404).json({ error: "User not found" });
     }
 
-    const sharedBooks = await PublicBook.find({ userId: user._id });
+    const sharedBooks = await PublicBook.find({ sharedBy: user._id });
+    console.log(sharedBooks)
 
     return res.status(200).json({ user, sharedBooks });
   } catch (err) {

@@ -1,23 +1,19 @@
 import { Routes, Route } from "react-router-dom";
 
-
 import SignUp from "./pages/SignUp";
 import LogIn from "./pages/LogIn";
-import Home from "./pages/Home";
-
-import Navbar from "./components/Navbar";
-
-import Reading from "./pages/Reading"
-import WantToRead from "./pages/WantToRead";
-import Read from "./pages/Read";
-import Book from "./pages/Book";
-import { ToastContainer } from "react-toastify";
+import UserProfile from "./pages/UserProfile";
 import AuthLayout from "./pages/AuthLayout";
 import RootLayout from "./pages/RootLayout";
+
+import BooksPage from "./pages/BooksPage";
+import Book from "./pages/Book";
+
+import Navbar from "./components/Navbar";
 import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
-import UserProfile from "./pages/UserProfile";
-import MyBooks from "./pages/MyBooks";
+
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -45,11 +41,11 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route path="/" element={<Home />} />
-            <Route path="/my_books" element={<MyBooks />} />
-            <Route path="/reading" element={<Reading />} />
-            <Route path="/want_to_read" element={<WantToRead />} />
-            <Route path="/read" element={<Read />} />
+            <Route path="/" element={<BooksPage title="Public library" />} />
+            <Route path="/my_books" element={<BooksPage title="My books" status="all" />} />
+            <Route path="/reading" element={<BooksPage title="Reading" status="reading" />} />
+            <Route path="/wishlist" element={<BooksPage title="Wishlist" status="wishlist" />} />
+            <Route path="/finished" element={<BooksPage title="Finished" status="finished" />} />
             <Route path="/book/:id" element={<Book />} />
             <Route path="/user/:id" element={<UserProfile />} />
           </Route>

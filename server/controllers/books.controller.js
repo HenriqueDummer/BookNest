@@ -23,7 +23,6 @@ export const getMyBooks = async (req, res) => {
   }
 }
 
-
 export const getPublicBooks = async (req, res) => {
   try {
     const books = await PublicBook.find()

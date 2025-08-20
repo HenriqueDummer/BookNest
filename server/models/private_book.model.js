@@ -44,7 +44,7 @@ const bookSchema = mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["reading", "read", "want_to_read"],
+        enum: ["reading", "finished", "wishlist"],
         default: "want_to_read"
     },
     shared: {

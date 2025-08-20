@@ -58,7 +58,7 @@ const Navbar = () => {
         </NavLink>
         <NavLink
           className={({ isActive }) => (isActive ? "font-bold" : "")}
-          to="/want_to_read"
+          to="/wishlist"
         >
           <li className={liStyle}>
             <CiHeart />
@@ -67,7 +67,7 @@ const Navbar = () => {
         </NavLink>
         <NavLink
           className={({ isActive }) => (isActive ? "font-bold" : "")}
-          to="/read"
+          to="/finished"
         >
           <li className={liStyle}>
             <CiCircleCheck />
