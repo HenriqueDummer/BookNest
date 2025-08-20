@@ -25,10 +25,10 @@ type BookComponentProps = {
 const BookComponent = ({ bookData }: BookComponentProps) => {
 
   console.log(bookData)
-  const { currentPage, genres, author, pubYear, totalPages, status, bookCover, userId, isPublic } = bookData
+  const { currentPage, genres, author, totalPages, bookCover, userId, isPublic } = bookData
 
   let progress = null;
-  if (currentPage && totalPages) {
+  if (currentPage !== undefined && totalPages) {
     progress = Math.round((currentPage / totalPages) * 1000) / 10;
   }
 

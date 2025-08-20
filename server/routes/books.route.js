@@ -1,6 +1,6 @@
 import express from "express"
 
-import { addBook, updateBook, getBookById, deleteBook, shareBook, getPublicBooks, getMyBooks } from "../controllers/books.controller.js"
+import { addBook, updateBook, getBookById, deleteBook, shareBook, getPublicBooks, getMyBooks, copyBook } from "../controllers/books.controller.js"
 import { protectRoute } from "../middleware/protectRoute.js"
 
 const route = express.Router()
@@ -12,5 +12,6 @@ route.post('/create', protectRoute, addBook)
 route.delete('/delete/:id',protectRoute, deleteBook)
 route.patch('/update/:id', protectRoute, updateBook)
 route.post('/share/:id', protectRoute, shareBook)
+route.post('/copy/:id', protectRoute, copyBook)
 
 export default route

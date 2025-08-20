@@ -10,7 +10,7 @@ export type PublicBook = {
   genres: string[];
   summary: string;
   bookBackground: string;
-  userId: User;
+  sharedBy: User;
   shared: boolean;
   isPublic: boolean;
 }

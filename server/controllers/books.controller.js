@@ -7,9 +7,9 @@ export const getMyBooks = async (req, res) => {
     const { status } = req.query;
     const user = req.user;
 
-    const filter = {userId: user._id};
+    const filter = { userId: user._id };
 
-    if(status && status !== "all") {
+    if (status && status !== "all") {
       filter.status = status;
     }
 
@@ -27,8 +27,8 @@ export const getMyBooks = async (req, res) => {
 export const getPublicBooks = async (req, res) => {
   try {
     const books = await PublicBook.find()
-      .select("author title bookCover totalPages currentPage genres pubYear status userId isPublic")
-      .populate("userId", "username");
+      .select("author title bookCover totalPages currentPage genres pubYear status sharedBy isPublic")
+      .populate("sharedBy", "username");
 
     if (books) {
       return res.status(200).json(books);
@@ -47,7 +47,6 @@ export const addBook = async (req, res) => {
     const {
       title,
       author,
-      status,
       currentPage,
       totalPages,
       summary,
@@ -93,7 +92,6 @@ export const addBook = async (req, res) => {
       pubYear,
       bookCover,
       bookBackground,
-      status,
     });
 
     if (newBook) {
@@ -120,10 +118,8 @@ export const deleteBook = async (req, res) => {
     // If the book is shared, delete the public book as well
     let publicBook;
     if (privateBook.shared && privateBook.publicBookId) {
-      publicBook = await PublicBook.findById(privateBook.publicBookId);
+      publicBook = await PublicBook.find({ _id: privateBook.publicBookId, sharedBy: privateBook.userId });
     }
-
-    console.log(publicBook)
 
     await cloudinary.uploader.destroy(
       privateBook.bookCover.split("/").pop().split(".")[0],
@@ -216,7 +212,7 @@ export const getBookById = async (req, res) => {
   try {
     let book = await PrivateBook.findById(id);
     if (!book) {
-      book = await PublicBook.findById(id).populate("userId", "username profileImg");
+      book = await PublicBook.findById(id).populate("sharedBy", "username profileImg");
     }
 
     if (!book) {
@@ -239,6 +235,10 @@ export const shareBook = async (req, res) => {
       return res.status(404).json({ error: "Private book not found" });
     }
 
+    if(book.sharedBy){
+      return res.status(400).json({ error: "You can't share copied books" });
+    }
+
     // If the book is already shared, privatize it
     if (book.shared) {
       if (book.publicBookId) {
@@ -257,18 +257,18 @@ export const shareBook = async (req, res) => {
     }
 
     // Otherwise, share it
-    const { author, title, userId, genres, summary, bookCover, bookBackground, totalPages, pubYear } = book;
+    const { author, title, genres, summary, bookCover, bookBackground, totalPages, userId, pubYear } = book;
 
     const newPublicBook = new PublicBook({
       author,
       title,
-      userId,
       genres,
       summary,
       bookCover,
       bookBackground,
       totalPages,
       pubYear,
+      sharedBy: userId,
     });
 
     await newPublicBook.save();
@@ -290,4 +290,54 @@ export const shareBook = async (req, res) => {
   }
 };
 
+export const copyBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { user } = req;
+
+    const publicBook = await PublicBook.findById(id);
+    if (!publicBook) {
+      return res.status(404).json({ error: "Public book not found" });
+    }
+
+    if(publicBook.sharedBy.toString() === user._id.toString()) {
+      return res.status(400).json({ error: "You cannot copy your own public book" });
+    }
+
+    const {
+      title,
+      author,
+      totalPages,
+      summary,
+      genres,
+      pubYear,
+      bookCover,
+      bookBackground
+    } = publicBook;
+
+    const copiedBook = await new PrivateBook({
+      userId: user._id,
+      title,
+      author,
+      totalPages,
+      summary,
+      genres,
+      pubYear,
+      bookCover,
+      bookBackground,
+      copiedFrom: publicBook._id,
+    })
+
+    if (copiedBook) {
+      copiedBook.save();
+      return res.status(201).json(copiedBook);
+    } else {
+      return res.status(400).json({ error: "Could not copy book" });
+    }
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
 

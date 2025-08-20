@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const bookSchema = mongoose.Schema({
-
     title: {
         type: String,
         required: true,
@@ -34,7 +33,7 @@ const bookSchema = mongoose.Schema({
         type: String,
         default: "https://i.pinimg.com/originals/80/ec/77/80ec77932091113c4970a88f69b9bb4f.gif"
     },
-    userId: {
+    sharedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true

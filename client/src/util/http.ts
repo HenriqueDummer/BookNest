@@ -26,7 +26,6 @@ export const getMe = async (): Promise<User | undefined> => {
   }
 };
 
-
 export const submitLogIn = async (formData) => {
   const { email, password } = formData;
 
@@ -74,14 +73,14 @@ export const submitSignUp = async (formData) => {
 
     const data = await res.json();
     if (!res.ok) {
-      throw new Error(data.error || "Failed to sign up!")
+      throw new Error(data.error || "Failed to sign up!");
     }
     console.log(data);
 
     return data;
   } catch (err) {
     console.log(err);
-    throw new Error(err.message)
+    throw new Error(err.message);
   }
 };
 
@@ -103,7 +102,9 @@ export const logout = async () => {
   }
 };
 
-export const getUserById = async (id: string): Promise<{user: User, sharedBooks: PublicBook[]} | undefined> => {
+export const getUserById = async (
+  id: string
+): Promise<{ user: User; sharedBooks: PublicBook[] } | undefined> => {
   try {
     const res = await fetch(API_KEY + "/auth/user/" + id, {
       method: "GET",
@@ -114,14 +115,13 @@ export const getUserById = async (id: string): Promise<{user: User, sharedBooks:
     });
 
     const data = await res.json();
-    console.log(data)
+    console.log(data);
     return data;
-
   } catch (err) {
     console.log(err);
     return undefined;
   }
-}
+};
 
 export const getMyBooks = async (status: string) => {
   try {
@@ -159,7 +159,7 @@ export const getPublicBooks = async (): Promise<PublicBook[]> => {
     console.log(err);
     throw new Error("Failed to fetch all books!");
   }
-}
+};
 
 export const shareBook = async (bookId: string) => {
   try {
@@ -172,18 +172,19 @@ export const shareBook = async (bookId: string) => {
     });
 
     const data = await res.json();
-    console.log(data)
+    console.log(data);
     return data;
   } catch (err) {
     console.log(err);
     throw new Error("Failed to share book!");
   }
-}
+};
 
-
-export const getBookById = async (id: string): Promise<PrivateBook | undefined> => {
+export const getBookById = async (
+  id: string
+): Promise<PrivateBook | undefined> => {
   try {
-    const res = await fetch(API_KEY + "/books/" + id, {
+    const res = await fetch(API_KEY + "/books/book/" + id, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -258,5 +259,24 @@ export const updateBook = async (formData) => {
     return data;
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const copyBook = async (bookId: string) => {
+  try {
+    const res = await fetch(API_KEY + "/books/copy/" + bookId, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+    console.log(data);
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to copy book!");
   }
 };
