@@ -1,6 +1,4 @@
 import BookComponent from "./BookComponent";
-import { useQuery } from "@tanstack/react-query";
-import { getBooksByStatus, getPublicBooks } from "@/util/http";
 
 import { IoAdd } from "react-icons/io5";
 import { IoTelescopeOutline } from "react-icons/io5";
@@ -8,20 +6,16 @@ import { IoTelescopeOutline } from "react-icons/io5";
 import BookModal from "./Modal/Modal";
 import Loading from "./Loading";
 import Error from "@/pages/Error";
+import useBooks from "@/hooks/useBooks";
 
 type BookCollectionProps = {
   title: string;
   status?: string;
+  isPublic: boolean;
 }
 
-const BookCollection = ({ title, status }: BookCollectionProps) => {
-  const { data, isLoading, isError, error } = useQuery({
-    queryFn: () =>
-      !status ? getPublicBooks() : getBooksByStatus(status),
-    queryKey: ["books", status],
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
+const BookCollection = ({ title, status, isPublic }: BookCollectionProps) => {
+  const { data, isLoading, isError, error } = useBooks({isPublic, status})
 
   if (isLoading) return <Loading message="Fetching books..." />;
 

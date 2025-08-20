@@ -123,9 +123,9 @@ export const getUserById = async (id: string): Promise<{user: User, sharedBooks:
   }
 }
 
-export const getAllBooks = async () => {
+export const getMyBooks = async (status: string) => {
   try {
-    const res = await fetch(API_KEY + "/books/all", {
+    const res = await fetch(API_KEY + "/books/me?status=" + status, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -180,25 +180,6 @@ export const shareBook = async (bookId: string) => {
   }
 }
 
-
-export const getBooksByStatus = async (status: string): Promise<PrivateBook[] | undefined> => {
-  try {
-    const url = status === "all" ? "/books/all" : "/books/status/" + status;
-    const res = await fetch(API_KEY + url, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.log(err);
-    return undefined;
-  }
-};
 
 export const getBookById = async (id: string): Promise<PrivateBook | undefined> => {
   try {

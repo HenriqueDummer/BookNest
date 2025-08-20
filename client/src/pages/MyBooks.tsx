@@ -4,7 +4,7 @@ const MyBooks = () => {
 
   return (
     <>
-      <BookCollection status="all" title="All" />
+      <BookCollection status="all" title="All" isPublic={false}/>
     </>
   )
 

@@ -4,7 +4,7 @@ const Home = () => {
 
   return (
     <>
-      <BookCollection title="All" />
+      <BookCollection title="All" isPublic={true} />
     </>
   )
 }

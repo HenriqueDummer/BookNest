@@ -2,22 +2,27 @@ import PrivateBook from "../models/private_book.model.js";
 import { v2 as cloudinary } from "cloudinary";
 import PublicBook from "../models/public_book.model.js";
 
-export const getAllBooks = async (req, res) => {
+export const getMyBooks = async (req, res) => {
   try {
+    const { status } = req.query;
     const user = req.user;
 
-    const books = await PrivateBook.find({ userId: user._id }).select("author title bookCover totalPages currentPage genres pubYear status isPublic");
+    const filter = {userId: user._id};
 
-    if (books) {
-      return res.status(200).json(books);
-    } else {
-      return res.status(400).json({ error: "Could not find books" });
+    if(status && status !== "all") {
+      filter.status = status;
     }
+
+    const books = await PrivateBook.find(filter).select("author title bookCover totalPages currentPage genres pubYear status isPublic");
+
+    return res.status(200).json(books);
+
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });
   }
-};
+}
+
 
 export const getPublicBooks = async (req, res) => {
   try {
@@ -204,36 +209,13 @@ export const updateBook = async (req, res) => {
   }
 };
 
-export const getBooksByStatus = async (req, res) => {
-  const { status } = req.params;
-  const user = req.user;
-
-  try {
-    let books
-
-    if (status) {
-      books = await PrivateBook.find({
-        $and: [{ userId: user._id }, { status: status }],
-      });
-    } else {
-      books = await PrivateBook.find({ userId: user._id });
-    }
-
-
-    return res.status(200).json(books);
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ error: "Internal server error" });
-  }
-};
-
 export const getBookById = async (req, res) => {
   const { id } = req.params;
   console.log("status");
 
   try {
     let book = await PrivateBook.findById(id);
-    if(!book) {
+    if (!book) {
       book = await PublicBook.findById(id).populate("userId", "username profileImg");
     }
 
