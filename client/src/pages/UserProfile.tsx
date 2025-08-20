@@ -2,6 +2,7 @@ import BookCollection from "@/components/BookCollection"
 import Loading from "@/components/Loading"
 import { getUserById } from "@/util/http"
 import { useQuery } from "@tanstack/react-query"
+import { Book } from "lucide-react"
 import { useParams } from "react-router-dom"
 
 const UserProfile = () => {
@@ -9,15 +10,15 @@ const UserProfile = () => {
   if (!id) return <p className="text-zinc-400">No user ID provided.</p>
 
   const { data, isLoading } = useQuery({
-    queryKey: ["userProfile"],
+    queryKey: ["userProfile", id],
     queryFn: () => getUserById(id),
+    staleTime: 5 * 60 * 1000, // 5 minutes
   })
 
   const {user, sharedBooks} = data || {}
 
   if (isLoading) return <Loading message="Fetching user profile..." />
 
-  console.log(user)
   return (
     <section className="flex-grow p-4 sm:p-10 lg:p-20 justify-center overflow-auto
  bg-dark_bg">
@@ -28,8 +29,8 @@ const UserProfile = () => {
           <p className="text-zinc-400 mt-2">{user?.bio}</p>
         </div>
       </div>
-      <div className="mt-10 w-full flex justify-center lg:justify-start flex-wrap gap-5 lg:p-5">
-      </div>
+      <h2 className="text-zinc-300 text-2xl mt-10">Shared books</h2>
+      <BookCollection books={sharedBooks}/>
     </section>
   )
 }

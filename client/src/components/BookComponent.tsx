@@ -24,7 +24,6 @@ type BookComponentProps = {
 
 const BookComponent = ({ bookData }: BookComponentProps) => {
 
-  console.log(bookData)
   const { currentPage, genres, author, totalPages, bookCover, sharedBy, isPublic } = bookData
 
   let progress = null;

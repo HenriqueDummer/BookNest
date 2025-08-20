@@ -109,8 +109,7 @@ export const getUserById = async (req, res) => {
       res.status(404).json({ error: "User not found" });
     }
 
-    const sharedBooks = await PublicBook.find({ sharedBy: user._id });
-    console.log(sharedBooks)
+    const sharedBooks = await PublicBook.find({ sharedBy: user._id }).populate("sharedBy", "username");
 
     return res.status(200).json({ user, sharedBooks });
   } catch (err) {

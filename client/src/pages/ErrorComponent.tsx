@@ -2,7 +2,11 @@ import { useEffect } from "react";
 import { BiSolidError } from "react-icons/bi";
 import { toast } from "react-toastify";
 
-const Error = ({ error }) => {
+type ErrorComponentProps = {
+    error: Error
+}
+
+const ErrorComponent = ({error}: ErrorComponentProps) => {
     useEffect(() => {
         toast.error(error.message, {theme: "dark"})
     }, [])
@@ -15,4 +19,4 @@ const Error = ({ error }) => {
   );
 };
 
-export default Error;
+export default ErrorComponent;
