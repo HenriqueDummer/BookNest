@@ -6,7 +6,7 @@ import { QueryClient } from "@tanstack/react-query";
 export const queryClient = new QueryClient();
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-export const getMe = async (): Promise<User | undefined> => {
+export const getMe = async (): Promise<User | null> => {
   try {
     const res = await fetch(API_KEY + "/auth/getme", {
       method: "GET",
@@ -18,11 +18,12 @@ export const getMe = async (): Promise<User | undefined> => {
 
     const data = await res.json();
 
-    if (data.error) return undefined;
+    if (data.error) return null;
 
     return data;
   } catch (err) {
     console.log(err);
+    return null;
   }
 };
 

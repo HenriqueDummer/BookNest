@@ -46,7 +46,6 @@ export const addBook = async (req, res) => {
     const {
       title,
       author,
-      currentPage,
       totalPages,
       summary,
       genres,
@@ -85,12 +84,12 @@ export const addBook = async (req, res) => {
       title,
       author,
       totalPages,
-      currentPage,
       summary,
       genres,
       pubYear,
       bookCover,
       bookBackground,
+      createdBy: userId
     });
 
     if (newBook) {
@@ -188,7 +187,6 @@ export const updateBook = async (req, res) => {
     (book.title = title || book.title),
       (book.author = author || book.author),
       (book.totalPages = totalPages || book.totalPages),
-      (book.currentPage = currentPage || book.currentPage),
       (book.summary = summary || book.summary),
       (book.genres = genres || book.genres),
       (book.pubYear = pubYear || book.pubYear),
@@ -211,7 +209,7 @@ export const getBookById = async (req, res) => {
   try {
     let book = await PrivateBook.findById(id);
     if (!book) {
-      book = await PublicBook.findById(id).populate("sharedBy", "username profileImg");
+      book = await PublicBook.findById(id).populate("sharedBy", "username profileImg").populate("characters");
     }
 
     if (!book) {

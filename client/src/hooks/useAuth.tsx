@@ -1,4 +1,4 @@
-import { getMe, queryClient, submitLogIn, submitSignUp } from "@/util/http";
+import { getMe, logout, queryClient, submitLogIn, submitSignUp } from "@/util/http";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
@@ -36,6 +36,10 @@ const useAuth = () => {
     },
   });
 
+  const logoutMutation = useMutation({
+    mutationFn: () => logout(),
+  })
+
   return {
     authUser,
     isLoadingUser,
@@ -44,6 +48,8 @@ const useAuth = () => {
     isLogginIn: loginMutation.isPending,
     signUp: singUpMutation.mutate,
     signingUp: singUpMutation.isPending,
+    logout: logoutMutation.mutate,
+    isLoggingOut: logoutMutation.isPending,
   };
 };
 

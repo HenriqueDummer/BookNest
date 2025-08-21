@@ -13,6 +13,7 @@ const ProtectedRoute = ({ children }) => {
       />
     );
 
+  console.log(authUser, userError);
   if (!authUser || userError) return <Navigate to={"/login"} replace />;
 
   return children;

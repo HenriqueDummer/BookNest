@@ -1230,11 +1230,6 @@ body {
   background-color: rgb(255 255 255 / 0.1);
 }
 
-.bg-zinc-900 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(24 24 27 / var(--tw-bg-opacity, 1));
-}
-
 .bg-\[radial-gradient\(ellipse_at_bottom\2c _var\(--tw-gradient-stops\)\)\] {
   background-image: radial-gradient(ellipse at bottom, var(--tw-gradient-stops));
 }
@@ -1431,10 +1426,6 @@ body {
   line-height: 1rem;
 }
 
-.font-bold {
-  font-weight: 700;
-}
-
 .font-light {
   font-weight: 300;
 }
@@ -1496,10 +1487,6 @@ body {
 
 .text-secondary-foreground {
   color: hsl(var(--secondary-foreground));
-}
-
-.text-white\/80 {
-  color: rgb(255 255 255 / 0.8);
 }
 
 .text-zinc-100 {
@@ -1690,8 +1677,23 @@ body {
   background-color: rgb(255 255 255 / 0.1);
 }
 
+.hover\:bg-zinc-900:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(24 24 27 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:text-accent-foreground:hover {
   color: hsl(var(--accent-foreground));
+}
+
+.hover\:text-purple:hover {
+  --tw-text-opacity: 1;
+  color: rgb(102 43 199 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-zinc-300:hover {
+  --tw-text-opacity: 1;
+  color: rgb(212 212 216 / var(--tw-text-opacity, 1));
 }
 
 .hover\:underline:hover {
@@ -1911,8 +1913,8 @@ body {
     justify-content: flex-end;
   }
 
-  .sm\:gap-10 {
-    gap: 2.5rem;
+  .sm\:gap-4 {
+    gap: 1rem;
   }
 
   .sm\:space-x-2 > :not([hidden]) ~ :not([hidden]) {
@@ -1989,8 +1991,8 @@ body {
     width: 50%;
   }
 
-  .lg\:w-\[18rem\] {
-    width: 18rem;
+  .lg\:w-\[14rem\] {
+    width: 14rem;
   }
 
   .lg\:w-\[24rem\] {

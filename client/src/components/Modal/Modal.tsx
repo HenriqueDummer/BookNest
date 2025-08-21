@@ -57,9 +57,7 @@ const BookModal = ({ existingFormData, children, className }: BookModalProps) =>
   });
 
   const initialFormData = existingFormData ?? {
-    status: "want_to_read",
     genres: [],
-    currentPage: 0,
     totalPages: 0,
     title: "",
     bookBackground: "",
