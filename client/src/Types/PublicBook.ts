@@ -13,4 +13,5 @@ export type PublicBook = {
   sharedBy: User;
   shared: boolean;
   isPublic: boolean;
+  createdBy: string
 }

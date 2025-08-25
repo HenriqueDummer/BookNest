@@ -1,3 +1,5 @@
+import { text } from 'stream/consumers';
+
 /** @type {import('tailwindcss').Config} */
 export default {
 	darkMode: ["class"],
@@ -10,7 +12,13 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			colors: {
-				dark_bg: 'rgb(10 10 10 / var(--tw-bg-opacity, 1))',
+				text: {
+					primary: "rgb(255 255 255)",
+					secondary: "rgb(255 255 255 / 0.6)",
+				},
+				dark_bg: '#111112',
+				dark_bg_sec: "#1A1A1A",
+				dark_bg_third: "#252525",
 				purple: '#662BC7',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',

@@ -232,7 +232,7 @@ export const shareBook = async (req, res) => {
       return res.status(404).json({ error: "Private book not found" });
     }
 
-    if(book.sharedBy){
+    if (book.sharedBy) {
       return res.status(400).json({ error: "You can't share copied books" });
     }
 
@@ -254,7 +254,7 @@ export const shareBook = async (req, res) => {
     }
 
     // Otherwise, share it
-    const { author, title, genres, summary, bookCover, bookBackground, totalPages, userId, pubYear } = book;
+    const { author, title, genres, summary, bookCover, bookBackground, totalPages, userId, pubYear, createdBy} = book;
 
     const newPublicBook = new PublicBook({
       author,
@@ -266,6 +266,7 @@ export const shareBook = async (req, res) => {
       totalPages,
       pubYear,
       sharedBy: userId,
+      createdBy
     });
 
     await newPublicBook.save();
@@ -297,7 +298,7 @@ export const copyBook = async (req, res) => {
       return res.status(404).json({ error: "Public book not found" });
     }
 
-    if(publicBook.sharedBy.toString() === user._id.toString()) {
+    if (publicBook.sharedBy.toString() === user._id.toString()) {
       return res.status(400).json({ error: "You cannot copy your own public book" });
     }
 

@@ -6,18 +6,22 @@ import UserProfile from "./pages/UserProfile";
 import AuthLayout from "./pages/AuthLayout";
 import RootLayout from "./pages/RootLayout";
 
-import BooksPage from "./pages/BooksPage";
-import Book from "./pages/Book";
+import BooksPage from "./pages/Shelf";
+import Book from "./pages/Book/Overview";
 
 import Navbar from "./components/Navbar";
 import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import { ToastContainer } from "react-toastify";
+import BookLayout from "./pages/Book/BookLayout";
+import Overview from "./pages/Book/Overview";
+import Notes from "./pages/Book/Notes";
+import Characters from "./pages/Book/Characters";
 
 function App() {
   return (
-    <div className="flex bg-neutral-950 flex-col-reverse lg:flex-row h-dvh">
+    <div className="flex bg-neutral-950 flex-col-reverse lg:flex-row h-dvh text-white">
       <ToastContainer />
       <div className="flex flex-1 overflow-auto">
         <Routes>
@@ -32,6 +36,7 @@ function App() {
             <Route path="/login" element={<LogIn />} />
             <Route path="/signup" element={<SignUp />} />
           </Route>
+
           {/* Private routes */}
           <Route
             element={
@@ -42,11 +47,29 @@ function App() {
             }
           >
             <Route path="/" element={<BooksPage title="Public library" />} />
-            <Route path="/my_books" element={<BooksPage title="My books" status="all" />} />
-            <Route path="/reading" element={<BooksPage title="Reading" status="reading" />} />
-            <Route path="/wishlist" element={<BooksPage title="Wishlist" status="wishlist" />} />
-            <Route path="/finished" element={<BooksPage title="Finished" status="finished" />} />
-            <Route path="/book/:id" element={<Book />} />
+            <Route
+              path="/my_books"
+              element={<BooksPage title="My books" status="all" />}
+            />
+            <Route
+              path="/reading"
+              element={<BooksPage title="Reading" status="reading" />}
+            />
+            <Route
+              path="/wishlist"
+              element={<BooksPage title="Wishlist" status="wishlist" />}
+            />
+            <Route
+              path="/finished"
+              element={<BooksPage title="Finished" status="finished" />}
+            />
+
+            <Route path="/book/:id" element={<BookLayout />}>
+              <Route index element={<Overview />} />
+              <Route path="notes" element={<Notes />} />
+              <Route path="characters" element={<Characters />} />
+            </Route>
+
             <Route path="/user/:id" element={<UserProfile />} />
           </Route>
         </Routes>
