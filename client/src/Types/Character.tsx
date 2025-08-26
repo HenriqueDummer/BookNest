@@ -1,0 +1,13 @@
+export type Character = {
+  // _id: string;
+  name: string;
+  description: string;
+  color: string;
+  tags: string[];
+  relationships: {
+    characterId: string;
+    type: string;
+    color: string;
+  }[],
+  notes: string[]
+}

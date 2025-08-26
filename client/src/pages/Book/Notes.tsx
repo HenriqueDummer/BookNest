@@ -1,3 +1,4 @@
+import Note from "@/components/Note";
 import Container from "@/components/ui/Container";
 import { BiSolidEditAlt } from "react-icons/bi";
 
@@ -76,33 +77,9 @@ const dummyNotes = [
 
 const Notes = () => {
   return (
-    <div className="w-full flex flex-col gap-5">
+    <div className="flex flex-col gap-5">
       {dummyNotes.map((note) => (
-        <Container
-          key={note.content}
-          className="bg-dark_bg_sec px-4 py-2 flex justify-between items-center overflow-hidden"
-        >
-          <div className="flex gap-3">
-            <div
-              className="w-[3px] flex max-h-14 rounded-full"
-              style={{
-                backgroundColor: note.color,
-                boxShadow: `0px 0px 250px 20px ${note.color}`,
-              }}
-            ></div>
-
-            <div className="flex-1">
-              <p className="">{note.content}</p>
-              <p className="text-text-secondary text-sm">
-                Chapter {note.chapter} - Page {note.page}
-              </p>
-            </div>
-          </div>
-
-          <button className=" p-3 rounded-lg bg-dark_bg_third">
-            <BiSolidEditAlt />
-          </button>
-        </Container>
+        <Note content={note.content} page={note.page} chapter={note.chapter} color={note.color} bgThird={false} />
       ))}
     </div>
   );

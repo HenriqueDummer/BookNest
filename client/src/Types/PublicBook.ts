@@ -1,3 +1,4 @@
+import type { Character } from "./Character";
 import type { User } from "./User";
 
 export type PublicBook = {
@@ -13,5 +14,6 @@ export type PublicBook = {
   sharedBy: User;
   shared: boolean;
   isPublic: boolean;
-  createdBy: string
+  createdBy: string;
+  characters: Character[];
 }

@@ -27,7 +27,7 @@ const Overview = () => {
 
   return (
     <div className="w-full flex flex-col gap-5">
-      <Container title="Overview">
+      <Container title="Summary">
         <p className="text-text-secondary">{summary}</p>
       </Container>
 

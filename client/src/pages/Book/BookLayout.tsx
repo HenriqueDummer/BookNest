@@ -135,7 +135,7 @@ const BookLayout = () => {
             authUserId={authUser?._id}
             isPublic={isPublic}
           />
-          <div className="mt-10">
+          <div className="my-10">
             <Outlet context={{ bookData }} />
           </div>
         </div>
