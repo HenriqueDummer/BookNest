@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { Button } from "./ui/button";
 import { FiLink } from "react-icons/fi";
 import { IoCopyOutline } from "react-icons/io5";
+import { useState } from "react";
 
 const navItems = [
   { to: "", label: "Overview" },
@@ -46,6 +47,8 @@ const BookNavbar = ({
   createdBy,
   authUserId,
 }: BookNavbar) => {
+  const [hovered, setHovered] = useState<boolean>(false);
+
   const { mutate: share } = useMutation({
     mutationFn: shareBook,
     onSuccess: (data) => {
@@ -88,10 +91,20 @@ const BookNavbar = ({
       )}
 
       {!isPublic && (
-        <Button onClick={() => share(id)} className="gap-3 px-4 !py-5">
+        <Button
+          onClick={() => share(id)}
+          className="gap-3 px-4 !py-5 duration-200 hover:bg-dark_bg_third"
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
           <FiLink size={22} />
-          {shared ? "Shared" : "Share"}
-          {shared && <div className="w-[6px] aspect-square rounded-full bg-green-600"></div>}
+          {shared ? (hovered ? "Unshare" : "Shared") : "Share"}
+          {shared && !hovered && (
+            <div className="w-[6px] aspect-square rounded-full bg-green-600"></div>
+          )}
+          {shared && hovered && (
+            <div className="w-[6px] aspect-square rounded-full bg-red-600"></div>
+          )}
         </Button>
       )}
     </div>

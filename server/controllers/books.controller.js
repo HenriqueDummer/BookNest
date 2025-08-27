@@ -254,7 +254,7 @@ export const shareBook = async (req, res) => {
     }
 
     // Otherwise, share it
-    const { author, title, genres, summary, bookCover, bookBackground, totalPages, userId, pubYear, createdBy} = book;
+    const { author, title, genres, summary, bookCover, bookBackground, totalPages, userId, pubYear, createdBy } = book;
 
     const newPublicBook = new PublicBook({
       author,
@@ -333,6 +333,26 @@ export const copyBook = async (req, res) => {
       return res.status(400).json({ error: "Could not copy book" });
     }
 
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+export const updateProgress = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { updatedCurrentPage } = req.body;
+
+    const book = await PrivateBook.findById(id);
+    if (!book) {
+      return res.status(404).json({ message: "Book not found!" })
+    }
+
+    book.currentPage = updatedCurrentPage;
+    await book.save();
+
+    return res.status(200).json(book);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal server error" });

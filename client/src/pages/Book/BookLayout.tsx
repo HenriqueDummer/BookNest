@@ -39,6 +39,7 @@ const BookLayout = () => {
   const { data: bookData, isLoading } = useQuery({
     queryFn: () => getBookById(id),
     queryKey: ["book", id],
+    staleTime: 1000 * 60 * 5
   });
 
   if (isLoading) return <Loading />;

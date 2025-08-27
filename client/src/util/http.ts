@@ -281,3 +281,29 @@ export const copyBook = async (bookId: string) => {
     throw new Error("Failed to copy book!");
   }
 };
+
+export const updateProgress = async ({
+  bookId,
+  updatedCurrentPage,
+}: { bookId: string; updatedCurrentPage: number }) => {
+  try {
+    const res = await fetch(`${API_KEY}/books/update/progress/${bookId}`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ updatedCurrentPage: updatedCurrentPage }),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Failed to update book progress");
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+    throw new Error("Failed to update book progress");
+  }
+};
