@@ -88,7 +88,7 @@ const Progress = ({ currentPage, totalPages, id }: ProgressProps) => {
                 variant={"destructive"}
                 onClick={onSave}
               >
-                Save
+                Cancel
               </Button>
               <Button
                 className="bg-purple"

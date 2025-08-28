@@ -1,15 +1,20 @@
-import { BiSolidEditAlt } from "react-icons/bi";
 import Container from "./ui/Container";
+import type { Note } from "@/Types/Note";
+import type { ReactNode } from "react";
 
 type NoteProps = {
-  content: string;
-  color: string;
-  page?: number | null;
-  chapter?: number | null;
-  characterNote: boolean;
-};
+  characterNote?: boolean;
+  children?: ReactNode;
+} & Note;
 
-const Note = ({ content, color, chapter, page, characterNote }: NoteProps) => {
+const NoteComponent = ({
+  children,
+  content,
+  color,
+  page,
+  chapter,
+  characterNote = false,
+}: NoteProps) => {
   return (
     <Container
       key={content}
@@ -29,7 +34,9 @@ const Note = ({ content, color, chapter, page, characterNote }: NoteProps) => {
         ></div>
 
         <div className="flex-1">
-          <p className={`py-1 ${characterNote ? "text-sm" : "text-base"}`}>{content}</p>
+          <p className={`py-1 ${characterNote ? "text-sm" : "text-base"}`}>
+            {content}
+          </p>
           {page && chapter && page !== null && chapter !== null && (
             <p className="text-text-secondary text-sm">
               Chapter {chapter} - Page {page}
@@ -38,15 +45,9 @@ const Note = ({ content, color, chapter, page, characterNote }: NoteProps) => {
         </div>
       </div>
 
-      {!characterNote && (
-        <button
-          className={`p-3 rounded-lg duration-200 hover:bg-black/20 hidden group-hover:inline`}
-        >
-          <BiSolidEditAlt />
-        </button>
-      )}
+      {children}
     </Container>
   );
 };
 
-export default Note;
+export default NoteComponent;

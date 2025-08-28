@@ -95,7 +95,7 @@ const CharacterComponent = ({ character }: { character: Character }) => {
           {notes.length > 0 ? (
             <div className="flex flex-col gap-2 my-4">
               {notes.map((note) => (
-                <Note content={note} color={color} characterNote />
+                <Note content={note} page={null} chapter={null} color={color} characterNote />
               ))}
             </div>
           ) : (

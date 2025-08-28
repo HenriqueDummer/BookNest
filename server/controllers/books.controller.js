@@ -349,6 +349,10 @@ export const updateProgress = async (req, res) => {
       return res.status(404).json({ message: "Book not found!" })
     }
 
+    if (updatedCurrentPage < 0 || updatedCurrentPage > book.totalPages) {
+      return res.status(404).json({ message: "Invalid input" })
+    }
+
     book.currentPage = updatedCurrentPage;
     await book.save();
 
@@ -359,3 +363,49 @@ export const updateProgress = async (req, res) => {
   }
 }
 
+export const addNote = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { note } = req.body;
+
+    console.log(id)
+    const book = await PrivateBook.findById(id)
+    if (!book)
+      return res.status(404).json({ message: "Book not found" })
+
+    if (!note.content)
+      return res.status(400).json({ message: "Note should have a text content" })
+
+    console.log(note)
+    book.notes.push(note)
+
+    await book.save()
+    return res.status(200).json(book)
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+export const deleteNote = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { noteId } = req.body;
+
+    const book = await PrivateBook.findById(id)
+    if (!book)
+      return res.status(404).json({ message: "Book not found" })
+
+    console.log(book.notes)
+    console.log(noteId)
+    book.notes = book.notes.filter((note) => note._id.toString() !== noteId);
+
+    await book.save()
+    return res.status(200).json(book)
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}

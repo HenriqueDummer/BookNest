@@ -1,8 +1,9 @@
+import type { Note } from "./Note";
 import type { PublicBook } from "./PublicBook";
 
 export type PrivateBook = {
   currentPage: number;
   status: "reading" | "want_to_read" | "read";
   copiedFrom: string | null;
-  notes: string;
+  notes: Note[];
 } & PublicBook;

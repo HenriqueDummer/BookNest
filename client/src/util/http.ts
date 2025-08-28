@@ -1,3 +1,4 @@
+import type { Note } from "@/Types/Note";
 import type { PrivateBook } from "@/Types/PrivateBook";
 import type { PublicBook } from "@/Types/PublicBook";
 import type { User } from "@/Types/User";
@@ -285,10 +286,13 @@ export const copyBook = async (bookId: string) => {
 export const updateProgress = async ({
   bookId,
   updatedCurrentPage,
-}: { bookId: string; updatedCurrentPage: number }) => {
+}: {
+  bookId: string;
+  updatedCurrentPage: number;
+}) => {
   try {
     const res = await fetch(`${API_KEY}/books/update/progress/${bookId}`, {
-      method: "PUT",
+      method: "PATCH",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
@@ -299,6 +303,66 @@ export const updateProgress = async ({
     if (!res.ok) {
       const errorData = await res.json();
       throw new Error(errorData.message || "Failed to update book progress");
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+    throw new Error("Failed to update book progress");
+  }
+};
+
+export const addNote = async ({
+  bookId,
+  formData,
+}: {
+  bookId: string;
+  formData: Note;
+}) => {
+  try {
+    console.log(bookId);
+    const res = await fetch(`${API_KEY}/books/update/add_note/${bookId}`, {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ note: formData }),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Failed to add note");
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+    throw new Error("Failed to update book progress");
+  }
+};
+
+export const deleteNote = async ({
+  bookId,
+  noteId,
+}: {
+  bookId: string;
+  noteId: string;
+}) => {
+  try {
+    console.log(bookId);
+    const res = await fetch(`${API_KEY}/books/update/delete_note/${bookId}`, {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ noteId: noteId }),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Failed to add note");
     }
 
     return await res.json();

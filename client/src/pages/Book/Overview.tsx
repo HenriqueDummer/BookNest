@@ -1,13 +1,9 @@
 import { useOutletContext } from "react-router-dom";
 import type { PrivateBook } from "@/Types/PrivateBook";
 import Container from "@/components/ui/Container";
-import { CiBookmark } from "react-icons/ci";
-import { Label } from "@radix-ui/react-label";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
 import Progress from "@/components/Progress";
 
-type BookOutletProps = { bookData: PrivateBook };
+export type BookOutletProps = { bookData: PrivateBook };
 
 const Overview = () => {
   const { bookData } = useOutletContext<BookOutletProps>();
