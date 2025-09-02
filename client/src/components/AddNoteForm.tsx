@@ -1,7 +1,7 @@
 import { Label } from "@radix-ui/react-label";
 import TextareaAutosize from "react-textarea-autosize";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "./ui/Container";
 import type { Note } from "@/Types/Note";
 import { toast } from "react-toastify";
@@ -11,52 +11,51 @@ import { useMutation } from "@tanstack/react-query";
 import { addNote, deleteNote, queryClient } from "@/util/http";
 import type { PrivateBook } from "@/Types/PrivateBook";
 import { accentColors } from "@/Types/Colors";
+import useAddNote from "@/hooks/useAddNote";
+import useDeleteNote from "@/hooks/useDeleteNote";
+import useEditNote from "@/hooks/useEditNote";
+import NoteComponent from "./Note";
 
-type AddNoteFormProps = {
+type NoteFormProps = {
+  mode: "add" | "edit";
   bookId: string;
   totalPages: number;
-  setIsAddingNote: React.Dispatch<React.SetStateAction<boolean>>;
-  existingFormData: Note | null;
-  resetInitialData: () => void;
+  note: Note | null;
+  onClose: () => void;
 };
 
+function validateNote(note: Note, totalPages: number): string | null {
+  if (!note.content.trim()) return "Note text cannot be empty";
+  if (note.chapter && note.chapter < 0)
+    return "Chapter should be a positive number";
+  if (note.page && note.page < 0) return "Page should be a positive number";
+  if (note.page && note.page > totalPages)
+    return `Page cannot be greater than total pages: ${totalPages}`;
+  return null;
+}
+
 const AddNoteForm = ({
+  mode,
   bookId,
   totalPages,
-  setIsAddingNote,
-  existingFormData,
-  resetInitialData,
-}: AddNoteFormProps) => {
-  const initialData =
-    existingFormData !== null
-      ? existingFormData
-      : {
-          content: "",
-          page: null,
-          chapter: null,
-          color: accentColors[0],
-        };
-
-  const [formData, setFormData] = useState<Note>(initialData);
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: addNote,
-    onSuccess: (udpdatedData: PrivateBook) => {
-      queryClient.setQueryData(["book", bookId], () => {
-        return udpdatedData;
-      });
-    },
+  note,
+  onClose,
+}: NoteFormProps) => {
+  const [formData, setFormData] = useState<Note>({
+    content: "",
+    page: null,
+    chapter: null,
+    color: accentColors[0],
+    ...note,
   });
 
-  const { mutate: deleteNoteMutate, isPending: isDeletingNote } = useMutation({
-    mutationFn: deleteNote,
-    onSuccess: (udpdatedData: PrivateBook) => {
-      handleCancel();
-      queryClient.setQueryData(["book", bookId], () => {
-        return udpdatedData;
-      });
-    },
-  });
+  useEffect(() => {
+    if (note) setFormData((prev) => ({ ...prev, ...note }));
+  }, [note]);
+
+  const { mutate: mutateAddNote } = useAddNote({ bookId, onClose });
+  const { mutate: mutateDeleteNote } = useDeleteNote({ bookId, onClose });
+  const { mutate: mutateEditNote } = useEditNote({ bookId, onClose });
 
   function handleFormChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -67,67 +66,29 @@ const AddNoteForm = ({
         [e.target.id]: e.target.value,
       };
     });
-
-    console.log(formData);
   }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (formData.content.trim() === "") {
-      toast.error("Note text cannot be empty", {
-        theme: "dark",
-        autoClose: 2000,
-      });
-      return;
-    }
+    const error = validateNote(formData, totalPages);
+    if (error) toast.error(error, { theme: "dark", autoClose: 2000 });
 
-    if (formData.chapter && formData.chapter < 0) {
-      toast.error("Chapter should be a positive number", {
-        theme: "dark",
-        autoClose: 2000,
-      });
-      return;
+    if (mode === "add") {
+      mutateAddNote({ bookId, formData });
+    } else {
+      mutateEditNote({ bookId, formData });
     }
-
-    if (formData.page && formData.page < 0) {
-      toast.error("Page should be a positive number", {
-        theme: "dark",
-        autoClose: 2000,
-      });
-      return;
-    }
-
-    if (formData.page && formData.page > totalPages) {
-      toast.error(
-        `Page should cannot be greater than total pages: ${totalPages}`,
-        { theme: "dark", autoClose: 2000 }
-      );
-      return;
-    }
-
-    mutate({ bookId, formData });
-    setIsAddingNote(false);
   }
 
   function handleDeleteNote() {
-    if (existingFormData && existingFormData._id)
-      deleteNoteMutate({ bookId: bookId, noteId: existingFormData._id });
-  }
-
-  function handleCancel() {
-    setIsAddingNote(false);
-    resetInitialData();
-    setFormData({
-      content: "",
-      page: null,
-      chapter: null,
-      color: "rgba(249,115,22)",
-    });
+    if (mode === "edit" && note?._id) {
+      mutateDeleteNote({ bookId: bookId, noteId: note._id });
+    }
   }
 
   return (
-    <Container title="New note">
+    <Container title={mode === "add" ? "New note" : "Edit note"}>
       <form onSubmit={(e) => handleSubmit(e)} className="w-full mt-4">
         <p>
           <Label className="font-semibold">Note text:</Label>
@@ -186,10 +147,10 @@ const AddNoteForm = ({
 
         <div
           className={`mt-4 flex gap-2 justify-${
-            existingFormData ? "between" : "end"
+            mode === "edit" ? "between" : "end"
           }`}
         >
-          {existingFormData && (
+          {mode === "edit" && (
             <Button
               variant={"destructive"}
               type="button"
@@ -199,7 +160,7 @@ const AddNoteForm = ({
             </Button>
           )}
           <div className="flex gap-2">
-            <Button variant={"ghost"} type="button" onClick={handleCancel}>
+            <Button variant={"ghost"} type="button" onClick={() => onClose()}>
               Cancel
             </Button>
             <Button className="bg-purple hover:bg-purple/80">Add</Button>

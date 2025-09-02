@@ -371,3 +371,32 @@ export const deleteNote = async ({
     throw new Error("Failed to update book progress");
   }
 };
+
+export const editNote = async ({
+  bookId,
+  formData,
+}: {
+  bookId: string;
+  formData: Note;
+}) => {
+  try {
+    const res = await fetch(`${API_KEY}/books/update/edit_note/${bookId}`, {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ updatedNote: formData }),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Failed to edit note");
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+    throw new Error("Failed to update book progress");
+  }
+};

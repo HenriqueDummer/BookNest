@@ -3,54 +3,47 @@ import { useOutletContext } from "react-router-dom";
 import type { BookOutletProps } from "./Overview";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import AddNoteForm from "@/components/AddNoteForm";
+
 import { BiSolidEditAlt } from "react-icons/bi";
 import type { Note } from "@/Types/Note";
+import AddNoteForm from "@/components/AddNoteForm";
 
 const Notes = () => {
   const { bookData } = useOutletContext<BookOutletProps>();
-  const [isAddingNote, setIsAddingNote] = useState<boolean>(false);
-  const [initialData, setInitialData] = useState<Note | null>(null);
-
-  const handleEditNote = (note: Note) => {
-    setInitialData(note);
-    setIsAddingNote(true);
-  };
-
-  const resetInitialData = () => {
-    setInitialData(null);
-  };
+  const [editingNote, setEditingNote] = useState<Note | null>(null);
 
   const notes = bookData.notes;
 
   return (
     <div>
-      {isAddingNote ? (
+      {editingNote ? (
         <AddNoteForm
-          resetInitialData={resetInitialData}
-          existingFormData={initialData}
+          mode={editingNote._id ? "edit" : "add"}
+          note={editingNote}
+          onClose={() => setEditingNote(null)}
           bookId={bookData._id}
           totalPages={bookData.totalPages}
-          setIsAddingNote={setIsAddingNote}
         />
       ) : (
         <div className="flex justify-end">
-          <Button variant="ghost" onClick={() => setIsAddingNote(true)}>
+          <Button variant="ghost" onClick={() => setEditingNote({} as Note)}>
             Add note
           </Button>
         </div>
       )}
+
       {notes.length > 0 ? (
         <div className="flex flex-col gap-5 mt-5">
           {notes.map((note) => (
             <NoteComponent
+              key={note._id}
               content={note.content}
               page={note.page}
               chapter={note.chapter}
               color={note.color}
             >
               <button
-                onClick={() => handleEditNote(note)}
+                onClick={() => setEditingNote(note)}
                 className={`p-3 rounded-lg duration-200 hover:bg-black/20 hidden group-hover:inline`}
               >
                 <BiSolidEditAlt />

@@ -1,6 +1,6 @@
 import express from "express"
 
-import { addBook, updateBook, getBookById, deleteBook, shareBook, getPublicBooks, getMyBooks, copyBook, updateProgress, addNote, deleteNote } from "../controllers/books.controller.js"
+import { addBook, updateBook, getBookById, deleteBook, shareBook, getPublicBooks, getMyBooks, copyBook, updateProgress, addNote, deleteNote, editNote } from "../controllers/books.controller.js"
 import { protectRoute } from "../middleware/protectRoute.js"
 
 const route = express.Router()
@@ -16,6 +16,7 @@ route.post('/copy/:id', protectRoute, copyBook)
 route.patch('/update/progress/:id', protectRoute, updateProgress)
 route.patch('/update/add_note/:id', protectRoute, addNote)
 route.patch('/update/delete_note/:id', protectRoute, deleteNote)
+route.patch('/update/edit_note/:id', protectRoute, editNote)
 route.patch('/update/:id', protectRoute, updateBook)
 
 route.delete('/delete/:id',protectRoute, deleteBook)

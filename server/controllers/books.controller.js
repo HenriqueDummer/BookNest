@@ -13,20 +13,23 @@ export const getMyBooks = async (req, res) => {
       filter.status = status;
     }
 
-    const books = await PrivateBook.find(filter).select("author title bookCover totalPages currentPage genres pubYear status isPublic");
+    const books = await PrivateBook.find(filter).select(
+      "author title bookCover totalPages currentPage genres pubYear status isPublic"
+    );
 
     return res.status(200).json(books);
-
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });
   }
-}
+};
 
 export const getPublicBooks = async (req, res) => {
   try {
     const books = await PublicBook.find()
-      .select("author title bookCover totalPages currentPage genres pubYear status sharedBy isPublic")
+      .select(
+        "author title bookCover totalPages currentPage genres pubYear status sharedBy isPublic"
+      )
       .populate("sharedBy", "username");
 
     if (books) {
@@ -34,33 +37,23 @@ export const getPublicBooks = async (req, res) => {
     } else {
       return res.status(400).json({ error: "Could not find public books" });
     }
-
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });
   }
-}
+};
 
 export const addBook = async (req, res) => {
   try {
-    const {
-      title,
-      author,
-      totalPages,
-      summary,
-      genres,
-      pubYear,
-    } = req.body;
+    const { title, author, totalPages, summary, genres, pubYear } = req.body;
     let { bookCover, bookBackground } = req.body;
     const userId = req.user._id;
 
     console.log(summary);
     if (!title || !bookCover || !author || !totalPages || !summary)
-      return res
-        .status(400)
-        .json({
-          error: "Must provide title, author, cover, summary and total pages!",
-        });
+      return res.status(400).json({
+        error: "Must provide title, author, cover, summary and total pages!",
+      });
 
     const existingBook = await PrivateBook.find({ title });
 
@@ -89,7 +82,7 @@ export const addBook = async (req, res) => {
       pubYear,
       bookCover,
       bookBackground,
-      createdBy: userId
+      createdBy: userId,
     });
 
     if (newBook) {
@@ -108,31 +101,36 @@ export const deleteBook = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const privateBook = await PrivateBook.findById(id)
+    const privateBook = await PrivateBook.findById(id);
     if (!privateBook) {
-      return res.status(400).json({ error: "Book not found!" })
+      return res.status(400).json({ error: "Book not found!" });
     }
 
     // If the book is shared, delete the public book as well
     let publicBook;
     if (privateBook.shared && privateBook.publicBookId) {
-      publicBook = await PublicBook.find({ _id: privateBook.publicBookId, sharedBy: privateBook.userId });
+      publicBook = await PublicBook.find({
+        _id: privateBook.publicBookId,
+        sharedBy: privateBook.userId,
+      });
     }
 
     await cloudinary.uploader.destroy(
       privateBook.bookCover.split("/").pop().split(".")[0],
-      publicBook !== undefined ?? publicBook.bookCover.split("/").pop().split(".")[0]
+      publicBook !== undefined ??
+        publicBook.bookCover.split("/").pop().split(".")[0]
     );
 
     await cloudinary.uploader.destroy(
       privateBook.bookBackground.split("/").pop().split(".")[0],
-      publicBook !== undefined ?? publicBook.bookBackground.split("/").pop().split(".")[0]
+      publicBook !== undefined ??
+        publicBook.bookBackground.split("/").pop().split(".")[0]
     );
 
-    await PrivateBook.findByIdAndDelete(id)
+    await PrivateBook.findByIdAndDelete(id);
     await PublicBook.findByIdAndDelete(privateBook.publicBookId);
 
-    res.status(200).json(privateBook)
+    res.status(200).json(privateBook);
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });
@@ -141,14 +139,7 @@ export const deleteBook = async (req, res) => {
 
 export const updateBook = async (req, res) => {
   try {
-    const {
-      title,
-      author,
-      totalPages,
-      summary,
-      genres,
-      pubYear,
-    } = req.body;
+    const { title, author, totalPages, summary, genres, pubYear } = req.body;
     let { bookCover, bookBackground } = req.body;
     const { id } = req.params;
 
@@ -191,11 +182,10 @@ export const updateBook = async (req, res) => {
       (book.genres = genres || book.genres),
       (book.pubYear = pubYear || book.pubYear),
       (book.bookCover = bookCover || book.bookCover),
-      (book.bookBackground = bookBackground || book.bookBackground)
+      (book.bookBackground = bookBackground || book.bookBackground);
 
     book = await book.save();
     return res.status(200).json(book);
-
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal server error" });
@@ -209,7 +199,9 @@ export const getBookById = async (req, res) => {
   try {
     let book = await PrivateBook.findById(id);
     if (!book) {
-      book = await PublicBook.findById(id).populate("sharedBy", "username profileImg").populate("characters");
+      book = await PublicBook.findById(id)
+        .populate("sharedBy", "username profileImg")
+        .populate("characters");
     }
 
     if (!book) {
@@ -218,7 +210,7 @@ export const getBookById = async (req, res) => {
 
     return res.status(200).json(book);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -254,7 +246,18 @@ export const shareBook = async (req, res) => {
     }
 
     // Otherwise, share it
-    const { author, title, genres, summary, bookCover, bookBackground, totalPages, userId, pubYear, createdBy } = book;
+    const {
+      author,
+      title,
+      genres,
+      summary,
+      bookCover,
+      bookBackground,
+      totalPages,
+      userId,
+      pubYear,
+      createdBy,
+    } = book;
 
     const newPublicBook = new PublicBook({
       author,
@@ -266,7 +269,7 @@ export const shareBook = async (req, res) => {
       totalPages,
       pubYear,
       sharedBy: userId,
-      createdBy
+      createdBy,
     });
 
     await newPublicBook.save();
@@ -281,7 +284,6 @@ export const shareBook = async (req, res) => {
       message: "Book shared successfully",
       book: updatedPrivateBook,
     });
-
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal server error" });
@@ -299,7 +301,9 @@ export const copyBook = async (req, res) => {
     }
 
     if (publicBook.sharedBy.toString() === user._id.toString()) {
-      return res.status(400).json({ error: "You cannot copy your own public book" });
+      return res
+        .status(400)
+        .json({ error: "You cannot copy your own public book" });
     }
 
     const {
@@ -310,7 +314,7 @@ export const copyBook = async (req, res) => {
       genres,
       pubYear,
       bookCover,
-      bookBackground
+      bookBackground,
     } = publicBook;
 
     const copiedBook = await new PrivateBook({
@@ -324,7 +328,7 @@ export const copyBook = async (req, res) => {
       bookCover,
       bookBackground,
       copiedFrom: publicBook._id,
-    })
+    });
 
     if (copiedBook) {
       copiedBook.save();
@@ -332,12 +336,11 @@ export const copyBook = async (req, res) => {
     } else {
       return res.status(400).json({ error: "Could not copy book" });
     }
-
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal server error" });
   }
-}
+};
 
 export const updateProgress = async (req, res) => {
   try {
@@ -346,11 +349,11 @@ export const updateProgress = async (req, res) => {
 
     const book = await PrivateBook.findById(id);
     if (!book) {
-      return res.status(404).json({ message: "Book not found!" })
+      return res.status(404).json({ message: "Book not found!" });
     }
 
     if (updatedCurrentPage < 0 || updatedCurrentPage > book.totalPages) {
-      return res.status(404).json({ message: "Invalid input" })
+      return res.status(404).json({ message: "Invalid input" });
     }
 
     book.currentPage = updatedCurrentPage;
@@ -361,51 +364,76 @@ export const updateProgress = async (req, res) => {
     console.error(err);
     return res.status(500).json({ error: "Internal server error" });
   }
-}
+};
 
 export const addNote = async (req, res) => {
   try {
     const { id } = req.params;
     const { note } = req.body;
 
-    console.log(id)
-    const book = await PrivateBook.findById(id)
-    if (!book)
-      return res.status(404).json({ message: "Book not found" })
+    console.log(id);
+    const book = await PrivateBook.findById(id);
+    if (!book) return res.status(404).json({ message: "Book not found" });
 
     if (!note.content)
-      return res.status(400).json({ message: "Note should have a text content" })
+      return res
+        .status(400)
+        .json({ message: "Note should have a text content" });
 
-    console.log(note)
-    book.notes.push(note)
+    console.log(note);
+    book.notes.push(note);
 
-    await book.save()
-    return res.status(200).json(book)
-
+    await book.save();
+    return res.status(200).json(book);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal server error" });
   }
-}
+};
 
 export const deleteNote = async (req, res) => {
   try {
     const { id } = req.params;
     const { noteId } = req.body;
 
-    const book = await PrivateBook.findById(id)
-    if (!book)
-      return res.status(404).json({ message: "Book not found" })
+    const book = await PrivateBook.findById(id);
+    if (!book) return res.status(404).json({ message: "Book not found" });
 
-    console.log(book.notes)
-    console.log(noteId)
+    console.log(book.notes);
+    console.log(noteId);
     book.notes = book.notes.filter((note) => note._id.toString() !== noteId);
 
-    await book.save()
-    return res.status(200).json(book)
-
+    await book.save();
+    return res.status(200).json(book);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal server error" });
   }
-}
+};
+
+export const editNote = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { updatedNote } = req.body;
+
+    const book = await PrivateBook.findById(id);
+    if (!book) return res.status(404).json({ message: "Book not found" });
+
+    if (!updatedNote.content)
+      return res
+        .status(400)
+        .json({ message: "Note should have a text content" });
+
+    book.notes = book.notes.map((note) => {
+      if (toString(note._id) === toString(updateBook._id)) return updatedNote;
+
+      return note;
+    });
+
+    await book.save();
+    return res.status(200).json(book);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
