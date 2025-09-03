@@ -1,10 +1,10 @@
-import type { AccentColors } from "./Note";
+import type { AccentColor } from "./Colors";
 
 export type Character = {
   // _id: string;
   name: string;
   description: string;
-  color: AccentColors;
+  color: AccentColor;
   tags: string[];
   relationships: {
     characterId: string;

@@ -29,9 +29,13 @@ type BookModalProps = {
   existingFormData?: PrivateBook;
   children: React.ReactNode;
   className?: string;
-}
+};
 
-const BookModal = ({ existingFormData, children, className }: BookModalProps) => {
+const BookModal = ({
+  existingFormData,
+  children,
+  className,
+}: BookModalProps) => {
   const mutation = existingFormData ? updateBook : addBook;
   const { mutate, isPending } = useMutation({
     mutationFn: mutation,
@@ -64,7 +68,7 @@ const BookModal = ({ existingFormData, children, className }: BookModalProps) =>
     bookCover: "",
     summary: "",
     author: "",
-    pubYear: 0
+    pubYear: 0,
   };
 
   const initialCover = existingFormData?.bookCover ?? null;
@@ -75,7 +79,9 @@ const BookModal = ({ existingFormData, children, className }: BookModalProps) =>
   const [cover, setCover] = useState(initialCover);
   const [background, setBackground] = useState(initialBackground);
 
-  function handleFormChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleFormChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
     setFormData((prev) => {
       return {
         ...prev,
@@ -95,7 +101,7 @@ const BookModal = ({ existingFormData, children, className }: BookModalProps) =>
     <>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger
-          className={`flex items-center bg-purple text-zinc-300 font-semibold px-2 py-1 lg:px-3 lg:py-2 rounded-lg ${className}`}
+          className={`flex items-center bg-purple text-zinc-300 font-semibold text-sm px-2 lg:py-2 rounded-lg ${className}`}
         >
           {children}
         </DialogTrigger>
@@ -112,8 +118,8 @@ const BookModal = ({ existingFormData, children, className }: BookModalProps) =>
             className="flex min-w-[20rem] max-h-[36rem] lg:min-w-0 lg:min-h-0 overflow-y-auto overflow-x-hidden lg:overflow-visible flex-col items-center lg:flex-row gap-5 p-3 lg:p-6 [&::-webkit-scrollbar]:w-2
   [&::-webkit-scrollbar-track]:rounded-full
   [&::-webkit-scrollbar-thumb]:rounded-full
-  [&::-webkit-scrollbar-track]:bg-neutral-700
-  [&::-webkit-scrollbar-thumb]:bg-neutral-500"
+  [&::-webkit-scrollbar-track]:bg-dark_bg_sec
+  [&::-webkit-scrollbar-thumb]:bg-dark_bg_third"
           >
             <div className="w-full lg:w-[24rem] lg:px-0 flex flex-col justify-between">
               <BookBackground

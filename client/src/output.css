@@ -970,6 +970,10 @@ body {
   width: 100%;
 }
 
+.w-12 {
+  width: 3rem;
+}
+
 .min-w-\[20rem\] {
   min-width: 20rem;
 }
@@ -1463,6 +1467,10 @@ body {
 
 .pl-2 {
   padding-left: 0.5rem;
+}
+
+.pr-2 {
+  padding-right: 0.5rem;
 }
 
 .pr-8 {
@@ -2166,10 +2174,6 @@ body {
     display: flex;
   }
 
-  .lg\:h-10 {
-    height: 2.5rem;
-  }
-
   .lg\:h-full {
     height: 100%;
   }
@@ -2310,6 +2314,11 @@ body {
   background-color: rgb(115 115 115 / var(--tw-bg-opacity, 1));
 }
 
+.\[\&\:\:-webkit-scrollbar-thumb\]\:bg-dark_bg_third::-webkit-scrollbar-thumb {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 37 37 / var(--tw-bg-opacity, 1));
+}
+
 .\[\&\:\:-webkit-scrollbar-track\]\:rounded-full::-webkit-scrollbar-track {
   border-radius: 9999px;
 }
@@ -2319,8 +2328,17 @@ body {
   background-color: rgb(64 64 64 / var(--tw-bg-opacity, 1));
 }
 
+.\[\&\:\:-webkit-scrollbar-track\]\:bg-dark_bg_sec::-webkit-scrollbar-track {
+  --tw-bg-opacity: 1;
+  background-color: rgb(26 26 26 / var(--tw-bg-opacity, 1));
+}
+
 .\[\&\:\:-webkit-scrollbar\]\:w-2::-webkit-scrollbar {
   width: 0.5rem;
+}
+
+.\[\&\:\:-webkit-scrollbar\]\:w-1::-webkit-scrollbar {
+  width: 0.25rem;
 }
 
 .\[\&\>span\]\:line-clamp-1>span {

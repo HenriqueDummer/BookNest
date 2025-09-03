@@ -201,7 +201,6 @@ export const getBookById = async (req, res) => {
     if (!book) {
       book = await PublicBook.findById(id)
         .populate("sharedBy", "username profileImg")
-        .populate("characters");
     }
 
     if (!book) {
