@@ -1,7 +1,7 @@
 import type { AccentColor } from "./Colors";
 
 export type Character = {
-  // _id: string;
+  _id?: string;
   name: string;
   description: string;
   color: AccentColor;

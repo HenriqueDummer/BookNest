@@ -23,10 +23,12 @@ const Overview = () => {
             <th className="font-semibold">Author:</th>
             <td className="text-text-secondary">{bookData.author}</td>
           </tr>
+          <div className="w-full h-[2px] bg-white/10 rounded-sm my-1"></div>
           <tr className="w-full flex justify-between">
             <th className="font-semibold">Publication year:</th>
             <td className="text-text-secondary">{bookData.pubYear}</td>
           </tr>
+          <div className="w-full h-[2px] bg-white/10 rounded-sm my-1"></div>
           <tr className="w-full flex justify-between">
             <th className="font-semibold">Genres:</th>
             <td className="text-text-secondary flex gap-1">
@@ -35,7 +37,7 @@ const Overview = () => {
               ))}
             </td>
           </tr>
-
+          <div className="w-full h-[2px] bg-white/10 rounded-sm my-1"></div>
           <tr className="w-full flex justify-between">
             <th className="font-semibold">Rating:</th>
             <td className="text-text-secondary flex gap-1">

@@ -1,3 +1,4 @@
+import type { Character } from "@/Types/Character";
 import type { Note } from "@/Types/Note";
 import type { PrivateBook } from "@/Types/PrivateBook";
 import type { PublicBook } from "@/Types/PublicBook";
@@ -392,6 +393,64 @@ export const editNote = async ({
     if (!res.ok) {
       const errorData = await res.json();
       throw new Error(errorData.message || "Failed to edit note");
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+    throw new Error("Failed to update book progress");
+  }
+};
+
+export const addCharacter = async ({
+  bookId,
+  formData,
+}: {
+  bookId: string;
+  formData: Character;
+}) => {
+  try {
+    const res = await fetch(`${API_KEY}/books/updated/add_character/${bookId}`, {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ newCharacter: formData }),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Failed to add character");
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+    throw new Error("Failed to update book progress");
+  }
+};
+
+export const editCharacter = async ({
+  bookId,
+  formData,
+}: {
+  bookId: string;
+  formData: Character;
+}) => {
+  try {
+    const res = await fetch(`${API_KEY}/books/updated/edit_character/${bookId}`, {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ updatedCharacter: formData }),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Failed to updated character");
     }
 
     return await res.json();

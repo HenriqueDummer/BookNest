@@ -14,7 +14,12 @@ const getInitials = (name: string) => {
     .join("");
 };
 
-const CharacterComponent = ({ character }: { character: Character }) => {
+type CharacterComponentType = {
+  character: Character;
+  children: React.ReactNode;
+};
+
+const CharacterComponent = ({ character, children }: CharacterComponentType) => {
   const { color, name, description, tags, relationships, notes } = character;
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
@@ -95,7 +100,13 @@ const CharacterComponent = ({ character }: { character: Character }) => {
           {notes.length > 0 ? (
             <div className="flex flex-col gap-2 my-4">
               {notes.map((note) => (
-                <Note content={note} page={null} chapter={null} color={color} characterNote />
+                <Note
+                  content={note}
+                  page={null}
+                  chapter={null}
+                  color={color}
+                  characterNote
+                />
               ))}
             </div>
           ) : (
@@ -118,10 +129,7 @@ const CharacterComponent = ({ character }: { character: Character }) => {
             More details
           </button>
           {isExpanded && (
-            <Button className="bg-purple hover:bg-purple/80">
-              <BiSolidEditAlt size={16} />
-              Edit
-            </Button>
+            children
           )}
         </div>
       </div>

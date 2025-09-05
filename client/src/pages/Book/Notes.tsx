@@ -7,6 +7,7 @@ import { useState } from "react";
 import { BiSolidEditAlt } from "react-icons/bi";
 import type { Note } from "@/Types/Note";
 import AddNoteForm from "@/components/AddNoteForm";
+import { IoIosAdd } from "react-icons/io";
 
 const Notes = () => {
   const { bookData } = useOutletContext<BookOutletProps>();
@@ -27,6 +28,7 @@ const Notes = () => {
       ) : (
         <div className="flex justify-end">
           <Button variant="ghost" onClick={() => setEditingNote({} as Note)}>
+            <IoIosAdd />
             Add note
           </Button>
         </div>

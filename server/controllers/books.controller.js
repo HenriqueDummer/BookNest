@@ -1,6 +1,7 @@
 import PrivateBook from "../models/private_book.model.js";
 import { v2 as cloudinary } from "cloudinary";
 import PublicBook from "../models/public_book.model.js";
+import Character from "../models/character.model.js";
 
 export const getMyBooks = async (req, res) => {
   try {
@@ -118,13 +119,13 @@ export const deleteBook = async (req, res) => {
     await cloudinary.uploader.destroy(
       privateBook.bookCover.split("/").pop().split(".")[0],
       publicBook !== undefined ??
-        publicBook.bookCover.split("/").pop().split(".")[0]
+      publicBook.bookCover.split("/").pop().split(".")[0]
     );
 
     await cloudinary.uploader.destroy(
       privateBook.bookBackground.split("/").pop().split(".")[0],
       publicBook !== undefined ??
-        publicBook.bookBackground.split("/").pop().split(".")[0]
+      publicBook.bookBackground.split("/").pop().split(".")[0]
     );
 
     await PrivateBook.findByIdAndDelete(id);
@@ -197,10 +198,11 @@ export const getBookById = async (req, res) => {
   console.log("status");
 
   try {
-    let book = await PrivateBook.findById(id);
+    let book = await PrivateBook.findById(id).populate("characters");;
     if (!book) {
       book = await PublicBook.findById(id)
         .populate("sharedBy", "username profileImg")
+
     }
 
     if (!book) {
@@ -436,3 +438,70 @@ export const editNote = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const addCharacter = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { newCharacter } = req.body;
+
+    const book = await PrivateBook.findById(id);
+    if (!book) return res.status(404).json({ message: "Book not found" });
+
+    if (!newCharacter.name || !newCharacter.description) {
+      return res.status(400).json({ message: "Name and descritption are required!" })
+    }
+
+    console.log(newCharacter)
+
+    const newChar = new Character({
+      name: newCharacter.name,
+      description: newCharacter.description,
+      notes: newCharacter.notes,
+      relationships: newCharacter.relationships,
+      color: newCharacter.color,
+      tags: newCharacter.tags
+    })
+
+    book.characters.push(newChar)
+
+    if (newChar) {
+      newChar.save()
+      book.save()
+      return res.status(201).json(book)
+    } else {
+      return res.status(400).json({ message: "Could not create character!" })
+    }
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+export const editCharacter = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { updatedCharacter } = req.body;
+
+    const book = await PrivateBook.findById(id).populate("characters");
+    if (!book) return res.status(404).json({ message: "Book not found" });
+
+    if (!updatedCharacter.name || !updatedCharacter.description) {
+      return res.status(400).json({ message: "Name and descritption are required!" })
+    }
+
+
+    const character = await Character.findByIdAndUpdate(updatedCharacter._id, { $set: updatedCharacter }, { new: true })
+
+    if (!character) {
+      return res.status(404).json({ message: "Character not found" });
+    }
+
+    const updatedBook = await PrivateBook.findById(id).populate("characters");
+
+    return res.status(200).json(updatedBook);
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
